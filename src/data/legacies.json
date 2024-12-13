@@ -46,6 +46,24 @@
     ]
   },
   {
+    "id": "fortune_teller",
+    "req": [
+      {
+        "type": "resource",
+        "id": "legacy",
+        "value": 2
+      }
+    ],
+    "gen": [
+      {
+        "type": "resource",
+        "id": "luck",
+        "value": 1,
+        "fix": true
+      }
+    ]
+  },
+  {
     "id": "irrigation_techniques",
     "req": [
       {
@@ -122,6 +140,28 @@
         "type": "cap",
         "id": "iron",
         "value": 500
+      }
+    ]
+  },
+  {
+    "id": "service_gods",
+    "req": [
+      {
+        "type": "resource",
+        "id": "legacy",
+        "value": 2
+      }
+    ],
+    "gen": [
+      {
+        "type": "cap",
+        "id": "faith",
+        "value": 1000
+      },
+      {
+        "type": "cap",
+        "id": "mana",
+        "value": 1000
       }
     ]
   },
@@ -452,6 +492,51 @@
     ]
   },
   {
+    "id": "service_gods_II",
+    "req": [
+      {
+        "type": "resource",
+        "id": "legacy",
+        "value": 4
+      },
+      {
+        "type": "legacy",
+        "id": "service_gods",
+        "value": 1
+      }
+    ],
+    "gen": [
+      {
+        "type": "cap",
+        "id": "faith",
+        "value": 2500
+      },
+      {
+        "type": "cap",
+        "id": "mana",
+        "value": 2500
+      }
+    ]
+  },
+  {
+    "id": "soothsayer",
+    "req": [
+      {
+        "type": "resource",
+        "id": "legacy",
+        "value": 4
+      }
+    ],
+    "gen": [
+      {
+        "type": "resource",
+        "id": "luck",
+        "value": 2,
+        "fix": true
+      }
+    ]
+  },
+  {
     "id": "spikes_and_pits",
     "req": [
       {
@@ -493,6 +578,16 @@
         "id": "mana",
         "value": 5,
         "perc": true
+      }
+    ]
+  },
+  {
+    "id": "zenix_familiar_l",
+    "req": [
+      {
+        "type": "resource",
+        "id": "legacy",
+        "value": 4
       }
     ]
   },
@@ -1178,6 +1273,24 @@
     ]
   },
   {
+    "id": "clairvoyant",
+    "req": [
+      {
+        "type": "resource",
+        "id": "legacy",
+        "value": 8
+      }
+    ],
+    "gen": [
+      {
+        "type": "resource",
+        "id": "luck",
+        "value": 3,
+        "fix": true
+      }
+    ]
+  },
+  {
     "id": "defensive_rampart",
     "req": [
       {
@@ -1286,6 +1399,33 @@
         "type": "cap",
         "id": "saltpetre",
         "value": 2500
+      }
+    ]
+  },
+  {
+    "id": "service_gods_III",
+    "req": [
+      {
+        "type": "resource",
+        "id": "legacy",
+        "value": 8
+      },
+      {
+        "type": "legacy",
+        "id": "service_gods_II",
+        "value": 1
+      }
+    ],
+    "gen": [
+      {
+        "type": "cap",
+        "id": "faith",
+        "value": 6000
+      },
+      {
+        "type": "cap",
+        "id": "mana",
+        "value": 6000
       }
     ]
   },
@@ -2373,6 +2513,24 @@
     ]
   },
   {
+    "id": "cartomancer",
+    "req": [
+      {
+        "type": "resource",
+        "id": "legacy",
+        "value": 16
+      }
+    ],
+    "gen": [
+      {
+        "type": "resource",
+        "id": "luck",
+        "value": 4,
+        "fix": true
+      }
+    ]
+  },
+  {
     "id": "deep_pockets_III",
     "req": [
       {
@@ -2524,6 +2682,33 @@
         "type": "cap",
         "id": "natronite",
         "value": 20000
+      }
+    ]
+  },
+  {
+    "id": "service_gods_IV",
+    "req": [
+      {
+        "type": "resource",
+        "id": "legacy",
+        "value": 16
+      },
+      {
+        "type": "legacy",
+        "id": "service_gods_III",
+        "value": 1
+      }
+    ],
+    "gen": [
+      {
+        "type": "cap",
+        "id": "faith",
+        "value": 12000
+      },
+      {
+        "type": "cap",
+        "id": "mana",
+        "value": 12000
       }
     ]
   },
@@ -3094,6 +3279,51 @@
         "type": "legacy",
         "id": "angel",
         "value": 1
+      }
+    ]
+  },
+  {
+    "id": "acolyte_fate",
+    "req": [
+      {
+        "type": "resource",
+        "id": "legacy",
+        "value": 32
+      }
+    ],
+    "gen": [
+      {
+        "type": "resource",
+        "id": "luck",
+        "value": 6,
+        "fix": true
+      }
+    ]
+  },
+  {
+    "id": "service_gods_V",
+    "req": [
+      {
+        "type": "resource",
+        "id": "legacy",
+        "value": 32
+      },
+      {
+        "type": "legacy",
+        "id": "service_gods_IV",
+        "value": 1
+      }
+    ],
+    "gen": [
+      {
+        "type": "cap",
+        "id": "faith",
+        "value": 25000
+      },
+      {
+        "type": "cap",
+        "id": "mana",
+        "value": 25000
       }
     ]
   },

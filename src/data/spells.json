@@ -32,6 +32,22 @@
     ]
   },
   {
+    "id": "lucky_grove_f",
+    "type": "prayer",
+    "req": [
+      {
+        "type": "resource",
+        "id": "faith",
+        "value": 600
+      },
+      {
+        "type": "building",
+        "id": "fortune_grove",
+        "value": 1
+      }
+    ]
+  },
+  {
     "id": "sacrifices_gods",
     "type": "prayer",
     "req": [
@@ -117,6 +133,22 @@
       {
         "type": "building",
         "id": "stable",
+        "value": 3
+      }
+    ]
+  },
+  {
+    "id": "lucky_well_f",
+    "type": "prayer",
+    "req": [
+      {
+        "type": "resource",
+        "id": "faith",
+        "value": 1000
+      },
+      {
+        "type": "building",
+        "id": "fortune_grove",
         "value": 3
       }
     ]
@@ -292,6 +324,22 @@
       {
         "type": "prayer",
         "id": "blessing",
+        "value": 1
+      }
+    ]
+  },
+  {
+    "id": "ancient_spell_p",
+    "type": "prayer",
+    "req": [
+      {
+        "type": "resource",
+        "id": "faith",
+        "value": 1250
+      },
+      {
+        "type": "tech",
+        "id": "ancient_spell",
         "value": 1
       }
     ]
@@ -501,6 +549,138 @@
     ]
   },
   {
+    "id": "focus_development",
+    "type": "prayer",
+    "req": [
+      {
+        "type": "resource",
+        "id": "faith",
+        "value": 2000
+      },
+      {
+        "type": "building",
+        "id": "magic_circle",
+        "value": 3
+      }
+    ],
+    "gen": [
+      {
+        "type": "prayer",
+        "id": "focus_research",
+        "value": -1
+      },
+      {
+        "type": "prayer",
+        "id": "focus_magic",
+        "value": -1
+      }
+    ]
+  },
+  {
+    "id": "focus_magic",
+    "type": "prayer",
+    "req": [
+      {
+        "type": "resource",
+        "id": "faith",
+        "value": 2000
+      },
+      {
+        "type": "building",
+        "id": "magic_circle",
+        "value": 3
+      }
+    ],
+    "gen": [
+      {
+        "type": "prayer",
+        "id": "focus_research",
+        "value": -1
+      },
+      {
+        "type": "prayer",
+        "id": "focus_development",
+        "value": -1
+      }
+    ]
+  },
+  {
+    "id": "focus_research",
+    "type": "prayer",
+    "req": [
+      {
+        "type": "resource",
+        "id": "faith",
+        "value": 2000
+      },
+      {
+        "type": "building",
+        "id": "magic_circle",
+        "value": 3
+      }
+    ],
+    "gen": [
+      {
+        "type": "prayer",
+        "id": "focus_development",
+        "value": -1
+      },
+      {
+        "type": "prayer",
+        "id": "focus_magic",
+        "value": -1
+      }
+    ]
+  },
+  {
+    "id": "life_magic_p",
+    "type": "prayer",
+    "req": [
+      {
+        "type": "resource",
+        "id": "faith",
+        "value": 2000
+      },
+      {
+        "type": "prayer",
+        "id": "focus_development",
+        "value": 1
+      }
+    ]
+  },
+  {
+    "id": "highlightment_p",
+    "type": "prayer",
+    "req": [
+      {
+        "type": "resource",
+        "id": "faith",
+        "value": 2000
+      },
+      {
+        "type": "prayer",
+        "id": "focus_research",
+        "value": 1
+      }
+    ]
+  },
+  {
+    "id": "mana_flowers_p",
+    "type": "prayer",
+    "req": [
+      {
+        "type": "resource",
+        "id": "faith",
+        "value": 2000
+      },
+      {
+        "type": "prayer",
+        "id": "focus_magic",
+        "value": 1
+      }
+    ]
+  },
+  {
     "id": "demonology",
     "type": "prayer",
     "req": [
@@ -566,6 +746,22 @@
         "type": "tech",
         "id": "construction_of_automata",
         "value": 1
+      }
+    ]
+  },
+  {
+    "id": "eureka_halls_f",
+    "type": "prayer",
+    "req": [
+      {
+        "type": "resource",
+        "id": "faith",
+        "value": 2500
+      },
+      {
+        "type": "building",
+        "id": "fortune_grove",
+        "value": 5
       }
     ]
   },
@@ -644,6 +840,38 @@
     ]
   },
   {
+    "id": "mage_p",
+    "type": "prayer",
+    "req": [
+      {
+        "type": "resource",
+        "id": "faith",
+        "value": 2600
+      },
+      {
+        "type": "prayer",
+        "id": "mage_academy_f",
+        "value": 1
+      }
+    ]
+  },
+  {
+    "id": "mana_armor_p",
+    "type": "prayer",
+    "req": [
+      {
+        "type": "resource",
+        "id": "faith",
+        "value": 2600
+      },
+      {
+        "type": "prayer",
+        "id": "mage_fields_f",
+        "value": 1
+      }
+    ]
+  },
+  {
     "id": "the_aid",
     "type": "prayer",
     "req": [
@@ -656,6 +884,69 @@
         "type": "tech",
         "id": "the_scourge",
         "value": 1
+      }
+    ]
+  },
+  {
+    "id": "sacred_den_f",
+    "type": "prayer",
+    "req": [
+      {
+        "type": "resource",
+        "id": "faith",
+        "value": 4000
+      },
+      {
+        "type": "prayer",
+        "id": "focus_development",
+        "value": 1
+      },
+      {
+        "type": "building",
+        "id": "magic_circle",
+        "value": 6
+      }
+    ]
+  },
+  {
+    "id": "mage_academy_f",
+    "type": "prayer",
+    "req": [
+      {
+        "type": "resource",
+        "id": "faith",
+        "value": 4000
+      },
+      {
+        "type": "prayer",
+        "id": "focus_research",
+        "value": 1
+      },
+      {
+        "type": "building",
+        "id": "magic_circle",
+        "value": 6
+      }
+    ]
+  },
+  {
+    "id": "mage_fields_f",
+    "type": "prayer",
+    "req": [
+      {
+        "type": "resource",
+        "id": "faith",
+        "value": 4000
+      },
+      {
+        "type": "prayer",
+        "id": "focus_magic",
+        "value": 1
+      },
+      {
+        "type": "building",
+        "id": "magic_circle",
+        "value": 6
       }
     ]
   },
@@ -888,6 +1179,78 @@
     ]
   },
   {
+    "id": "legion_light_p",
+    "type": "prayer",
+    "req": [
+      {
+        "type": "resource",
+        "id": "faith",
+        "value": 6000
+      },
+      {
+        "type": "building",
+        "id": "magic_circle",
+        "value": 8
+      }
+    ],
+    "gen": [
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "warrior_monk",
+        "type_gen": "stat",
+        "gen": "defense",
+        "value": 4,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "sacred_golem",
+        "type_gen": "stat",
+        "gen": "defense",
+        "value": 8,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "battle_angel",
+        "type_gen": "stat",
+        "gen": "attack",
+        "value": 8,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "battle_angel",
+        "type_gen": "stat",
+        "gen": "defense",
+        "value": 6,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "seraphim",
+        "type_gen": "stat",
+        "gen": "attack",
+        "value": 120,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "seraphim",
+        "type_gen": "stat",
+        "gen": "defense",
+        "value": 80,
+        "perc": false
+      }
+    ]
+  },
+  {
     "id": "old_small_one_2",
     "type": "prayer",
     "req": [
@@ -920,6 +1283,22 @@
     ]
   },
   {
+    "id": "amusement_quarter_f",
+    "type": "prayer",
+    "req": [
+      {
+        "type": "resource",
+        "id": "faith",
+        "value": 6700
+      },
+      {
+        "type": "building",
+        "id": "fortune_grove",
+        "value": 7
+      }
+    ]
+  },
+  {
     "id": "northern_star_power",
     "type": "prayer",
     "req": [
@@ -936,6 +1315,38 @@
       {
         "type": "tech",
         "id": "northern_star",
+        "value": 1
+      }
+    ]
+  },
+  {
+    "id": "archmage_p",
+    "type": "prayer",
+    "req": [
+      {
+        "type": "resource",
+        "id": "faith",
+        "value": 10000
+      },
+      {
+        "type": "prayer",
+        "id": "highschool_magic_f",
+        "value": 1
+      }
+    ]
+  },
+  {
+    "id": "armored_caravan_p",
+    "type": "prayer",
+    "req": [
+      {
+        "type": "resource",
+        "id": "faith",
+        "value": 10000
+      },
+      {
+        "type": "prayer",
+        "id": "philosopher_stone_p",
         "value": 1
       }
     ]
@@ -973,6 +1384,101 @@
         "gen": "attack",
         "value": 5,
         "perc": false
+      }
+    ]
+  },
+  {
+    "id": "highschool_magic_f",
+    "type": "prayer",
+    "req": [
+      {
+        "type": "resource",
+        "id": "faith",
+        "value": 10000
+      },
+      {
+        "type": "prayer",
+        "id": "focus_research",
+        "value": 1
+      },
+      {
+        "type": "building",
+        "id": "magic_circle",
+        "value": 9
+      }
+    ]
+  },
+  {
+    "id": "magic_workshop_f",
+    "type": "prayer",
+    "req": [
+      {
+        "type": "resource",
+        "id": "faith",
+        "value": 10000
+      },
+      {
+        "type": "prayer",
+        "id": "mana_forest_p",
+        "value": 1
+      }
+    ]
+  },
+  {
+    "id": "mana_forest_p",
+    "type": "prayer",
+    "req": [
+      {
+        "type": "resource",
+        "id": "faith",
+        "value": 10000
+      },
+      {
+        "type": "prayer",
+        "id": "focus_magic",
+        "value": 1
+      },
+      {
+        "type": "building",
+        "id": "magic_circle",
+        "value": 9
+      }
+    ]
+  },
+  {
+    "id": "philosopher_stone_p",
+    "type": "prayer",
+    "req": [
+      {
+        "type": "resource",
+        "id": "faith",
+        "value": 10000
+      },
+      {
+        "type": "prayer",
+        "id": "focus_development",
+        "value": 1
+      },
+      {
+        "type": "building",
+        "id": "magic_circle",
+        "value": 9
+      }
+    ]
+  },
+  {
+    "id": "spell_book_p",
+    "type": "prayer",
+    "req": [
+      {
+        "type": "resource",
+        "id": "faith",
+        "value": 10000
+      },
+      {
+        "type": "prayer",
+        "id": "highschool_magic_f",
+        "value": 1
       }
     ]
   },
@@ -1060,6 +1566,22 @@
     ]
   },
   {
+    "id": "underground_tunnel_f",
+    "type": "prayer",
+    "req": [
+      {
+        "type": "resource",
+        "id": "faith",
+        "value": 11000
+      },
+      {
+        "type": "building",
+        "id": "fortune_grove",
+        "value": 8
+      }
+    ]
+  },
+  {
     "id": "protection_power",
     "type": "prayer",
     "req": [
@@ -1127,6 +1649,133 @@
       {
         "type": "tech",
         "id": "faith_world",
+        "value": 1
+      }
+    ]
+  },
+  {
+    "id": "ivory_tower_f",
+    "type": "prayer",
+    "req": [
+      {
+        "type": "resource",
+        "id": "faith",
+        "value": 18000
+      },
+      {
+        "type": "prayer",
+        "id": "focus_research",
+        "value": 1
+      },
+      {
+        "type": "building",
+        "id": "magic_circle",
+        "value": 13
+      }
+    ]
+  },
+  {
+    "id": "magic_stable_f",
+    "type": "prayer",
+    "req": [
+      {
+        "type": "resource",
+        "id": "faith",
+        "value": 18000
+      },
+      {
+        "type": "prayer",
+        "id": "mana_fortress_p",
+        "value": 1
+      }
+    ]
+  },
+  {
+    "id": "mana_fortress_p",
+    "type": "prayer",
+    "req": [
+      {
+        "type": "resource",
+        "id": "faith",
+        "value": 18000
+      },
+      {
+        "type": "prayer",
+        "id": "mana_spiral_p",
+        "value": 1
+      }
+    ]
+  },
+  {
+    "id": "mana_materials_p",
+    "type": "prayer",
+    "req": [
+      {
+        "type": "resource",
+        "id": "faith",
+        "value": 18000
+      },
+      {
+        "type": "prayer",
+        "id": "steel_palace_f",
+        "value": 1
+      }
+    ]
+  },
+  {
+    "id": "mana_spiral_p",
+    "type": "prayer",
+    "req": [
+      {
+        "type": "resource",
+        "id": "faith",
+        "value": 18000
+      },
+      {
+        "type": "prayer",
+        "id": "focus_magic",
+        "value": 1
+      },
+      {
+        "type": "building",
+        "id": "magic_circle",
+        "value": 13
+      }
+    ]
+  },
+  {
+    "id": "steel_palace_f",
+    "type": "prayer",
+    "req": [
+      {
+        "type": "resource",
+        "id": "faith",
+        "value": 18000
+      },
+      {
+        "type": "prayer",
+        "id": "focus_development",
+        "value": 1
+      },
+      {
+        "type": "building",
+        "id": "magic_circle",
+        "value": 13
+      }
+    ]
+  },
+  {
+    "id": "tome_wisdom_p",
+    "type": "prayer",
+    "req": [
+      {
+        "type": "resource",
+        "id": "faith",
+        "value": 18000
+      },
+      {
+        "type": "prayer",
+        "id": "ivory_tower_f",
         "value": 1
       }
     ]
@@ -1217,8 +1866,71 @@
     ]
   },
   {
+    "id": "fate_shrine_f",
+    "type": "prayer",
+    "req": [
+      {
+        "type": "resource",
+        "id": "faith",
+        "value": 17000
+      },
+      {
+        "type": "building",
+        "id": "fortune_grove",
+        "value": 9
+      }
+    ]
+  },
+  {
+    "id": "summon_nikharul",
+    "type": "prayer",
+    "req": [
+      {
+        "type": "resource",
+        "id": "faith",
+        "value": 20000
+      },
+      {
+        "type": "tech",
+        "id": "dark_crystal",
+        "value": 1
+      }
+    ],
+    "gen": [
+      {
+        "type": "prayer",
+        "id": "control_fortress",
+        "value": -1
+      }
+    ]
+  },
+  {
+    "id": "control_fortress",
+    "type": "prayer",
+    "req": [
+      {
+        "type": "resource",
+        "id": "faith",
+        "value": 20000
+      },
+      {
+        "type": "tech",
+        "id": "dark_crystal",
+        "value": 1
+      }
+    ],
+    "gen": [
+      {
+        "type": "prayer",
+        "id": "summon_nikharul",
+        "value": -1
+      }
+    ]
+  },
+  {
     "id": "temple_ritual",
     "type": "spell",
+    "cat": "resource",
     "req": [
       {
         "type": "prayer",
@@ -1247,6 +1959,7 @@
   {
     "id": "minor_blessing",
     "type": "spell",
+    "cat": "resource",
     "req": [
       {
         "type": "prayer",
@@ -1277,6 +1990,7 @@
   {
     "id": "acolyte_hymn",
     "type": "spell",
+    "cat": "resource",
     "req": [
       {
         "type": "prayer",
@@ -1307,6 +2021,7 @@
   {
     "id": "great_seeker_blessing",
     "type": "spell",
+    "cat": "army",
     "req": [
       {
         "type": "prayer",
@@ -1348,6 +2063,7 @@
   {
     "id": "great_warrior_blessing",
     "type": "spell",
+    "cat": "army",
     "req": [
       {
         "type": "prayer",
@@ -1417,6 +2133,7 @@
   {
     "id": "mana_energy_shield",
     "type": "spell",
+    "cat": "defense",
     "req": [
       {
         "type": "prayer",
@@ -1444,6 +2161,7 @@
   {
     "id": "mother_earth_blessing",
     "type": "spell",
+    "cat": "resource",
     "req": [
       {
         "type": "prayer",
@@ -1474,6 +2192,7 @@
   {
     "id": "old_small_one_blessing",
     "type": "spell",
+    "cat": "resource",
     "req": [
       {
         "type": "prayer",
@@ -1510,6 +2229,7 @@
   {
     "id": "sacred_armor",
     "type": "spell",
+    "cat": "army",
     "req": [
       {
         "type": "prayer",
@@ -1544,8 +2264,98 @@
     ]
   },
   {
+    "id": "mana_armor_s",
+    "type": "spell",
+    "req": [
+      {
+        "type": "prayer",
+        "id": "mana_armor_p",
+        "value": 1
+      }
+    ],
+    "gen": [
+      {
+        "type": "resource",
+        "id": "mana",
+        "value": -25
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "light_cavarly",
+        "type_gen": "stat",
+        "gen": "defense",
+        "value": 7,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "knight",
+        "type_gen": "stat",
+        "gen": "defense",
+        "value": 7,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "commander",
+        "type_gen": "stat",
+        "gen": "defense",
+        "value": 12,
+        "perc": false
+      }
+    ]
+  },
+  {
+    "id": "spell_ancient",
+    "type": "spell",
+    "cat": "resource",
+    "req": [
+      {
+        "type": "prayer",
+        "id": "ancient_spell_p",
+        "value": 1
+      }
+    ],
+    "gen": [
+      {
+        "type": "resource",
+        "id": "mana",
+        "value": -5
+      },
+      {
+        "type": "resource",
+        "id": "food",
+        "value": 3
+      },
+      {
+        "type": "resource",
+        "id": "wood",
+        "value": 2
+      },
+      {
+        "type": "resource",
+        "id": "stone",
+        "value": 2
+      },
+      {
+        "type": "resource",
+        "id": "copper",
+        "value": 1.5
+      },
+      {
+        "type": "resource",
+        "id": "iron",
+        "value": 1
+      }
+    ]
+  },
+  {
     "id": "theresmore_revealed",
     "type": "spell",
+    "cat": "resource",
     "req": [
       {
         "type": "prayer",
@@ -1575,6 +2385,7 @@
   {
     "id": "wild_man_blessing",
     "type": "spell",
+    "cat": "resource",
     "req": [
       {
         "type": "prayer",
@@ -1605,6 +2416,7 @@
   {
     "id": "wild_man_spear",
     "type": "spell",
+    "cat": "army",
     "req": [
       {
         "type": "prayer",
@@ -1641,6 +2453,7 @@
   {
     "id": "growth_of_nature",
     "type": "spell",
+    "cat": "resource",
     "req": [
       {
         "type": "prayer",
@@ -1662,8 +2475,34 @@
     ]
   },
   {
+    "id": "mana_flowers_s",
+    "type": "spell",
+    "cat": "resource",
+    "req": [
+      {
+        "type": "prayer",
+        "id": "mana_flowers_p",
+        "value": 1
+      }
+    ],
+    "gen": [
+      {
+        "type": "resource",
+        "id": "mana",
+        "value": 10
+      },
+      {
+        "type": "resource",
+        "id": "mana",
+        "value": 2,
+        "perc": true
+      }
+    ]
+  },
+  {
     "id": "lighten_of_rocks",
     "type": "spell",
+    "cat": "resource",
     "req": [
       {
         "type": "prayer",
@@ -1687,6 +2526,7 @@
   {
     "id": "magic_tools",
     "type": "spell",
+    "cat": "resource",
     "req": [
       {
         "type": "prayer",
@@ -1710,6 +2550,7 @@
   {
     "id": "magic_lights",
     "type": "spell",
+    "cat": "resource",
     "req": [
       {
         "type": "prayer",
@@ -1738,6 +2579,7 @@
   {
     "id": "mirune_blessing",
     "type": "spell",
+    "cat": "resource",
     "req": [
       {
         "type": "prayer",
@@ -1766,6 +2608,7 @@
   {
     "id": "dark_ritual",
     "type": "spell",
+    "cat": "army",
     "req": [
       {
         "type": "prayer",
@@ -1811,6 +2654,7 @@
   {
     "id": "great_builder_blessing",
     "type": "spell",
+    "cat": "resource",
     "req": [
       {
         "type": "prayer",
@@ -1851,6 +2695,7 @@
   {
     "id": "mana_dome",
     "type": "spell",
+    "cat": "defense",
     "req": [
       {
         "type": "prayer",
@@ -1878,6 +2723,7 @@
   {
     "id": "mysterious_arcane_blessing",
     "type": "spell",
+    "cat": "resource",
     "req": [
       {
         "type": "prayer",
@@ -1907,6 +2753,7 @@
   {
     "id": "sacred_weapon",
     "type": "spell",
+    "cat": "army",
     "req": [
       {
         "type": "prayer",
@@ -1943,6 +2790,7 @@
   {
     "id": "church_ritual",
     "type": "spell",
+    "cat": "army",
     "req": [
       {
         "type": "prayer",
@@ -1984,6 +2832,7 @@
   {
     "id": "great_seeker_eyesight",
     "type": "spell",
+    "cat": "army",
     "req": [
       {
         "type": "prayer",
@@ -2025,6 +2874,7 @@
   {
     "id": "great_warrior_fury",
     "type": "spell",
+    "cat": "army",
     "req": [
       {
         "type": "prayer",
@@ -2079,6 +2929,7 @@
   {
     "id": "mother_earth_grace",
     "type": "spell",
+    "cat": "resource",
     "req": [
       {
         "type": "prayer",
@@ -2109,6 +2960,7 @@
   {
     "id": "new_world_chant",
     "type": "spell",
+    "cat": "army",
     "req": [
       {
         "type": "prayer",
@@ -2160,6 +3012,7 @@
   {
     "id": "old_small_one_grace",
     "type": "spell",
+    "cat": "resource",
     "req": [
       {
         "type": "prayer",
@@ -2196,6 +3049,7 @@
   {
     "id": "wild_man_dexterity",
     "type": "spell",
+    "cat": "army",
     "req": [
       {
         "type": "prayer",
@@ -2250,6 +3104,7 @@
   {
     "id": "dragon_armor",
     "type": "spell",
+    "cat": "army",
     "req": [
       {
         "type": "prayer",
@@ -2304,6 +3159,7 @@
   {
     "id": "dragon_weapon",
     "type": "spell",
+    "cat": "army",
     "req": [
       {
         "type": "prayer",
@@ -2356,8 +3212,110 @@
     ]
   },
   {
+    "id": "life_magic_s",
+    "type": "spell",
+    "cat": "resource",
+    "req": [
+      {
+        "type": "prayer",
+        "id": "life_magic_p",
+        "value": 1
+      }
+    ],
+    "gen": [
+      {
+        "type": "resource",
+        "id": "mana",
+        "value": -25
+      },
+      {
+        "type": "resource",
+        "id": "food",
+        "value": 4
+      },
+      {
+        "type": "resource",
+        "id": "wood",
+        "value": 4
+      },
+      {
+        "type": "resource",
+        "id": "stone",
+        "value": 4
+      }
+    ]
+  },
+  {
+    "id": "highlightment_s",
+    "type": "spell",
+    "cat": "resource",
+    "req": [
+      {
+        "type": "prayer",
+        "id": "highlightment_p",
+        "value": 1
+      }
+    ],
+    "gen": [
+      {
+        "type": "resource",
+        "id": "mana",
+        "value": -25
+      },
+      {
+        "type": "resource",
+        "id": "research",
+        "value": 5
+      },
+      {
+        "type": "resource",
+        "id": "research",
+        "value": 3,
+        "perc": true
+      }
+    ]
+  },
+  {
+    "id": "spell_book_s",
+    "type": "spell",
+    "cat": "army",
+    "req": [
+      {
+        "type": "prayer",
+        "id": "spell_book_p",
+        "value": 1
+      }
+    ],
+    "gen": [
+      {
+        "type": "resource",
+        "id": "mana",
+        "value": -25
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "mage_u",
+        "type_gen": "stat",
+        "gen": "attack",
+        "value": 12,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "mage_u",
+        "type_gen": "stat",
+        "gen": "defense",
+        "value": 12,
+        "perc": false
+      }
+    ]
+  },
+  {
     "id": "mana_armor",
     "type": "spell",
+    "cat": "army",
     "req": [
       {
         "type": "prayer",
@@ -2410,8 +3368,34 @@
     ]
   },
   {
+    "id": "mana_forest_s",
+    "type": "spell",
+    "cat": "resource",
+    "req": [
+      {
+        "type": "prayer",
+        "id": "mana_forest_p",
+        "value": 1
+      }
+    ],
+    "gen": [
+      {
+        "type": "resource",
+        "id": "mana",
+        "value": 35
+      },
+      {
+        "type": "resource",
+        "id": "mana",
+        "value": 3,
+        "perc": true
+      }
+    ]
+  },
+  {
     "id": "druid_blessing",
     "type": "spell",
+    "cat": "resource",
     "req": [
       {
         "type": "prayer",
@@ -2446,6 +3430,7 @@
   {
     "id": "blessing_city",
     "type": "spell",
+    "cat": "resource",
     "req": [
       {
         "type": "prayer",
@@ -2493,6 +3478,7 @@
   {
     "id": "northern_star_protection",
     "type": "spell",
+    "cat": "defense",
     "req": [
       {
         "type": "prayer",
@@ -2520,6 +3506,7 @@
   {
     "id": "northern_star_incremental",
     "type": "spell",
+    "cat": "resource",
     "req": [
       {
         "type": "prayer",
@@ -2572,8 +3559,39 @@
     ]
   },
   {
+    "id": "philosopher_stone_s",
+    "type": "spell",
+    "cat": "resource",
+    "req": [
+      {
+        "type": "prayer",
+        "id": "philosopher_stone_p",
+        "value": 1
+      }
+    ],
+    "gen": [
+      {
+        "type": "resource",
+        "id": "mana",
+        "value": -50
+      },
+      {
+        "type": "resource",
+        "id": "gold",
+        "value": 15
+      },
+      {
+        "type": "resource",
+        "id": "gold",
+        "value": 3,
+        "perc": true
+      }
+    ]
+  },
+  {
     "id": "army_blessing",
     "type": "spell",
+    "cat": "army",
     "req": [
       {
         "type": "prayer",
@@ -2617,8 +3635,133 @@
     ]
   },
   {
+    "id": "mana_materials_s",
+    "type": "spell",
+    "cat": "resource",
+    "req": [
+      {
+        "type": "prayer",
+        "id": "mana_materials_p",
+        "value": 1
+      }
+    ],
+    "gen": [
+      {
+        "type": "resource",
+        "id": "mana",
+        "value": -75
+      },
+      {
+        "type": "resource",
+        "id": "building_material",
+        "value": 7
+      },
+      {
+        "type": "resource",
+        "id": "steel",
+        "value": 7
+      },
+      {
+        "type": "resource",
+        "id": "supplies",
+        "value": 7
+      },
+      {
+        "type": "resource",
+        "id": "crystal",
+        "value": 7
+      },
+      {
+        "type": "resource",
+        "id": "saltpetre",
+        "value": 7
+      }
+    ]
+  },
+  {
+    "id": "tome_wisdom_s",
+    "type": "spell",
+    "cat": "army",
+    "req": [
+      {
+        "type": "prayer",
+        "id": "tome_wisdom_p",
+        "value": 1
+      }
+    ],
+    "gen": [
+      {
+        "type": "resource",
+        "id": "mana",
+        "value": -75
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "mage_u",
+        "type_gen": "stat",
+        "gen": "attack",
+        "value": 24,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "mage_u",
+        "type_gen": "stat",
+        "gen": "defense",
+        "value": 12,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "archmage_u",
+        "type_gen": "stat",
+        "gen": "attack",
+        "value": 120,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "archmage_u",
+        "type_gen": "stat",
+        "gen": "defense",
+        "value": 80,
+        "perc": false
+      }
+    ]
+  },
+  {
+    "id": "mana_spiral_s",
+    "type": "spell",
+    "cat": "resource",
+    "req": [
+      {
+        "type": "prayer",
+        "id": "mana_spiral_p",
+        "value": 1
+      }
+    ],
+    "gen": [
+      {
+        "type": "resource",
+        "id": "mana",
+        "value": 100
+      },
+      {
+        "type": "resource",
+        "id": "mana",
+        "value": 7,
+        "perc": true
+      }
+    ]
+  },
+  {
     "id": "children_hope",
     "type": "spell",
+    "cat": "resource",
     "req": [
       {
         "type": "prayer",

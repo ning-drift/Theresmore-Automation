@@ -3,11 +3,13 @@
 // @description Automation suite for Theresmore game
 // @namespace   github.com/Theresmore-Automation/Theresmore-Automation
 // @match       https://www.theresmoregame.com/play/
+// @match       https://theresmoregame.g8hh.com/
+// @match       https://theresmoregame.g8hh.com.cn/
 // @license     MIT
 // @run-at      document-idle
 // @downloadURL https://theresmore-automation.github.io/Theresmore-Automation/dist/bundle.user.js
 // @updateURL   https://theresmore-automation.github.io/Theresmore-Automation/dist/bundle.user.js
-// @version     3.9.1
+// @version     4.10.1
 // @homepage    https://github.com/Theresmore-Automation/Theresmore-Automation
 // @author      Theresmore Automation team
 // @grant       none
@@ -29,7 +31,7 @@ A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYR
 ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-const taVersion = "3.9.1";
+const taVersion = "4.10.1";
 
 
 (function () {
@@ -44,6 +46,15 @@ const taVersion = "3.9.1";
     MAGIC: 'Magic',
     DIPLOMACY: 'Diplomacy'
   };
+  const PAGES_INDEX = {
+    [PAGES.BUILD]: 0,
+    [PAGES.RESEARCH]: 1,
+    [PAGES.POPULATION]: 2,
+    [PAGES.ARMY]: 4,
+    [PAGES.MARKETPLACE]: 6,
+    [PAGES.MAGIC]: 3,
+    [PAGES.DIPLOMACY]: 5
+  };
   const SUBPAGES = {
     CITY: 'City',
     COLONY: 'Colony',
@@ -54,6 +65,17 @@ const taVersion = "3.9.1";
     EXPLORE: 'Explore',
     ATTACK: 'Attack',
     GARRISON: 'Garrison'
+  };
+  const SUBPAGES_INDEX = {
+    [SUBPAGES.CITY]: 0,
+    [SUBPAGES.COLONY]: 1,
+    [SUBPAGES.RESEARCH]: 0,
+    [SUBPAGES.SPELLS]: 0,
+    [SUBPAGES.PRAYERS]: 1,
+    [SUBPAGES.ARMY]: 0,
+    [SUBPAGES.EXPLORE]: 1,
+    [SUBPAGES.ATTACK]: 3,
+    [SUBPAGES.GARRISON]: 4
   };
   const SUBPAGE_MAPPING = {
     CITY: 'BUILD',
@@ -82,12 +104,23 @@ const taVersion = "3.9.1";
     IMPROVE_RELATIONSHIPS: 'Improve relationships',
     ALLY: 'Alliance'
   };
+  const TOOLTIP_PREFIX = {
+    BUILDING: 'bui_',
+    TECH: 'tech_',
+    PRAYER: 'pray_',
+    UNIT: 'uni_',
+    FACTION_IMPROVE: 'improve_',
+    FACTION_DELEGATION: 'delegation_'
+  };
   var CONSTANTS = {
     PAGES,
     SUBPAGES,
     SUBPAGE_MAPPING,
+    PAGES_INDEX,
+    SUBPAGES_INDEX,
     DIPLOMACY,
-    DIPLOMACY_BUTTONS
+    DIPLOMACY_BUTTONS,
+    TOOLTIP_PREFIX
   };
 
   // https://stackoverflow.com/a/55366435
@@ -159,6 +192,73 @@ const taVersion = "3.9.1";
   				type: "resource",
   				id: "research",
   				value: 0.3
+  			},
+  			{
+  				type: "population",
+  				id: "unemployed",
+  				value: 1
+  			}
+  		]
+  	},
+  	{
+  		id: "house_workers",
+  		cat: "living_quarters",
+  		tab: 1,
+  		age: 100,
+  		req: [
+  			{
+  				type: "resource",
+  				id: "wood",
+  				value: 45,
+  				multi: 1.3
+  			},
+  			{
+  				type: "resource",
+  				id: "stone",
+  				value: 30,
+  				multi: 1.3
+  			},
+  			{
+  				type: "tech",
+  				id: "house_of_workers",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "food",
+  				value: -1.5
+  			},
+  			{
+  				type: "population",
+  				id: "farmer",
+  				value: 1
+  			},
+  			{
+  				type: "population",
+  				id: "lumberjack",
+  				value: 1
+  			},
+  			{
+  				type: "population",
+  				id: "quarryman",
+  				value: 1
+  			},
+  			{
+  				type: "population",
+  				id: "miner",
+  				value: 1
+  			},
+  			{
+  				type: "resource",
+  				id: "gold",
+  				value: 0.5
+  			},
+  			{
+  				type: "resource",
+  				id: "research",
+  				value: 0.5
   			},
   			{
   				type: "population",
@@ -319,6 +419,43 @@ const taVersion = "3.9.1";
   				type: "population",
   				id: "unemployed",
   				value: 2
+  			}
+  		]
+  	},
+  	{
+  		id: "amusement_quarter_b",
+  		cat: "living_quarters",
+  		tab: 1,
+  		age: 13,
+  		req: [
+  			{
+  				type: "resource",
+  				id: "wood",
+  				value: 500,
+  				multi: 1.5
+  			},
+  			{
+  				type: "resource",
+  				id: "stone",
+  				value: 500,
+  				multi: 1.5
+  			},
+  			{
+  				type: "resource",
+  				id: "luck",
+  				value: 1
+  			},
+  			{
+  				type: "prayer",
+  				id: "amusement_quarter_f",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "population",
+  				id: "unemployed",
+  				value: 1
   			}
   		]
   	},
@@ -862,6 +999,43 @@ const taVersion = "3.9.1";
   		]
   	},
   	{
+  		id: "lucky_grove_b",
+  		cat: "resource",
+  		tab: 1,
+  		age: 13,
+  		req: [
+  			{
+  				type: "resource",
+  				id: "wood",
+  				value: 300,
+  				multi: 1.5
+  			},
+  			{
+  				type: "resource",
+  				id: "stone",
+  				value: 300,
+  				multi: 1.5
+  			},
+  			{
+  				type: "resource",
+  				id: "luck",
+  				value: 1
+  			},
+  			{
+  				type: "prayer",
+  				id: "lucky_grove_f",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "wood",
+  				value: 2
+  			}
+  		]
+  	},
+  	{
   		id: "quarry",
   		cat: "resource",
   		tab: 1,
@@ -1183,6 +1357,77 @@ const taVersion = "3.9.1";
   				type: "cap",
   				id: "horse",
   				value: 40
+  			}
+  		]
+  	},
+  	{
+  		id: "sacred_den_b",
+  		cat: "resource",
+  		tab: 1,
+  		age: 1,
+  		req: [
+  			{
+  				type: "resource",
+  				id: "food",
+  				value: 1400,
+  				multi: 1.2
+  			},
+  			{
+  				type: "resource",
+  				id: "wood",
+  				value: 1200,
+  				multi: 1.4
+  			},
+  			{
+  				type: "resource",
+  				id: "faith",
+  				value: 600,
+  				multi: 1.4
+  			},
+  			{
+  				type: "prayer",
+  				id: "sacred_den_f",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "population",
+  				id: "lumberjack",
+  				value: 1
+  			},
+  			{
+  				type: "population",
+  				id: "quarryman",
+  				value: 1
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "population",
+  				id: "lumberjack",
+  				type_gen: "resource",
+  				gen: "wood",
+  				value: 2,
+  				perc: true
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "population",
+  				id: "quarryman",
+  				type_gen: "resource",
+  				gen: "stone",
+  				value: 2,
+  				perc: true
+  			},
+  			{
+  				type: "cap",
+  				id: "faith",
+  				value: 400
+  			},
+  			{
+  				type: "population",
+  				id: "unemployed",
+  				value: 1
   			}
   		]
   	},
@@ -2087,22 +2332,22 @@ const taVersion = "3.9.1";
   			{
   				type: "resource",
   				id: "building_material",
-  				value: 0.1
+  				value: 0.2
   			},
   			{
   				type: "resource",
   				id: "steel",
-  				value: 0.1
+  				value: 0.2
   			},
   			{
   				type: "resource",
   				id: "crystal",
-  				value: 0.1
+  				value: 0.2
   			},
   			{
   				type: "resource",
   				id: "supplies",
-  				value: 0.1
+  				value: 0.2
   			},
   			{
   				type: "resource",
@@ -2168,6 +2413,43 @@ const taVersion = "3.9.1";
   				type: "cap",
   				id: "research",
   				value: 1000
+  			}
+  		]
+  	},
+  	{
+  		id: "eureka_halls_b",
+  		cat: "science",
+  		tab: 1,
+  		age: 13,
+  		req: [
+  			{
+  				type: "resource",
+  				id: "research",
+  				value: 300,
+  				multi: 1.5
+  			},
+  			{
+  				type: "resource",
+  				id: "stone",
+  				value: 300,
+  				multi: 1.5
+  			},
+  			{
+  				type: "resource",
+  				id: "luck",
+  				value: 1
+  			},
+  			{
+  				type: "prayer",
+  				id: "eureka_halls_f",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "research",
+  				value: 2
   			}
   		]
   	},
@@ -2319,6 +2601,54 @@ const taVersion = "3.9.1";
   		]
   	},
   	{
+  		id: "mage_academy_b",
+  		cat: "science",
+  		tab: 1,
+  		age: 1,
+  		req: [
+  			{
+  				type: "resource",
+  				id: "gold",
+  				value: 2000,
+  				multi: 1.4
+  			},
+  			{
+  				type: "resource",
+  				id: "wood",
+  				value: 1200,
+  				multi: 1.4
+  			},
+  			{
+  				type: "resource",
+  				id: "stone",
+  				value: 900,
+  				multi: 1.4
+  			},
+  			{
+  				type: "prayer",
+  				id: "mage_academy_f",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "research",
+  				value: 2
+  			},
+  			{
+  				type: "cap",
+  				id: "research",
+  				value: 1000
+  			},
+  			{
+  				type: "cap",
+  				id: "faith",
+  				value: 400
+  			}
+  		]
+  	},
+  	{
   		id: "university",
   		cat: "science",
   		tab: 1,
@@ -2381,6 +2711,55 @@ const taVersion = "3.9.1";
   				type: "cap",
   				id: "crystal",
   				value: 50
+  			}
+  		]
+  	},
+  	{
+  		id: "archeological_dig",
+  		cat: "science",
+  		tab: 1,
+  		age: 2,
+  		req: [
+  			{
+  				type: "resource",
+  				id: "gold",
+  				value: 6000,
+  				multi: 1.6
+  			},
+  			{
+  				type: "resource",
+  				id: "tools",
+  				value: 4000,
+  				multi: 1.5
+  			},
+  			{
+  				type: "resource",
+  				id: "building_material",
+  				value: 1000,
+  				multi: 1.4
+  			},
+  			{
+  				type: "tech",
+  				id: "master_history",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "research",
+  				value: 2
+  			},
+  			{
+  				type: "resource",
+  				id: "research",
+  				value: 2,
+  				perc: true
+  			},
+  			{
+  				type: "cap",
+  				id: "research",
+  				value: 2500
   			}
   		]
   	},
@@ -2657,6 +3036,84 @@ const taVersion = "3.9.1";
   				type: "cap",
   				id: "crystal",
   				value: 100
+  			}
+  		]
+  	},
+  	{
+  		id: "highschool_magic_b",
+  		cat: "science",
+  		tab: 1,
+  		age: 3,
+  		req: [
+  			{
+  				type: "resource",
+  				id: "gold",
+  				value: 8000,
+  				multi: 1.4
+  			},
+  			{
+  				type: "resource",
+  				id: "stone",
+  				value: 4000,
+  				multi: 1.4
+  			},
+  			{
+  				type: "resource",
+  				id: "faith",
+  				value: 4000,
+  				multi: 1.3
+  			},
+  			{
+  				type: "resource",
+  				id: "steel",
+  				value: 2500,
+  				multi: 1.2
+  			},
+  			{
+  				type: "resource",
+  				id: "mana",
+  				value: 1500,
+  				multi: 1.2
+  			},
+  			{
+  				type: "prayer",
+  				id: "highschool_magic_f",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "research",
+  				value: 4
+  			},
+  			{
+  				type: "resource",
+  				id: "mana",
+  				value: 4
+  			},
+  			{
+  				type: "resource",
+  				id: "crystal",
+  				value: 0.6
+  			},
+  			{
+  				type: "resource",
+  				id: "research",
+  				value: 2,
+  				perc: true
+  			},
+  			{
+  				type: "resource",
+  				id: "mana",
+  				value: 2,
+  				perc: true
+  			},
+  			{
+  				type: "resource",
+  				id: "crystal",
+  				value: 2,
+  				perc: true
   			}
   		]
   	},
@@ -3110,6 +3567,127 @@ const taVersion = "3.9.1";
   				type: "cap",
   				id: "army",
   				value: 3
+  			}
+  		]
+  	},
+  	{
+  		id: "underground_tunnel_b",
+  		cat: "defense",
+  		tab: 1,
+  		age: 13,
+  		req: [
+  			{
+  				type: "resource",
+  				id: "gold",
+  				value: 700,
+  				multi: 1.5
+  			},
+  			{
+  				type: "resource",
+  				id: "stone",
+  				value: 500,
+  				multi: 1.5
+  			},
+  			{
+  				type: "resource",
+  				id: "luck",
+  				value: 1
+  			},
+  			{
+  				type: "prayer",
+  				id: "underground_tunnel_f",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "settlement_defenses",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 40,
+  				perc: false
+  			},
+  			{
+  				type: "cap",
+  				id: "army",
+  				value: 2
+  			}
+  		]
+  	},
+  	{
+  		id: "boot_camp",
+  		cat: "defense",
+  		tab: 1,
+  		cap: 8,
+  		age: 100,
+  		req: [
+  			{
+  				type: "resource",
+  				id: "gold",
+  				value: 2500,
+  				multi: 1.4
+  			},
+  			{
+  				type: "resource",
+  				id: "iron",
+  				value: 1500,
+  				multi: 1.4
+  			},
+  			{
+  				type: "resource",
+  				id: "tools",
+  				value: 1500,
+  				multi: 1.4
+  			},
+  			{
+  				type: "tech",
+  				id: "boot_camp_t",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "archer",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 1,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "phalanx",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 1,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "warrior",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 1,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "light_cavarly",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 1,
+  				perc: false
+  			},
+  			{
+  				type: "cap",
+  				id: "army",
+  				value: 12
   			}
   		]
   	},
@@ -3803,6 +4381,78 @@ const taVersion = "3.9.1";
   		]
   	},
   	{
+  		id: "magic_workshop_b",
+  		cat: "defense",
+  		tab: 1,
+  		age: 3,
+  		cap: 10,
+  		req: [
+  			{
+  				type: "resource",
+  				id: "gold",
+  				value: 10000,
+  				multi: 1.4
+  			},
+  			{
+  				type: "resource",
+  				id: "faith",
+  				value: 10000,
+  				multi: 1.3
+  			},
+  			{
+  				type: "resource",
+  				id: "mana",
+  				value: 8000,
+  				multi: 1.3
+  			},
+  			{
+  				type: "prayer",
+  				id: "magic_workshop_f",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "priest",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 2,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "cleric",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 2,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "sacred_golem",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 4,
+  				perc: false
+  			},
+  			{
+  				type: "resource",
+  				id: "mana",
+  				value: 5
+  			},
+  			{
+  				type: "resource",
+  				id: "luck",
+  				value: 1,
+  				fix: true
+  			}
+  		]
+  	},
+  	{
   		id: "officer_training_ground",
   		cat: "defense",
   		tab: 1,
@@ -3963,6 +4613,179 @@ const taVersion = "3.9.1";
   				type_gen: "stat",
   				gen: "defense",
   				value: 50,
+  				perc: false
+  			}
+  		]
+  	},
+  	{
+  		id: "magic_stable_b",
+  		cat: "defense",
+  		tab: 1,
+  		age: 4,
+  		cap: 10,
+  		req: [
+  			{
+  				type: "resource",
+  				id: "faith",
+  				value: 15000,
+  				multi: 1.2
+  			},
+  			{
+  				type: "resource",
+  				id: "mana",
+  				value: 12000,
+  				multi: 1.2
+  			},
+  			{
+  				type: "resource",
+  				id: "horse",
+  				value: 7500,
+  				multi: 1.2
+  			},
+  			{
+  				type: "prayer",
+  				id: "magic_stable_f",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "light_cavarly",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 2,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "light_cavarly",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 1,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "knight",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 4,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "knight",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 2,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "cuirassier",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 5,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "cuirassier",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 3,
+  				perc: false
+  			},
+  			{
+  				type: "cap",
+  				id: "army",
+  				value: 10
+  			}
+  		]
+  	},
+  	{
+  		id: "soulstealer_citadel",
+  		cat: "defense",
+  		tab: 1,
+  		cap: 5,
+  		age: 100,
+  		req: [
+  			{
+  				type: "resource",
+  				id: "stone",
+  				value: 125000,
+  				multi: 1.3
+  			},
+  			{
+  				type: "resource",
+  				id: "mana",
+  				value: 25000,
+  				multi: 1.3
+  			},
+  			{
+  				type: "resource",
+  				id: "faith",
+  				value: 17500,
+  				multi: 1.3
+  			},
+  			{
+  				type: "prayer",
+  				id: "control_fortress",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "food",
+  				value: -120
+  			},
+  			{
+  				type: "resource",
+  				id: "mana",
+  				value: -120
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "heavy_warrior",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 12,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "heavy_warrior",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 12,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "crossbowman",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 11,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "crossbowman",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 6,
   				perc: false
   			}
   		]
@@ -5005,6 +5828,142 @@ const taVersion = "3.9.1";
   		]
   	},
   	{
+  		id: "steel_palace_b",
+  		cat: "wonders",
+  		tab: 1,
+  		cap: 1,
+  		age: 4,
+  		req: [
+  			{
+  				type: "building",
+  				id: "steel_palace_b_part",
+  				value: 10,
+  				consume: true
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "fame",
+  				value: 300,
+  				fix: true
+  			},
+  			{
+  				type: "resource",
+  				id: "gold",
+  				value: 100
+  			},
+  			{
+  				type: "population",
+  				id: "unemployed",
+  				value: 10
+  			}
+  		]
+  	},
+  	{
+  		id: "steel_palace_b_part",
+  		cat: "wonders",
+  		tab: 1,
+  		cap: 10,
+  		age: 4,
+  		req: [
+  			{
+  				type: "resource",
+  				id: "faith",
+  				value: 60000
+  			},
+  			{
+  				type: "resource",
+  				id: "mana",
+  				value: 60000
+  			},
+  			{
+  				type: "resource",
+  				id: "steel",
+  				value: 40000
+  			},
+  			{
+  				type: "prayer",
+  				id: "steel_palace_f",
+  				value: 1
+  			}
+  		]
+  	},
+  	{
+  		id: "ivory_tower_b",
+  		cat: "wonders",
+  		tab: 1,
+  		cap: 1,
+  		age: 4,
+  		req: [
+  			{
+  				type: "building",
+  				id: "ivory_tower_b_part",
+  				value: 10,
+  				consume: true
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "fame",
+  				value: 200,
+  				fix: true
+  			},
+  			{
+  				type: "resource",
+  				id: "research",
+  				value: 25
+  			},
+  			{
+  				type: "resource",
+  				id: "mana",
+  				value: 25
+  			},
+  			{
+  				type: "resource",
+  				id: "research",
+  				value: 10,
+  				perc: true
+  			},
+  			{
+  				type: "resource",
+  				id: "mana",
+  				value: 10,
+  				perc: true
+  			}
+  		]
+  	},
+  	{
+  		id: "ivory_tower_b_part",
+  		cat: "wonders",
+  		tab: 1,
+  		cap: 10,
+  		age: 4,
+  		req: [
+  			{
+  				type: "resource",
+  				id: "faith",
+  				value: 60000
+  			},
+  			{
+  				type: "resource",
+  				id: "mana",
+  				value: 60000
+  			},
+  			{
+  				type: "resource",
+  				id: "crystal",
+  				value: 40000
+  			},
+  			{
+  				type: "prayer",
+  				id: "ivory_tower_f",
+  				value: 1
+  			}
+  		]
+  	},
+  	{
   		id: "automated_complex",
   		cat: "wonders",
   		tab: 1,
@@ -5345,6 +6304,43 @@ const taVersion = "3.9.1";
   		]
   	},
   	{
+  		id: "lucky_well_b",
+  		cat: "commercial_area",
+  		tab: 1,
+  		age: 13,
+  		req: [
+  			{
+  				type: "resource",
+  				id: "gold",
+  				value: 700,
+  				multi: 1.5
+  			},
+  			{
+  				type: "resource",
+  				id: "stone",
+  				value: 500,
+  				multi: 1.5
+  			},
+  			{
+  				type: "resource",
+  				id: "luck",
+  				value: 1
+  			},
+  			{
+  				type: "prayer",
+  				id: "lucky_well_f",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "gold",
+  				value: 2
+  			}
+  		]
+  	},
+  	{
   		id: "canava_trading",
   		cat: "commercial_area",
   		tab: 1,
@@ -5507,6 +6503,60 @@ const taVersion = "3.9.1";
   				type: "cap",
   				id: "gold",
   				value: 2000
+  			}
+  		]
+  	},
+  	{
+  		id: "allied_embassy",
+  		cat: "commercial_area",
+  		tab: 1,
+  		age: 2,
+  		req: [
+  			{
+  				type: "resource",
+  				id: "gold",
+  				value: 5000,
+  				multi: 1.4
+  			},
+  			{
+  				type: "resource",
+  				id: "stone",
+  				value: 2500,
+  				multi: 1.4
+  			},
+  			{
+  				type: "resource",
+  				id: "tools",
+  				value: 1500,
+  				multi: 1.4
+  			},
+  			{
+  				type: "resource",
+  				id: "building_material",
+  				value: 500,
+  				multi: 1.4
+  			},
+  			{
+  				type: "tech",
+  				id: "embassy_nation",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "research",
+  				value: 2
+  			},
+  			{
+  				type: "resource",
+  				id: "gold",
+  				value: 2
+  			},
+  			{
+  				type: "cap",
+  				id: "army",
+  				value: 8
   			}
   		]
   	},
@@ -5941,6 +6991,66 @@ const taVersion = "3.9.1";
   		]
   	},
   	{
+  		id: "oracle_b",
+  		cat: "faith",
+  		tab: 1,
+  		age: 1,
+  		cap: 1,
+  		req: [
+  			{
+  				type: "resource",
+  				id: "stone",
+  				value: 500
+  			},
+  			{
+  				type: "resource",
+  				id: "faith",
+  				value: 500
+  			},
+  			{
+  				type: "tech",
+  				id: "oracle_t",
+  				value: 1
+  			}
+  		]
+  	},
+  	{
+  		id: "fate_shrine_b",
+  		cat: "faith",
+  		tab: 1,
+  		age: 13,
+  		req: [
+  			{
+  				type: "resource",
+  				id: "faith",
+  				value: 500,
+  				multi: 1.4
+  			},
+  			{
+  				type: "resource",
+  				id: "luck",
+  				value: 1
+  			},
+  			{
+  				type: "prayer",
+  				id: "fate_shrine_f",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "faith",
+  				value: 3
+  			},
+  			{
+  				type: "resource",
+  				id: "mana",
+  				value: 3
+  			}
+  		]
+  	},
+  	{
   		id: "altar_of_sacrifices",
   		cat: "faith",
   		tab: 1,
@@ -6145,6 +7255,48 @@ const taVersion = "3.9.1";
   		]
   	},
   	{
+  		id: "mana_fields_b",
+  		cat: "faith",
+  		tab: 1,
+  		age: 1,
+  		req: [
+  			{
+  				type: "resource",
+  				id: "faith",
+  				value: 1500,
+  				multi: 1.3
+  			},
+  			{
+  				type: "resource",
+  				id: "mana",
+  				value: 1000,
+  				multi: 1.3
+  			},
+  			{
+  				type: "prayer",
+  				id: "mage_fields_f",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "mana",
+  				value: 4
+  			},
+  			{
+  				type: "cap",
+  				id: "faith",
+  				value: 400
+  			},
+  			{
+  				type: "cap",
+  				id: "mana",
+  				value: 400
+  			}
+  		]
+  	},
+  	{
   		id: "pillars_of_mana",
   		cat: "faith",
   		tab: 1,
@@ -6190,6 +7342,51 @@ const taVersion = "3.9.1";
   				type: "cap",
   				id: "mana",
   				value: 200
+  			}
+  		]
+  	},
+  	{
+  		id: "glory_gods",
+  		cat: "faith",
+  		tab: 1,
+  		age: 2,
+  		req: [
+  			{
+  				type: "resource",
+  				id: "stone",
+  				value: 8000,
+  				multi: 1.4
+  			},
+  			{
+  				type: "resource",
+  				id: "building_material",
+  				value: 5000,
+  				multi: 1.3
+  			},
+  			{
+  				type: "resource",
+  				id: "faith",
+  				value: 3000,
+  				multi: 1.4
+  			},
+  			{
+  				type: "resource",
+  				id: "crystal",
+  				value: 2000,
+  				multi: 1.3
+  			},
+  			{
+  				type: "tech",
+  				id: "favor_gods",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "fame",
+  				value: 2,
+  				perc: true
   			}
   		]
   	},
@@ -6532,7 +7729,7 @@ const taVersion = "3.9.1";
   				type: "resource",
   				id: "faith",
   				value: 2500,
-  				multi: 1.5
+  				multi: 1.3
   			},
   			{
   				type: "resource",
@@ -7419,6 +8616,64 @@ const taVersion = "3.9.1";
   				type: "cap",
   				id: "tools",
   				value: 5000
+  			}
+  		]
+  	},
+  	{
+  		id: "alchemist_complex",
+  		cat: "resource",
+  		tab: 2,
+  		age: 5,
+  		req: [
+  			{
+  				type: "resource",
+  				id: "wood",
+  				value: 24000,
+  				multi: 1.1
+  			},
+  			{
+  				type: "resource",
+  				id: "stone",
+  				value: 20000,
+  				multi: 1.1
+  			},
+  			{
+  				type: "resource",
+  				id: "building_material",
+  				value: 11000,
+  				multi: 1.1
+  			},
+  			{
+  				type: "resource",
+  				id: "natronite",
+  				value: 3500,
+  				multi: 1.1
+  			},
+  			{
+  				type: "tech",
+  				id: "alchemist_complex_t",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "population",
+  				id: "alchemist",
+  				value: 1
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "population",
+  				id: "alchemist",
+  				type_gen: "resource",
+  				gen: "saltpetre",
+  				value: 1,
+  				perc: true
+  			},
+  			{
+  				type: "cap",
+  				id: "saltpetre",
+  				value: 2000
   			}
   		]
   	},
@@ -9747,6 +11002,58 @@ const taVersion = "3.9.1";
   		]
   	},
   	{
+  		id: "lich_fortress",
+  		found: [
+  			31,
+  			32,
+  			33,
+  			34,
+  			35
+  		],
+  		esp: 50,
+  		level: 7,
+  		reqFound: [
+  			{
+  				type: "tech",
+  				id: "huge_cave_t",
+  				value: 1
+  			}
+  		],
+  		relationship: 0,
+  		army: [
+  			{
+  				id: "nikharul",
+  				value: 1
+  			},
+  			{
+  				id: "skeletal_knight",
+  				value: 400
+  			},
+  			{
+  				id: "skeleton",
+  				value: 2000
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "fame",
+  				value: 150,
+  				fix: true
+  			},
+  			{
+  				type: "resource",
+  				id: "research",
+  				value: 2
+  			},
+  			{
+  				type: "resource",
+  				id: "stone",
+  				value: 2
+  			}
+  		]
+  	},
+  	{
   		id: "army_of_the_dead",
   		found: [
   			0
@@ -9755,11 +11062,11 @@ const taVersion = "3.9.1";
   		army: [
   			{
   				id: "skeleton",
-  				value: 1500
+  				value: 1000
   			},
   			{
   				id: "zombie",
-  				value: 700
+  				value: 400
   			}
   		]
   	},
@@ -10337,6 +11644,9 @@ const taVersion = "3.9.1";
   var en = {
   	achievements: "Achievements",
   	achievements_empty: "You have to work on it a bit",
+  	achievements_mine: "My Achievements",
+  	achievements_global: "Global Achievements",
+  	all_caps: "NG+ all caps",
   	all_resources: "All resources",
   	ancestor: "Ancestor",
   	armies: "Armies",
@@ -10361,6 +11671,8 @@ const taVersion = "3.9.1";
   	buy: "Buy",
   	cancel: "Cancel",
   	cap: "Cap",
+  	change_difficulty_1: "The change of difficulty can be made only one time per game. To change the difficulty level again you will have to get a prestige, ng+ or do a softreset",
+  	change_difficulty_2: "The change of difficulty cannot be reversed for the rest of the game. Are you sure?",
   	changelog: "Changelog",
   	colony: "Colony",
   	completed: "Completed",
@@ -10376,8 +11688,30 @@ const taVersion = "3.9.1";
   	died: "Died",
   	difficulty: "Difficulty",
   	difficulty_0: "Normal",
+  	difficulty_0_1_description: "For players familiar with incremental games",
+  	difficulty_0_2_description: "The game is balanced around this level, the best gaming experience even for the first playthrough",
+  	difficulty_0_3_description: "Access to the Oracle to forecast the outcome of battles",
   	difficulty_1: "Hard",
+  	difficulty_1_1_description: "A tough challenge for veterans of Theresmore",
+  	difficulty_1_2_description: "Each enemy will have more units",
+  	difficulty_1_3_description: "Each enemy will have an additional variable of a few units at the time of combat",
+  	difficulty_1_4_description: "Hard level Achievements will have better bonuses",
   	difficulty_2: "Impossible",
+  	difficulty_2_1_description: "An insane challenge to get the most out of Theresmore",
+  	difficulty_2_2_description: "Each enemy will have a lot more units",
+  	difficulty_2_3_description: "Each enemy will have an additional variable of a few more units at the time of combat",
+  	difficulty_2_4_description: "Impossible level Achievements will have great bonuses",
+  	difficulty_3: "Deity",
+  	difficulty_3_1_description: "A degenerated challenge only for those who already own many of the game's legacies",
+  	difficulty_3_2_description: "Each enemy will have a huge quantity of units",
+  	difficulty_3_3_description: "Each enemy will have an additional variable of several more units at the time of combat",
+  	difficulty_3_4_description: "Grant access to the Ultimate level of Achievements power",
+  	difficulty_3_5_description: "Access to the Glory of the Gods to harvest more FAME",
+  	difficulty_99: "Easy",
+  	difficulty_99_1_description: "For new Theresmore players who want a lighter challenge",
+  	difficulty_99_2_description: "Access to the Oracle to forecast the outcome of battles",
+  	difficulty_99_3_description: "Some of your soldiers will only be injured in battle instead of dying",
+  	difficulty_99_4_description: "Easy level Achievements will not have noticeable bonuses",
   	diplomacy: "Diplomacy",
   	dismiss: "Dismiss",
   	donate: "Donate",
@@ -10394,6 +11728,7 @@ const taVersion = "3.9.1";
   	hard_reset_confirm_3: "If you confirm, a deletion of all game data will be performed, do you want to continue?",
   	humans: "Humans",
   	humans_description: "Skilled diplomats and expert merchants, their curiosity drives them where others hesitate to venture",
+  	injured: "Injured",
   	killed: "You killed",
   	legacy_points: "Legacy points",
   	light_portal_of_the_dead: "Light Portal of the Dead",
@@ -10409,10 +11744,62 @@ const taVersion = "3.9.1";
   	mausoleum_description: "To please the gods and be able to meet them, we must offer a consideration of 1,000,000 resources. Each of them has a different value to the gods as can be seen below",
   	mausoleum_donation_total: "Total donations value",
   	mausoleum_donation_value: "Value",
+  	new_game_plus: "NG+",
+  	new_game_plus_title: "New Game Plus Mode",
+  	new_game_plus_description: "Congratulations! Through the purchase of your 25th Legacy Perk you have unlocked the opportunity to activate NEW GAME PLUS. This mode will reset your game like prestige but you will also lose your Legacy Perks acquired (you will keep your stats and achievements obtained so far). In return you will get a +1% bonus to all caps and +0.1% bonus to all production for each Legacy Perk you have lost. Each time you activate NEW GAME PLUS, you will also halve the time required for all exploration, espionage, and attack missions",
+  	new_game_plus_confirm_1: "This is the NEW GAME PLUS mode. Each time you perform a NG+ you will get a permanent bonus of 1% to all caps and 0.1% to all production for each Legacy Perks you had obtained in this game series. For each NG+ you have halved the time required for exploration, espionage, and attack missions. The NG+ resets all progress made so far (except achievements and stats) and restarts a new game",
+  	new_game_plus_confirm_2: "This will reset all your progress in this game",
+  	new_game_plus_confirm_3: "Do you understand what will happen?",
+  	new_game_plus_in_progress: "NG+ in progress",
+  	new_game_plus_current_bonuses: "Current bonuses",
+  	new_game_plus_new_bonuses: "New bonuses",
   	no_attackable_enemy: "You have no enemy to attack",
   	no_spy_enemy: "You have no enemy to spy",
   	no_requirements: "No requirements",
   	open_achievements: "Open achievements",
+  	oracle: "The Gods aid us with the Sphere of Foresight, a magical artifact kept at the Oracle. It will grant us to know the outcome of our battles",
+  	oracle_button: "Consult the Oracle",
+  	oracle_button_description: "Ask the Oracle for the outcome of the battle",
+  	oracle_prediction_defeat_1: "Beware, for the shadows of defeat loom ominously.",
+  	oracle_prediction_defeat_2: "The winds of fate whisper of impending doom.",
+  	oracle_prediction_defeat_3: "Prepare yourselves, for adversity beckons on the horizon.",
+  	oracle_prediction_defeat_4: "Alas, the oracle foretells a grim outcome.",
+  	oracle_prediction_defeat_5: "Steel your resolve, for the road ahead is fraught with peril.",
+  	oracle_prediction_defeat_6: "The specter of defeat casts a pall over the coming battle.",
+  	oracle_prediction_defeat_7: "Brace yourselves, for the odds stand against us.",
+  	oracle_prediction_defeat_8: "The oracle's words portend a harrowing trial ahead.",
+  	oracle_prediction_defeat_9: "Fear not the truth, for even in defeat, courage endures.",
+  	oracle_prediction_defeat_10: "Though the path be treacherous, the flame of hope shall not be extinguished.",
+  	oracle_prediction_defeat_11: "Prepare for the looming shadow of catastrophe to descend.",
+  	oracle_prediction_defeat_12: "The oracle's dire warning heralds an impending calamity.",
+  	oracle_prediction_defeat_13: "Behold, for the threads of destiny unravel towards a tragic end.",
+  	oracle_prediction_defeat_14: "Gird your souls, for the oracle foresees a dark and sorrowful fate.",
+  	oracle_prediction_defeat_15: "The veil of fate lifts to reveal a landscape marred by tragedy.",
+  	oracle_prediction_defeat_16: "Despair grips the heart as the oracle unveils a future steeped in sorrow.",
+  	oracle_prediction_defeat_17: "Brace yourselves, for the hand of destiny deals a cruel blow.",
+  	oracle_prediction_defeat_18: "The echo of tragedy reverberates through the oracle's somber prophecy.",
+  	oracle_prediction_defeat_19: "Alas, the stars align to paint a portrait of anguish and despair.",
+  	oracle_prediction_defeat_20: "In the cold embrace of fate, tragedy's bitter kiss awaits.",
+  	oracle_prediction_victory_1: "Victory is assured!",
+  	oracle_prediction_victory_2: "Prepare for a triumphant triumph!",
+  	oracle_prediction_victory_3: "Your foes shall crumble before you!",
+  	oracle_prediction_victory_4: "Fortune favors the bold! Victory awaits!",
+  	oracle_prediction_victory_5: "The tides of fate turn in your favor!",
+  	oracle_prediction_victory_6: "A glorious conquest awaits you!",
+  	oracle_prediction_victory_7: "The winds of destiny blow in your favor!",
+  	oracle_prediction_victory_8: "Your enemies tremble in fear of your might!",
+  	oracle_prediction_victory_9: "The battlefield shall echo with your triumph!",
+  	oracle_prediction_victory_10: "The stars align for your inevitable victory!",
+  	oracle_prediction_victory_11: "The indomitable spirit of humanity ensures victory!",
+  	oracle_prediction_victory_12: "Behold, for humanity's valor shall vanquish all!",
+  	oracle_prediction_victory_13: "The might of humanity shall shine bright upon the battlefield!",
+  	oracle_prediction_victory_14: "Prepare to witness the heroic ascendancy of mankind!",
+  	oracle_prediction_victory_15: "Humanity's courage shall crush all opposition!",
+  	oracle_prediction_victory_16: "In the face of adversity, humanity shall emerge triumphant!",
+  	oracle_prediction_victory_17: "Through unwavering resolve, humanity shall claim its rightful victory!",
+  	oracle_prediction_victory_18: "The legacy of humanity's valor shall echo through the annals of history!",
+  	oracle_prediction_victory_19: "Humanity's destiny is written in the stars, destined for glorious conquest!",
+  	oracle_prediction_victory_20: "The heart of humanity beats with the rhythm of victory, unstoppable and unyielding!",
   	paste_message: "Click here to paste a save",
   	paste_message_click: "Press Ctrl+V to paste a save",
   	paste_success: "The game has been loaded from the save, please wait...",
@@ -10457,7 +11844,11 @@ const taVersion = "3.9.1";
   	soft_reset_description_9_false: "The once proud fortresses of the Orcish nation lay in ruins, and the horde set out on a final, desperate charge. With fire in their eyes and weapons in their hands, they launched themselves against our walls, seeking to break through. The armies of the free peoples, honed by centuries of battle against the most fearsome foes, stood their ground and battled the orcs for days. The fate of the free and the bloodthirsty hung in the balance, and the outcome was uncertain. But then, a breach was made, and the end seemed near. The humans fought with all their might, knowing that defeat would mean enslavement or worse. The orcish horde stormed forward, a relentless tide of destruction. The last bastion of freedom held fast, but eventually, with a mournful crash, it fell. Theresmore was no more, and the humans were doomed. The only thing that remained was a bitter memory of the battle, a reminder of the sacrifice made by those who fought for freedom and of the hope that had once burned bright, but now lay forever extinguished. You were defeated, but that's not the end of Theresmore! Thanks to the fame you have accumulated so far, you can spend legacy point to buy special permanent perks that will help you for all the upcoming games",
   	soft_reset_in_progress: "Prestige in progress",
   	spells: "Spells",
+  	spells_all: "All spells",
+  	spells_army: "Army",
+  	spells_defense: "Defense",
   	spells_empty: "There are no spells at the moment",
+  	spells_resource: "Resources",
   	spy: "Spy",
   	spy_empty: "You have no spy to send",
   	start_game: "Enter",
@@ -10471,6 +11862,7 @@ const taVersion = "3.9.1";
   	victory: "Victory!",
   	warning: "Warning",
   	wood: "Wood",
+  	wounded: "Our soldiers are more tough and many of them will be wounded instead of dying in battle",
   	one: "One",
   	a_few: "A few",
   	some: "Some",
@@ -10516,6 +11908,12 @@ const taVersion = "3.9.1";
   	bui_academy_of_freethinkers_part_description: "A part of the Academy of Freethinkers",
   	bui_alchemic_laboratory: "Alchemical laboratory",
   	bui_alchemic_laboratory_description: "Produce alchemist for saltpetre",
+  	bui_alchemist_complex: "Alchemist complex",
+  	bui_alchemist_complex_description: "Will fill the need for saltpetre",
+  	bui_archeological_dig: "Archeological Dig",
+  	bui_archeological_dig_description: "Searching in the Past",
+  	bui_allied_embassy: "Allied embassy",
+  	bui_allied_embassy_description: "A place to exchange information and organize cooperation among allies",
   	bui_altar_of_sacrifices: "Altar of sacrifices",
   	bui_altar_of_sacrifices_description: "Death will please the gods",
   	bui_artillery_firing: "Artillery firing range",
@@ -10524,6 +11922,8 @@ const taVersion = "3.9.1";
   	bui_artisans_complex_description: "Raw metal refining center and handicrafts",
   	bui_artisan_workshop: "Artisan Workshop",
   	bui_artisan_workshop_description: "The tools these artisans produce will be the manufacturing focus of the settlement",
+  	bui_amusement_quarter_b: "Amusement Quarter",
+  	bui_amusement_quarter_b_description: "A not quite legal neighborhood",
   	bui_ancient_vault: "Ancient vault",
   	bui_ancient_vault_description: "Where ancient knowledge is stored",
   	bui_arch_triumph: "Arch of Triumph",
@@ -10546,6 +11946,8 @@ const taVersion = "3.9.1";
   	bui_builders_complex_description: "Like a builder district but with much more space",
   	bui_books: "Books",
   	bui_books_description: "A part of the Library of SouLs",
+  	bui_boot_camp: "Boot Camp",
+  	bui_boot_camp_description: "A strong army will protect Theresmore",
   	bui_canava_trading: "Canava trading post",
   	bui_canava_trading_description: "From neighboring villages a network of markets to generate profit",
   	bui_carpenter_workshop: "Carpenter workshop",
@@ -10588,10 +11990,14 @@ const taVersion = "3.9.1";
   	bui_elf_village_description: "The home of the last elves of Theresmore",
   	bui_estates: "Estates",
   	bui_estates_description: "Our colony's estates where they cultivate and raise cattle. A rural guard protects them",
+  	bui_eureka_halls_b: "Eureka Halls",
+  	bui_eureka_halls_b_description: "The Halls of lucky ideas",
   	bui_factory: "Factory",
   	bui_factory_description: "The mass construction of everything we need",
   	bui_farm: "Farm",
   	bui_farm_description: "The peasants will feed our great nation",
+  	bui_fate_shrine_b: "Fate Shrine",
+  	bui_fate_shrine_b_description: "The Shrine of Fate, God of Luck",
   	bui_fiefdom: "Fiefdom",
   	bui_fiefdom_description: "The lord's lands produce food and raise pack animals",
   	bui_fortune_grove: "Fortune grove",
@@ -10606,6 +12012,8 @@ const taVersion = "3.9.1";
   	bui_fortified_citadel_part_description: "A part of the Fortified Citadel",
   	bui_gan_eden: "Gan Eden",
   	bui_gan_eden_description: "A Theresmore paradise where we can cultivate and thrive",
+  	bui_glory_gods: "Glory of the Gods",
+  	bui_glory_gods_description: "The Gods favor the bold",
   	bui_granary: "Granary",
   	bui_granary_description: "More grains more food more army",
   	bui_guarded_storehouse: "Guarded warehouse",
@@ -10638,14 +12046,22 @@ const taVersion = "3.9.1";
   	bui_harbor_district_part_description: "A part of the Harbor district",
   	bui_harvest_shrine: "Harvest Shrine",
   	bui_harvest_shrine_description: "The shrine dedicated to the Mother Earth will help us feed and grow the settlement",
+  	bui_highschool_magic_b: "Highschool of Magic",
+  	bui_highschool_magic_b_description: "Where science mixes with magic",
   	bui_holy_site: "Holy Site",
   	bui_holy_site_description: "The focal point of all the faithful in Theresmore",
   	bui_holy_site_part: "Holy Site part",
   	bui_holy_site_part_description: "A part of the Holy Site",
+  	bui_house_workers: "House of Workers",
+  	bui_house_workers_description: "Living place for workers",
   	bui_industrial_plant: "Industrial plant",
   	bui_industrial_plant_description: "A definite boost to production",
   	bui_island_outpost: "Island outpost",
   	bui_island_outpost_description: "So many wonderful animal species!",
+  	bui_ivory_tower_b: "Ivory Tower",
+  	bui_ivory_tower_b_description: "The Ivory Tower soars over Theresmore",
+  	bui_ivory_tower_b_part: "Ivory Tower part",
+  	bui_ivory_tower_b_part_description: "A part of the Ivory Tower",
   	bui_large_shed: "Large shed",
   	bui_large_shed_description: "The fight against caps knows no boundaries",
   	bui_large_warehouse: "Large storehouse",
@@ -10656,12 +12072,18 @@ const taVersion = "3.9.1";
   	bui_library_of_theresmore_description: "The place where ancient knowledge is preserved",
   	bui_logistic_center: "Logistic center",
   	bui_logistic_center_description: "A logistics hub to handle military goods and supplies",
+  	bui_lucky_grove_b: "Lucky Grove",
+  	bui_lucky_grove_b_description: " A Lucky Grove near our settlement",
+  	bui_lucky_well_b: "Lucky Well",
+  	bui_lucky_well_b_description: " The Lucky Well of gold",
   	bui_lumberjack_camp: "Lumberjack Camp",
   	bui_lumberjack_camp_description: "Wood is the resource on which we will base our city",
   	bui_machines_of_gods: "Machines of gods",
   	bui_machines_of_gods_description: "Machinery of a forgotten knowledge",
   	bui_mana_extractors: "Mana extractors",
   	bui_mana_extractors_description: "From underground we extract mana and other resources",
+  	bui_mana_fields_b: "Mana Fields",
+  	bui_mana_fields_b_description: "Acres where to grow mana",
   	bui_mana_pit: "Mana pit",
   	bui_mana_pit_description: "A very deep pit to accumulate all the mana we will need",
   	bui_mana_pit_part: "Mana pit part",
@@ -10670,10 +12092,16 @@ const taVersion = "3.9.1";
   	bui_mana_reactor_description: "Like a nuclear reactor but without waste",
   	bui_mansion: "Mansion",
   	bui_mansion_description: "A home for the middle class",
+  	bui_mage_academy_b: "Mage Academy",
+  	bui_mage_academy_b_description: "A place for research and development",
+  	bui_magic_workshop_b: "Magic Workshop",
+  	bui_magic_workshop_b_description: "Magical trinkets for troops and more",
   	bui_magical_tower: "Magical tower",
   	bui_magical_tower_description: "Tower defense are my favorite games",
   	bui_magic_circle: "Magic Circle",
   	bui_magic_circle_description: "Listen to the whisper of Theresmore",
+  	bui_magic_stable_b: "Magic Stable",
+  	bui_magic_stable_b_description: "Magic and Horses, what could go wrong?",
   	bui_marketplace: "Marketplace",
   	bui_marketplace_description: "From a small provincial market to the monopoly of entire nations",
   	bui_mausoleum_gods: "Mausoleum of gods",
@@ -10716,6 +12144,8 @@ const taVersion = "3.9.1";
   	bui_observatory_description: "A place to observe the stars and predict events",
   	bui_officer_training_ground: "Officer training ground",
   	bui_officer_training_ground_description: "The officers of our army will get out of here",
+  	bui_oracle_b: "The Oracle",
+  	bui_oracle_b_description: "The gods will send us signs",
   	bui_palisade: "Palisade",
   	bui_palisade_description: "Let's make sure that we turn our settlement into an Oppidum",
   	bui_palisade_unit: "Palisade part",
@@ -10748,6 +12178,8 @@ const taVersion = "3.9.1";
   	bui_research_plant_description: "From here, researchers will discover Theresmore",
   	bui_residential_block: "Residential block",
   	bui_residential_block_description: "A block of apartments to accommodate as many people as possible",
+  	bui_sacred_den_b: "Sacred Den",
+  	bui_sacred_den_b_description: "A sacred place sheltered from evil",
   	bui_sawmill: "Sawmill",
   	bui_sawmill_description: "More wood, more buildings, more production",
   	bui_school: "School",
@@ -10758,6 +12190,8 @@ const taVersion = "3.9.1";
   	bui_siege_workshop_description: "Better siege weapons for the army",
   	bui_souls: "Souls",
   	bui_souls_description: "The souls of scholars are absorbed by the Library of SouLs",
+  	bui_soulstealer_citadel: "Soulstealer Citadel",
+  	bui_soulstealer_citadel_description: "Infuse dark power to our army, with a great sacrifice",
   	bui_spiritual_garden: "Spiritual garden",
   	bui_spiritual_garden_description: "A place of peace in contact with nature",
   	bui_stable: "Stable",
@@ -10772,6 +12206,10 @@ const taVersion = "3.9.1";
   	bui_statue_virtue_description: "A huge statue to celebrate the humans of Theresmore",
   	bui_statue_virtue_part: "Statue of Virtues part",
   	bui_statue_virtue_part_description: "A part of the Statue of Virtues",
+  	bui_steel_palace_b: "Steel Palace",
+  	bui_steel_palace_b_description: "The Steel Palace shine in our city",
+  	bui_steel_palace_b_part: "Steel Palace part",
+  	bui_steel_palace_b_part_description: "A part of the Steel Palace",
   	bui_steelworks: "Steelworks",
   	bui_steelworks_description: "The steelworks will produce steel from other metals",
   	bui_stock_exchange: "Stock exchange",
@@ -10802,7 +12240,7 @@ const taVersion = "3.9.1";
   	bui_war_shrine_description: "The shrine dedicated to the God of War will help us crush our enemies",
   	bui_warehouse: "Warehouse",
   	bui_watchman_outpost: "Watchman Outpost",
-  	bui_watchman_outpost_description: "Always on the alert to spot the enemy. Placed at key points will allow you to see incoming attacks",
+  	bui_watchman_outpost_description: "Placed at key points will allow you to see incoming attacks. We need four of them to progress",
   	bui_the_vaults: "The Vaults",
   	bui_the_vaults_description: "A vault of stone and steel to store our gold",
   	bui_titanic_walls: "Titanic Walls",
@@ -10819,6 +12257,8 @@ const taVersion = "3.9.1";
   	bui_trench_description: "Barbed wire and a lot of mud",
   	bui_undead_herd: "Undead Herds",
   	bui_undead_herd_description: "Breeding of nearly living animals",
+  	bui_underground_tunnel_b: "Underground tunnel",
+  	bui_underground_tunnel_b_description: "A maze of tunnels to defend our people",
   	cat_commercial_area: "Commercial Area",
   	cat_defense: "Army and Defense",
   	cat_faith: "Faith and Magic",
@@ -10902,6 +12342,8 @@ const taVersion = "3.9.1";
   	dip_zultan_emirate_description: "Along the deserts of the south flourishing commercial cities have sprung up, the largest of these being Zultan whose oligarchy controls a vast area.",
   	dip_king_kobold_nation: "King Kobold Nation",
   	dip_king_kobold_nation_description: "These little bipedal lizards have never been at our level. We chased them back to the dust from whence they came.",
+  	dip_lich_fortress: "Nikharul Soulstealer fortress",
+  	dip_lich_fortress_description: "Nikharul undead army is a danger to all of Theresmore",
   	ene_ancient_burial_place: "Ancient burial place",
   	ene_ancient_burial_place_description: "A place long forgotten, few undeads roaming around. A few dozen of soldiers will exterminate them",
   	ene_ancient_giant: "Ancient Giant",
@@ -10942,6 +12384,8 @@ const taVersion = "3.9.1";
   	ene_demoness_castle_description: "A gloomy castle from which comes a strong demonic aura, there must be many demons within it",
   	ene_demonic_portal: "Demonic portal",
   	ene_demonic_portal_description: "Near this portal there are several greater and lesser demons while in the sky flutter dozens of imp",
+  	ene_dense_oasis: "Dense oasis",
+  	ene_dense_oasis_description: "The home of one of the Naga Princess. Beware!",
   	ene_desecrated_temple: "Desecrated Temple",
   	ene_desecrated_temple_description: "The Luna Temple has been converted into a pile of putrescence, many greenskinned humanoids are at work at this site",
   	ene_djinn_palace: "Djinn Palace",
@@ -10994,10 +12438,14 @@ const taVersion = "3.9.1";
   	ene_hobgoblin_chieftain_description: "A small army of Hobgoblins led by their chieftain",
   	ene_hobgoblin_encampment: "Hobgoblin encampment",
   	ene_hobgoblin_encampment_description: "A camp full of hobgoblin grunts, their resources could come in handy",
+  	ene_huge_cave: "Huge Cavern",
+  	ene_huge_cave_description: "Beneath the crypts of the Library is an immense cavern filled with skeletons ",
   	ene_hydra_pit: "Hydra pit",
   	ene_hydra_pit_description: "The pit of a hydra: it fights like a legion thanks to its five heads",
   	ene_lead_golem_mine: "Lead golem mine",
   	ene_lead_golem_mine_description: "In an old mine we discovered golems of a strange, very hard substance",
+  	ene_leprechaun_den: "Leprechaun Den",
+  	ene_leprechaun_den_description: "A Den of Leprechaun, it will bring us luck!",
   	ene_lich_temple: "Lich temple",
   	ene_lich_temple_description: "The Lich is a source of dark power and commands dozens of undead",
   	ene_king_reptiles: "The King of Reptiles",
@@ -11006,6 +12454,8 @@ const taVersion = "3.9.1";
   	ene_kobold_city_description: "A kobold city right under our feet, who knew?",
   	ene_kobold_looters: "Kobold looters",
   	ene_kobold_looters_description: "From their small encampment they raid the nearby countryside, let's drive them off with a few soldiers",
+  	ene_kobold_stash: "Kobold stash",
+  	ene_kobold_stash_description: "In the kobold stuff we might find some interesting things",
   	ene_kobold_underground_tunnels: "Kobold tunnels",
   	ene_kobold_underground_tunnels_description: "Kobolds dig their burrows deep, they are weak but very numerous",
   	ene_korrigan_dolmen: "Korrigan dolmen",
@@ -11052,12 +12502,16 @@ const taVersion = "3.9.1";
   	ene_prisoner_wagon_description: "A wagon in which bandits trapped civilians, a few spearman with archers will eliminate them",
   	ene_rat_cellar: "Rat cellar",
   	ene_rat_cellar_description: "A cellar infested with ravenous rats, let's bring some spearmen",
+  	ene_raider_hideout: "Raider hideout",
+  	ene_raider_hideout_description: "A cave with fourty raider in it",
   	ene_rusted_warehouse: "Rusted warehouse",
   	ene_rusted_warehouse_description: "An abandoned farmhouse that will become a good warehouse",
   	ene_sleeping_titan: "A sleeping Titan",
   	ene_sleeping_titan_description: "It seems that those who can awaken the titan will have immense gifts",
   	ene_skullface_encampment: "Skullface encampment",
   	ene_skullface_encampment_description: "The skullface camp is defended by several bandits; it will not be easy to eliminate him",
+  	ene_smuggler_warehouse: "Smuggler warehouse",
+  	ene_smuggler_warehouse_description: "A huge warehouse where the smugglers hide their things",
   	ene_snakes_nest: "Snakes nest",
   	ene_snakes_nest_description: "Into which many unsuspecting victims have fallen",
   	ene_spider_forest: "Spider forest",
@@ -11094,6 +12548,14 @@ const taVersion = "3.9.1";
   	fai_accept_druid_description: "Accepting the druid and his beliefs as an integral part of our society, he will become high priest",
   	fai_acolyte_hymn: "Acolyte hymn",
   	fai_acolyte_hymn_description: "The chant of the devout rises to the gods",
+  	fai_ancient_spell_p: "Spell of the Ancients",
+  	fai_ancient_spell_p_description: "A spell that will help us progress",
+  	fai_amusement_quarter_f: "The Amusement Quarter",
+  	fai_amusement_quarter_f_description: "We have to build the Amusement Quarter",
+  	fai_archmage_p: "Archmage",
+  	fai_archmage_p_description: "The Archmages are the elite of magician on the battlefield",
+  	fai_armored_caravan_p: "Armored Caravan",
+  	fai_armored_caravan_p_description: "We must also look out for the merchants in service of our beliefs!",
   	fai_army_blessing: "Army blessing",
   	fai_army_faith: "Army of faith",
   	fai_army_faith_description: "Armies of faith will burn our enemies",
@@ -11107,6 +12569,8 @@ const taVersion = "3.9.1";
   	fai_children_hope: "The Children Hope",
   	fai_city_blessing: "City blessing",
   	fai_city_blessing_description: "We must gather the city's wise men and create a protection spell",
+  	fai_control_fortress: "Rebuild the Fortress",
+  	fai_control_fortress_description: "Use the power of the Dark Crystal to rebuild the Soulstealer Citadel",
   	fai_create_sacred_golem: "Create a sacred golem",
   	fai_create_sacred_golem_description: "We will be able to create a blessed mana powered golem",
   	fai_church_ritual: "Church ritual",
@@ -11127,14 +12591,28 @@ const taVersion = "3.9.1";
   	fai_dragon_skull_description: "The ancient artifact is a skull of a dragon! We can use its powers and create new equipment by copying its hardness",
   	fai_dragon_weapon: "Dragon weapon",
   	fai_druid_blessing: "Druid blessing",
+  	fai_eureka_halls_f: "The Eureka Halls",
+  	fai_eureka_halls_f_description: "We have to explore the Eureka Halls",
   	fai_praise_gods: "Praise gods",
   	fai_praise_gods_description: "We must please the gods so they will listen to us",
   	fai_blessing: "Blessing",
   	fai_blessing_description: "The first form of power of the gods in Theresmore: blessings",
+  	fai_fate_shrine_f: "The Fate Shrine",
+  	fai_fate_shrine_f_description: "We have to praise the Fate Shrine",
+  	fai_focus_development: "Focus on Development path",
+  	fai_focus_development_description: "Focus on city enhancements. Only one focus can be taken. Choose wisely",
+  	fai_focus_magic: "Focus on Magic path",
+  	fai_focus_magic_description: "Focus on mana production. Only one focus can be taken. Choose wisely",
+  	fai_focus_research: "Focus on Research path",
+  	fai_focus_research_description: "Focus on research. Only one focus can be taken. Choose wisely",
   	fai_holy_light: "Holy light",
   	fai_holy_light_description: "Now we can bless our warriors with light",
   	fai_hope_children: "The children hope",
   	fai_hope_children_description: "We rescued the children from Gulud, they have magical abilities outside the norm",
+  	fai_lucky_grove_f: "A Lucky Grove",
+  	fai_lucky_grove_f_description: "We have to explore this Lucky Grove",
+  	fai_lucky_well_f: "A Lucky Well",
+  	fai_lucky_well_f_description: "We have to exploit this Lucky Well",
   	fai_pilgrim_chant: "Pilgrim chant",
   	fai_pilgrim_chant_description: "The faithful's song of faith creates abundance in the new world",
   	fai_prayer_for_the_great_seeker: "The Great Seeker",
@@ -11188,26 +12666,65 @@ const taVersion = "3.9.1";
   	fai_growth_nature: "Growth of Nature",
   	fai_growth_nature_description: "We will be able to create a spell to thicken our forests",
   	fai_growth_of_nature: "Growth of Nature",
+  	fai_highlightment_p: "Highlightment",
+  	fai_highlightment_p_description: "Focus on Reasearch allow us to cast highlightment",
+  	fai_highlightment_s: "Highlightment",
+  	fai_highschool_magic_f: "Highschool of Magic",
+  	fai_highschool_magic_f_description: "We have to build school for magician",
   	fai_incremental_power: "Incremental power",
   	fai_incremental_power_description: "We will use the power of the Northern Star to increase our production",
+  	fai_ivory_tower_f: "Ivory Tower",
+  	fai_ivory_tower_f_description: "The Ivory Tower will shine over Theresmore",
+  	fai_legion_light_p: "Legions of Light",
+  	fai_legion_light_p_description: "As our magic circle grows, we can bless our warriors of light",
+  	fai_life_magic_p: "Life Magic",
+  	fai_life_magic_p_description: "Focus on Development allow us to cast Life Magic",
+  	fai_life_magic_s: "Life Magic",
   	fai_lighten_rocks: "Lighten of rocks",
   	fai_lighten_rocks_description: "In the quarries we will be able to use our mana to lift the heavier stones",
   	fai_lighten_of_rocks: "Lighten of rocks",
+  	fai_mage_p: "Mage",
+  	fai_mage_p_description: "We can recruit Mages",
   	fai_magical_lights: "Magic lights",
   	fai_magical_lights_description: "In our mines we will be able to create artificial mana lights to help our miners",
   	fai_magic_lights: "Magic lights",
+  	fai_magic_stable_f: "Magic Stable",
+  	fai_magic_stable_f_description: "Adding magic to our stables will create stronger mounts",
   	fai_magical_tools: "Magic tools",
   	fai_magical_tools_description: "Who wouldn't want magic tools to increase production?",
   	fai_magic_tools: "Magic tools",
+  	fai_magic_workshop_f: "Magic Workshop",
+  	fai_magic_workshop_f_description: "A Workshop to sell magic stuff!",
+  	fai_mage_academy_f: "Mage Academy",
+  	fai_mage_academy_f_description: "An Academy to discover the secret of Theresmore",
   	fai_mana_armor: "Mana armor",
+  	fai_mana_armor_p: "Magic horse harnesses",
+  	fai_mana_armor_p_description: "A spell to improve our mounted troops",
+  	fai_mana_armor_s: "Magic horse harnesses",
   	fai_mana_defense: "Mana defense",
   	fai_mana_defense_description: "We can use mana to defend our settlement",
   	fai_mana_defense_II: "Mana defense II",
   	fai_mana_defense_II_description: "We can use even more mana to defend our settlement",
+  	fai_mage_fields_f: "Mana Fields",
+  	fai_mage_fields_f_description: "Fields where we could grove mana",
+  	fai_mana_forest_p: "Mana Forest",
+  	fai_mana_forest_p_description: "We can grow Mana Forest",
+  	fai_mana_forest_s: "Mana Forest",
   	fai_mana_dome: "Mana dome",
   	fai_mana_dome_description: "A dome of mana protecting our city",
   	fai_mana_energy_shield: "Mana energy shield",
   	fai_mana_energy_shield_description: "Strengthen our walls with a mana shield",
+  	fai_mana_flowers_p: "Mana Flowers",
+  	fai_mana_flowers_p_description: "Focus on Magic allows us to cast mana flowers",
+  	fai_mana_flowers_s: "Mana Flowers",
+  	fai_mana_fortress_p: "Mana Fortress",
+  	fai_mana_fortress_p_description: "What if we invented a fortress made of mana to protect our soldiers in battle?",
+  	fai_mana_materials_p: "Mana Materials",
+  	fai_mana_materials_p_description: "Craft materials from Mana",
+  	fai_mana_materials_s: "Mana Materials",
+  	fai_mana_spiral_p: "Mana Spiral",
+  	fai_mana_spiral_p_description: "We can cast a spell for generate even more Mana!",
+  	fai_mana_spiral_s: "Mana Spiral",
   	fai_minor_blessing: "Minor blessing",
   	fai_minor_blessing_description: "The gods grant us some minor blessings",
   	fai_mirune_blessing: "Mirune blessing",
@@ -11223,6 +12740,9 @@ const taVersion = "3.9.1";
   	fai_old_small_one_blessing: "Old Small One blessing",
   	fai_old_small_one_blessing_description: "Guide the hand of our craftsmen",
   	fai_old_small_one_grace: "Old Small One grace",
+  	fai_philosopher_stone_p: "Philosopher stone",
+  	fai_philosopher_stone_p_description: "The search for the philosopher's stone",
+  	fai_philosopher_stone_s: "Philosopher Stone",
   	fai_power_spell_east: "East Power Spell",
   	fai_power_spell_east_description: "The East Power Spell, the primacy of Horses",
   	fai_power_spell_north: "North Power Spell",
@@ -11235,6 +12755,8 @@ const taVersion = "3.9.1";
   	fai_protection_power_description: "We will use the power of the Northern Star to protect our city",
   	fai_sacred_armor: "Sacred armor",
   	fai_sacred_armor_description: "A magic armor for our commander",
+  	fai_sacred_den_f: "Sacred Den",
+  	fai_sacred_den_f_description: "We can discover a Sacred Den where our people can thrive",
   	fai_sacred_equipments: "Sacred equipments",
   	fai_sacred_equipments_description: "We can use mana to create magical equipment",
   	fai_sacred_equipments_II: "Sacred equipments II",
@@ -11249,8 +12771,16 @@ const taVersion = "3.9.1";
   	fai_spear_wild_man_description: "The wild man was a great horseman",
   	fai_spell_accept: "Cast this spell",
   	fai_spell_cancel: "Cancel this spell",
+  	fai_spell_ancient: "Spell of the Ancients",
+  	fai_spell_book_p: "Spell Book",
+  	fai_spell_book_p_description: "A spell book fo our magician",
+  	fai_spell_book_s: "Spell Book Magic",
+  	fai_steel_palace_f: "Steel Palace",
+  	fai_steel_palace_f_description: "The Steel Palace will be our glory on Theresmore!",
   	fai_study_undead_creatures: "Study of undead creatures",
   	fai_study_undead_creatures_description: "Now that we have defeated those undead we must study their characteristics",
+  	fai_summon_nikharul: "Summon Nikharul",
+  	fai_summon_nikharul_description: "Use the power of the Dark Crystal to harness Nikharul to our will forever",
   	fai_temple_mirune: "Temple of Mirune",
   	fai_temple_mirune_description: "The temple in the forest is dedicated to Mirune the woods goddess. Let's clean it up and pay homage to her",
   	fai_temple_ritual: "Temple ritual",
@@ -11259,8 +12789,13 @@ const taVersion = "3.9.1";
   	fai_the_aid_description: "More and more refugees are asking to enter the city, now it has become a big crowd",
   	fai_theresmore_revealed: "Theresmore revealed",
   	fai_theresmore_revealed_description: "The veil begins to lift",
+  	fai_tome_wisdom_p: "Tome of Wisdom",
+  	fai_tome_wisdom_p_description: "The Gods bring us the Tomes of Wisdom we have to study it",
+  	fai_tome_wisdom_s: "Tome of Wisdom Magic",
   	fai_warrior_gods: "Warriors of the Gods",
   	fai_warrior_gods_description: "Paladins chosen by the Gods join us",
+  	fai_underground_tunnel_f: "The Underground Tunnel",
+  	fai_underground_tunnel_f_description: "We have to explore the Underground Tunnel",
   	fai_wild_man_blessing: "Wild Man blessing",
   	fai_wild_man_spear: "Wild Man spear",
   	fai_wild_man_dexterity: "Wild Man dexterity",
@@ -11300,6 +12835,8 @@ const taVersion = "3.9.1";
   	img_holy_fury_description: "The gods have given us battle angels, as beautiful to see as they are terrible on the battlefield. With them we will dominate Theresmore",
   	img_king_kobold_nation: "The King of Kobold declares war!",
   	img_king_kobold_nation_description: "Who would have imagined that these little beings could be so socially evolved? All the Kobolds of Theresmore united under their king are coming out from underground to attack us!",
+  	img_lich_fortress: "The Fortress of Nikharul, the Soul Stealer",
+  	img_lich_fortress_description: "As the scout venture deeper into the underground, he is suddenly confronted by an awe-inspiring sight. Before him stands a colossal fortress, its walls towering high into the air, gleaming ominously in the darkness. The massive structure seems to have been carved out of the very bedrock itself, with a sinister energy pulsing from every stone. As he approach the fortress, the scout can see that the battlements are manned by an army of the undead, numbering in the thousands. The creatures are led by Nikharul, the soul stealer, a powerful lich with a burning hatred for the living. His eyes blaze with an otherworldly light, and the air around him crackles with dark energy. Nikharul stands at the forefront of the fortress, his skeletal hands clasped together as he gazes out over the battlefield. His face is twisted with a cruel smile, and his eyes gleam with a malevolent joy. He is eager to unleash his army upon the world, to spread chaos and death to all those who stand in his way",
   	img_magic: "Faith and Magic",
   	img_magic_description: "Since ancient times, our predecessors have relied on the gods for grace and help. Their prayers generated the faith so pleasing to the higher beings who command us. They released the Mana on Theresmore so that every person could feel it and honor it. Magic is an essential part of our nation, and mastering it will enable us to gain immense benefits",
   	img_markanat_forest: "Markanat's forest",
@@ -11334,6 +12871,8 @@ const taVersion = "3.9.1";
   	img_western_kingdom_description: "The glory of the west, Theresmore's most advanced kingdom. Its castles can be seen from miles away and their cities are rich and bustling. On the battlefield they use their heavy cavalry that shakes the earth and makes enemies tremble. They possess the accesses to the western sea, the only true maritime outlet for all who inhabit this continent",
   	img_zultan_emirate: "Zultan Emirate",
   	img_zultan_emirate_description: "Several autonomous city-states flourish in the sunny sands of the south. They answer to the great Emir of Zultan, the most powerful of these metropolises. A people developed in the most inhospitable lands of Theresmore and flourished through trade reaching every part of the continent. They protect the flame of Atamar who is said to have founded the city of Zultan",
+  	leg_acolyte_fate: "Acolyte of Fate",
+  	leg_acolyte_fate_description: "A true servant of Fate",
   	leg_ancient_balor_l: "Ancient Balor",
   	leg_ancient_balor_l_description: "Summon the ancient demon",
   	leg_ancient_vault: "Ancient Vault",
@@ -11360,12 +12899,16 @@ const taVersion = "3.9.1";
   	leg_army_of_men_IV_description: "We are swarm!",
   	leg_army_of_men_V: "Army of Men V",
   	leg_army_of_men_V_description: "We are multitude!",
+  	leg_cartomancer: "Cartomancer",
+  	leg_cartomancer_description: "In the cards a stream of luck",
   	leg_cpt_galliard_story: "Captain Galliard Story",
   	leg_cpt_galliard_story_description: "Unlock the Story of Captain Galliard",
   	leg_charism: "Charism",
   	leg_charism_description: "Your name will be spoken more often",
   	leg_charism_II: "Charism II",
   	leg_charism_II_description: "One man shall reign",
+  	leg_clairvoyant: "Clairvoyant",
+  	leg_clairvoyant_description: "He know where the luck rest",
   	leg_clever_villagers: "Clever Villagers",
   	leg_clever_villagers_description: "Our population is getting smarter",
   	leg_clever_villagers_II: "Clever Villagers II",
@@ -11416,6 +12959,8 @@ const taVersion = "3.9.1";
   	leg_enhanced_pickaxes_III_description: "Titanium pickaxes for our miners",
   	leg_enhanced_pickaxes_IV: "Enhanced Pickaxes IV",
   	leg_enhanced_pickaxes_IV_description: "Epic pickaxes for our miners",
+  	leg_fortune_teller: "Fortune Teller",
+  	leg_fortune_teller_description: "A bit of Luck",
   	leg_free_hands: "Free Hands",
   	leg_free_hands_description: "We need more population!",
   	leg_free_hands_II: "Free Hands II",
@@ -11524,6 +13069,16 @@ const taVersion = "3.9.1";
   	leg_resource_cap_VIII_description: "Gargantuan space for our valuables",
   	leg_seraphim_l: "Seraphim",
   	leg_seraphim_l_description: "The highest in rank in the angelic tiers",
+  	leg_service_gods: "Service to Gods",
+  	leg_service_gods_description: "In honor of our Gods",
+  	leg_service_gods_II: "Service to Gods II",
+  	leg_service_gods_II_description: "Believing in our Gods",
+  	leg_service_gods_III: "Service to Gods III",
+  	leg_service_gods_III_description: "Deep Faith in our Gods",
+  	leg_service_gods_IV: "Service to Gods IV",
+  	leg_service_gods_IV_description: "Worshipping our Gods",
+  	leg_service_gods_V: "Service to Gods V",
+  	leg_service_gods_V_description: "In awe of our Gods",
   	leg_shieldbearer: "Shieldbearer",
   	leg_shieldbearer_description: "Unlock the Shieldbearer unit",
   	leg_shopkeepers_and_breeders: "Shopkeepers and Breeders",
@@ -11532,6 +13087,8 @@ const taVersion = "3.9.1";
   	leg_shopkeepers_and_breeders_II_description: "We can attend some horse fairs",
   	leg_shopkeepers_and_breeders_III: "Shopkeepers and Breeders III",
   	leg_shopkeepers_and_breeders_III_description: "Master of tools and horses",
+  	leg_soothsayer: "Soothsayer",
+  	leg_soothsayer_description: "A chunk of Luck",
   	leg_spikes_and_pits: "Spikes and Pits",
   	leg_spikes_and_pits_description: "Traps around the settlement",
   	leg_spikes_and_pits_II: "Spikes and Pits II",
@@ -11570,7 +13127,12 @@ const taVersion = "3.9.1";
   	leg_white_m_company_description: "Unlock the White Company mercenary unit",
   	leg_woodworking: "Woodworking",
   	leg_woodworking_description: "Unlock the Sawmill",
+  	leg_zenix_familiar_l: "Zenix Familiar",
+  	leg_zenix_familiar_l_description: "Unlock the Zenix Familiar scout unit",
   	log_bui_1_alchemic_laboratory: "Alchemists will produce saltpetre for the production of arquebuses and bombards",
+  	log_bui_5_amusement_quarter_b: "Now we can research Lucky Investments",
+  	log_bui_10_amusement_quarter_b: "Now we can research Lucky little City",
+  	log_bui_15_amusement_quarter_b: "Now we can research Illgotten Gains",
   	log_bui_1_artisan_workshop: "With the artisan's workshops we will be able to build all the tools that will help in other jobs",
   	log_bui_5_artisan_workshop: "Your settlement is known for its local products",
   	log_bui_7_artisan_workshop: "Our artisan learn how to create better equipments for our army",
@@ -11595,18 +13157,42 @@ const taVersion = "3.9.1";
   	log_bui_8_common_house: "The memory of the past times is alive and is handed down from father to son, we can now research the mythology",
   	log_bui_15_common_house: "Congratulations, your little settlement is now a village!",
   	log_bui_1_credit_union: "We can now assume traders in the population tab",
+  	log_bui_5_eureka_halls_b: "Now we can research Lucky Idea",
+  	log_bui_10_eureka_halls_b: "Now we can research Eureka",
+  	log_bui_15_eureka_halls_b: "Now we can research Master of History",
+  	log_bui_5_fate_shrine_b: "Now we can research Martial Arts",
+  	log_bui_10_fate_shrine_b: "Now we can research Fate Blessing",
+  	log_bui_15_fate_shrine_b: "Now we can research Avatar of Fate",
   	log_bui_5_farm: "Our farmers are learning to farm better and better",
   	log_bui_15_farm: "The development of agriculture is creating new landowners",
+  	log_bui_1_fortune_grove: "We found a Lucky Grove",
+  	log_bui_3_fortune_grove: "We found a Lucky Well",
+  	log_bui_5_fortune_grove: "We found the Eureka Halls",
+  	log_bui_7_fortune_grove: "We found a good place for an Amusement Quarter",
+  	log_bui_8_fortune_grove: "We found a maze of Underground Tunnel",
+  	log_bui_9_fortune_grove: "We found the Fate Shrine",
   	log_bui_1_grocery: "With food and livestock we can now create supplies",
   	log_bui_1_island_outpost: "Thanks to this outpost we will now be able to explore the vast ocean",
   	log_bui_1_industrial_plant: "In the industrial plant, our artisans turn into workers",
+  	log_bui_1_ivory_tower_b: "Now we can recruit the High Prelate",
   	log_bui_1_library_souls: "Scholars are partially transformed into the undead, which explains the resulting abundance of food. They no longer have to feed themselves and can work without the need for sleep",
+  	log_bui_5_lucky_grove_b: "Now we can research Selling Wood",
+  	log_bui_10_lucky_grove_b: "Now we can research Fine Lucky Wood",
+  	log_bui_15_lucky_grove_b: "Now we can research Trained Longbowman",
+  	log_bui_5_lucky_well_b: "Now we can research Throwing Coin",
+  	log_bui_10_lucky_well_b: "Now we can research Dirty Money",
+  	log_bui_15_lucky_well_b: "Now we can research Fountain of Gold",
   	log_bui_5_lumberjack_camp: "A community of woodcarvers is emerging",
   	log_bui_15_lumberjack_camp: "Our woodworking is reaching a quality envied by many other kingdoms",
   	log_bui_1_mansion: "To conclude the feudal era we will have to create more universities, grocery, steelworks, carpentry workshop and mansion. This will make our village a city!",
   	log_bui_1_marketplace: "Finally the market! Now we can buy and sell goods",
   	log_bui_5_marketplace: "The market is getting bigger, we will be able to organize fairs",
   	log_bui_1_magic_circle: "How many amazing things we can do with mana. But beware of its dark side",
+  	log_bui_3_magic_circle: "Now that the magic circle is large enough, we can choose which area to dedicate our studies to. Do you want our scholars to focus on magic, research, or development? Choose carefully because one option excludes the others",
+  	log_bui_6_magic_circle: "We have unlock further developments in our focus!",
+  	log_bui_8_magic_circle: "We can now bless our warrios of light!",
+  	log_bui_9_magic_circle: "We have unlock further developments in our focus!",
+  	log_bui_13_magic_circle: "We have unlock further developments in our focus!",
   	log_bui_1_military_academy: "Some plans to make a defensive super weapon were presented at the military academy",
   	log_bui_1_military_camp: "The Quartermaster will help us with food supply for the army",
   	log_bui_1_ministry_development: "As we continue to build more ministries we will have access to new technologies",
@@ -11614,6 +13200,7 @@ const taVersion = "3.9.1";
   	log_bui_10_mine: "The depths of Theresmore are places to stay away from, continuing to dig could be very dangerous",
   	log_bui_15_mine: "In the mines we found a strange portal full of ancient symbols that resonate with mana. We have to build the pillars of mana to proceed",
   	log_bui_1_monument: "The Monument is the legacy of past lives. Enclosed within it are heirlooms that, when acquired and researched, will greatly aid our settlement",
+  	log_bui_1_oracle_b: "Now we can predict the result of our battle!",
   	log_bui_1_officer_training_ground: "Now we can recruit the General",
   	log_bui_2_quarry: "As we continue digging in the quarry we may find more minerals",
   	log_bui_3_quarry: "Quarrymen have found metal deposits",
@@ -11632,6 +13219,9 @@ const taVersion = "3.9.1";
   	log_bui_1_tower_mana: "Now with the four Power Spell we can build the Mausoleum and offer to the gods what they will ask for in sacrifice. This will lead us to Ascension",
   	log_bui_1_university: "Our professors through magical elements can now synthesize crystals",
   	log_bui_7_university: "A mage from lands afar introduces himself as Zenix. Intrigued by your settlement's history and magical studies, he wishes to learn from your greatest professors",
+  	log_bui_5_underground_tunnel_b: "Now we can research Preparing Tunnel",
+  	log_bui_10_underground_tunnel_b: "Now we can research Tunnel HQ",
+  	log_bui_15_underground_tunnel_b: "Now we can research Stocked Tunnel",
   	log_cap_5000_food: "We must exploit the abundance of our lands",
   	log_dip_attack_is_coming: "Our watchmen have discovered an impending attack! TO THE WALLS!",
   	log_dip_enso_multitude: "Our scouts headed far east and discover a civilized nation called the Enso Multitude",
@@ -11719,8 +13309,69 @@ const taVersion = "3.9.1";
   	log_ene_death_55: "Your scout died of a heart attack caused by a terrifying ghost while investigating strange noises in an abandoned mansion",
   	log_ene_death_56: "Your scout was killed by a tornado while trying to capture a snapshot of the natural wonder",
   	log_ene_death_57: "Your scout was crushed by a giant tree that fell during a storm while taking shelter under it",
+  	log_ene_death_58: "Your scout stumbled upon a cursed artifact and vanished without a trace",
+  	log_ene_death_59: "Your scout fell into a hidden pit trap and perished",
+  	log_ene_death_60: "Your scout was ensnared by enchanted vines and consumed by the forest",
+  	log_ene_death_61: "Your scout was ensorcelled by a siren's song and drowned in a river",
+  	log_ene_death_62: "Your scout was ensnared in a web spun by an arachnid horror and slowly suffocated",
+  	log_ene_death_63: "Your scout was cursed by a vengeful witch and turned to stone",
+  	log_ene_death_64: "Your scout was ambushed by spectral wraiths and lost their soul to the ether",
+  	log_ene_death_65: "Your scout was struck down by a bolt of lightning summoned by an angry storm elemental",
+  	log_ene_death_66: "Your scout was devoured by a pack of ravenous dire wolves",
+  	log_ene_death_67: "Your scout was dragged into the underworld by shadowy wraiths",
+  	log_ene_death_68: "Your scout was lured into a labyrinthine maze and perished in its depths",
+  	log_ene_death_69: "Your scout was cursed by a vengeful spirit and doomed to wander as a restless ghost",
+  	log_ene_death_70: "Your scout was ensnared by a carnivorous plant and slowly digested",
+  	log_ene_death_71: "Your scout was ensnared by a twisted illusion and driven to madness",
+  	log_ene_death_72: "Your scout was ambushed by a swarm of bloodthirsty bats and drained of their life essence",
+  	log_ene_death_73: "Your scout was ensnared in a dream trap and lost their mind to its illusions",
+  	log_ene_death_74: "Your scout was corrupted by dark magic and transformed into a mindless thrall",
+  	log_ene_death_75: "Your scout stumbled into a cursed mirror and was trapped in its reflection",
+  	log_ene_death_76: "Your scout was ensnared by cursed vines and slowly drained of their life force",
+  	log_ene_death_77: "Your scout was ensnared in a web of lies and betrayed by their own illusions",
+  	log_ene_death_78: "Your scout was ensnared by a vortex of chaos and torn asunder",
+  	log_ene_death_79: "Your scout was ensnared by the tendrils of an ancient evil and consumed",
+  	log_ene_death_80: "Your scout was ensnared by a dark enchantment and lost their will to live",
+  	log_ene_death_81: "Your scout was ensnared by the whispers of madness and driven to despair",
+  	log_ene_death_82: "Your scout was ensnared by the grip of death and pulled into the void",
+  	log_ene_death_83: "Your scout was ensnared by the chains of fate and bound to a tragic end",
+  	log_ene_death_84: "Your scout was ensnared by the curse of immortality and doomed to wander forever",
+  	log_ene_death_85: "Your scout was ensnared by the grasp of destiny and swept away into the unknown",
+  	log_ene_death_86: "Your scout was ensnared by the mists of time and lost in the currents of history",
+  	log_ene_death_87: "Your scout was ensnared by the echoes of the past and consumed by regret",
+  	log_ene_death_88: "Your scout was torn apart by a horde of rabid undead rats",
+  	log_ene_death_89: "Your scout was devoured alive by a swarm of flesh-eating scarabs",
+  	log_ene_death_90: "Your scout was impaled on spikes in a trap-filled corridor",
+  	log_ene_death_91: "Your scout was slowly drained of blood by a vampiric specter",
+  	log_ene_death_92: "Your scout was melted into a puddle by acidic ooze",
+  	log_ene_death_93: "Your scout was shredded by razor-sharp thorns in a carnivorous plant",
+  	log_ene_death_94: "Your scout was torn apart by the tentacles of a Kraken",
+  	log_ene_death_95: "Your scout was dismembered by a pack of ferocious hellhounds",
+  	log_ene_death_96: "Your scout was skewered by the stingers of giant scorpions",
+  	log_ene_death_97: "Your scout was consumed by the flames of a dragon's breath",
+  	log_ene_death_98: "Your scout was cursed by a banshee's wail and withered away",
+  	log_ene_death_99: "Your scout was drowned in a pool of acid by an abomination",
+  	log_ene_death_100: "Your scout was petrified by the gaze of a basilisk",
+  	log_ene_death_101: "Your scout was devoured by a pack of starving werewolves",
+  	log_ene_death_102: "Your scout was ensnared in a web of nightmares and driven to madness",
+  	log_ene_death_103: "Your scout tripped over their own feet and fell into a pit of custard",
+  	log_ene_death_104: "Your scout was smothered by a giant hug from an overly affectionate troll",
+  	log_ene_death_105: "Your scout was serenaded to death by a tone-deaf bard",
+  	log_ene_death_106: "Your scout was tickled to death by mischievous fairies",
+  	log_ene_death_107: "Your scout succumbed to a severe case of uncontrollable laughter",
+  	log_ene_death_108: "Your scout was hypnotized by a mesmerizing dance and danced until they dropped",
+  	log_ene_death_109: "Your scout was turned into a chicken by a misfired polymorph spell",
+  	log_ene_death_110: "Your scout was transformed into a frog by a vengeful wizard",
+  	log_ene_death_111: "Your scout was outsmarted by a cunning squirrel",
+  	log_ene_death_112: "Your scout was distracted by shiny objects and wandered off a cliff",
+  	log_ene_death_113: "Your scout was enchanted by the smell of freshly baked cookies and walked into a trap",
+  	log_ene_death_114: "Your scout was mesmerized by their own reflection and forgot to watch for danger",
+  	log_ene_death_115: "Your scout challenged a mimic to a staring contest and lost",
+  	log_ene_death_116: "Your scout was flattened by a falling anvil from a clumsy wizard's tower",
+  	log_ene_death_117: "Your scout was cursed to speak only in rhymes and was promptly ignored",
   	log_ene_demonic_portal: "Our scout discovered a portal surrounded by demons",
   	log_ene_demoness_castle: "Our scout discovered the castle of the demoness",
+  	log_ene_dense_oasis: "Our scout discovered a dense oasis full of nagas",
   	log_ene_desecrated_temple: "Our scout discovered what remains of the Luna Temple, the stench of decomposition reaches hundreds of meters",
   	log_ene_deserters_den: "Our scout discovered a cove of deserter and bandits",
   	log_ene_djinn_palace: "Our scout discovered where the Djinn had gone, created a magnificent glass palace and guarded it with several naga",
@@ -11731,7 +13382,9 @@ const taVersion = "3.9.1";
   	log_ene_ettin_enslaver: "Our scout discovered an Ettin tribe trading in slaves",
   	log_ene_hell_hole: "Our scout discovered an entrance to the underworld, demons patrol the cave and the horrors we will find there will be unimaginable. Warning!",
   	log_ene_loot: "Your scout returned to the settlement and brought back everything he could find",
+  	log_ene_loots: "Your scouts returned to the settlement and brought back everything they could find",
   	log_ene_no_loot: "Your scout explored the territories for days but came back empty handed",
+  	log_ene_no_loots: "Your scouts explored the territories for days but came back empty handed",
   	log_ene_bandit_camp: "Our scout discovered an encampment of bandits. By knocking it out we can eliminate the threat to our farmers and merchants",
   	log_ene_basilisk_cave: "Our scout discovered a cave of basilisks, beware of their petrifying gaze",
   	log_ene_black_mage_tower: "Our scout discovered a black tower inhabited by a large group of goblins together with their master",
@@ -11754,9 +13407,12 @@ const taVersion = "3.9.1";
   	log_ene_hobgoblin_chieftain: "Our scout discovered an Hobgoblin chieftain together with his small army",
   	log_ene_hobgoblin_encampment: "Our scout discovered an encampment full of Hobgoblin grunts",
   	log_ene_hydra_pit: "Our scout discovered the grave of one of the legendary monsters the five-headed Hydra",
+  	log_ene_huge_cave: "Our scout discovered what lies under the Library of SouLs: a huge cavern filled with undead!",
   	log_ene_lich_temple: "Our scout found where the necromancer came from, the temple of a Lich",
+  	log_ene_leprechaun_den: "Our scout found a den of a Leprechaun, it will store gold and luck!",
   	log_ene_kobold_city: "Our scout discovered a city full of Kobolds. Will it be part of a larger nation?",
   	log_ene_kobold_looters: "Our scout discovered a small band of Kobold looters",
+  	log_ene_kobold_stash: "Our scout discovered a kobold stash",
   	log_ene_kobold_underground_tunnels: "Our scout discovered an underground tunnel maze full of Kobolds, let's try to drive them off",
   	log_ene_korrigan_dolmen: "Our scout discovered a circle of dolmen, the korrigans guard it",
   	log_ene_naga_nest: "Our scout discovered a naga nest. In the distance you can hear the cries of animals that are kept as a food supply",
@@ -11780,11 +13436,13 @@ const taVersion = "3.9.1";
   	log_ene_orcish_prison_camp: "Our scout discovered a camp where orcs hold humans captive",
   	log_ene_prisoner_wagon: "Our scout discovered a wagon full of prisoners. Some bandits guard it",
   	log_ene_rat_cellar: "Our scout discovered a cellar infested by ravenous rats",
+  	log_ene_raider_hideout: "Our scout discovered a raider hideout. Open, Sesame!",
   	log_ene_rusted_warehouse: "Our scout discovered an isolated and rusted warehouse",
   	log_ene_skullface_encampment: "Our scout discovered where Skullface is hiding, we just have to eliminate him",
   	log_ene_sleeping_titan: "Our scout discovered the legendary sleeping Titan!",
   	log_ene_snakes_nest: "Our scout discovered a nest full of snakes",
   	log_ene_spider_forest: "Our scout discovered a dense forest full of giant cobwebs",
+  	log_ene_smuggler_warehouse: "Our scout discovered a smuggler warehouse",
   	log_ene_son_atamar: "Our scout found, in an old destroyed farm, where the son of Atamar gather",
   	log_ene_south_sacred_place: "Our scout discovered the south sacred place!",
   	log_ene_strange_village: "Our scout discovered a strange village, he was attacked by the inhabitants who showed a strange aggressiveness, they seemed bewitched",
@@ -11808,21 +13466,51 @@ const taVersion = "3.9.1";
   	log_starving: "Your settlement is starving, produce food!",
   	log_village_empty: "Your village is empty, look for some new technology",
   	log_fai_accept_druid: "The Druid and his beliefs are increasing day by day, we have made him high priest and now he will grant us his blessing",
+  	log_fai_amusement_quarter_f: "Now we can build the Amusement Quarter",
+  	log_fai_archmage_p: "Now we can recruit Archmage",
+  	log_fai_armored_caravan_p: "Now we can recruit Armored Caravan",
   	log_fai_banish_druid: "The city's guards enter the spiritual gardens where the Druid was circling more and more people, without a chance to retaliate, the druid is kicked out of the city with a ban on entering it again. The plants in the garden seemed to wither away at the time when the druid was seized with rage and more than one witness swears that he saw a fire coming from his eyes",
   	log_fai_city_blessing: "We need to increase the production of modern weapons and create extra defenses. This spell will help us",
+  	log_fai_control_fortress: "Now we can build the Soulstealer Citadel",
   	log_fai_demonology: "By studying the newly defeated demons we figured out how to harness their power and how to find the place they come from. We have to send our scouts to reconnoiter",
   	log_fai_demoniac_tome: "Tome contains many dark spells and a pact between a mistress and her servants. Perhaps the people in the village were the servants of some higher demon. There are clues in the tome to look for this entity. Let's send our scouts out to explore!",
   	log_fai_dragon_skull: "With that skull we have the ability to arm our soldiers with weapons and armor of the highest level. Let us hope that the old man's words did not match the truth",
+  	log_fai_eureka_halls_f: "Now we can build the Eureka Halls",
+  	log_fai_fate_shrine_f: "Now we can build the Fate Shrine",
+  	log_fai_life_magic_p: "Now we can cast Life Magic",
   	log_fai_gold_consecration: "Now that divine power is also with us we must increase our gold reserves even more",
+  	log_fai_highlightment_p: "Now we can cast Highlightment",
+  	log_fai_highschool_magic: "Now we can build the Highschool of Magic",
   	log_fai_hope_children: "The children subjected to Gulud's magic are overloaded with magical power; their singing and hope will guide humanity! Now we can cast The Children Hope spell",
+  	log_fai_ivory_tower_f: "Now we can build the Ivory Tower!",
+  	log_fai_lucky_grove_f: "Now we can build the Lucky Grove",
+  	log_fai_lucky_well_f: "Now we can build the Lucky Well",
+  	log_fai_mage_p: " Nowe we can recruit Mage",
+  	log_fai_mage_academy_f: "Now we can build the Mage Academy",
+  	log_fai_magic_workshop_f: "Now we can build Magic Workshop",
+  	log_fai_mana_armor_p: "Now we can cast Magic horse harnesses",
+  	log_fai_mage_fields_f: "Now we can build Mana Fields",
+  	log_fai_mana_flowers_p: "Now we can cast Mana Flowers",
+  	log_fai_mana_forest_p: "Now we can cast Mana Forest",
+  	log_fai_mana_fortress_p: "Now we can recruit Mana Fortress",
+  	log_fai_mana_materials_p: "Now we can cast Mana Materials",
+  	log_fai_mana_spiral_p: "Now we can cast Mana Spiral",
+  	log_fai_magic_stable_f: "Now we can build Mana Stable",
   	log_fai_northern_star_power: "We can use the power of the Northern Star in two ways: to protect our city or channel its energy to produce more. Only one of the two powers is obtainable; choose carefully",
+  	log_fai_philosopher_stone_p: "Now we can cast Philosopher Stone",
   	log_fai_prayer_for_the_ancient_monk: "We can now train warrior monks",
   	log_fai_prayer_goddess_luck: "Luck is an asset that everyone should keep in mind on Theresmore, the more luck, the better",
   	log_fai_prayer_lonely_druid: "The request for a blessing to the Druid has been granted, and a powerful spell can now be cast. The Druid's creed banishes natronite and despises vile money, why is it granted in his blessing instead?",
+  	log_fai_sacred_den_f: "Now we can build Sacred Den",
   	log_fai_sacred_place: "We can now send our scouts to discover the sacred places around Theresmore. Conquering them, we can channel all the mana into a Tower and cast the 4 Spells of Power. This will be our goal for the prestige of Ascension",
+  	log_fai_speel_book_p: "Now we can cast Speel Book Magic",
+  	log_fai_steel_palace_f: "Now we can build the Steel Palace!",
   	log_fai_strange_lamp: "Handling the lamp, it activated and a Djinn came out, thanking us for freeing him: he flew away with a loud laugh. We should send our scouts to look for his home",
+  	log_fai_summon_nikharul: "Now we can summon Nikharul the Soulstealer in the army!",
   	log_fai_the_aid: "To solve the refugees problem we will have to create a new district, it will cost us a lot in terms of resources, but we can then make something out of the work of all these people",
   	log_fai_temple_mirune: "Mirune the woods goddess has granted us a powerful spell. Now we can cast it",
+  	log_fai_tome_wisdom_p: "Now we can cast Tome of Wisdom Magic",
+  	log_fai_underground_tunnel_f: "Now we can build the Underground Tunnel",
   	log_fai_warrior_gods: "We can now train Paladin",
   	log_fai_zenix_aid: "Following the way of Atamar and with the teachings of Zenix we will now be able to train the Strategist. The archmage returns to his lands promising help when times become darker",
   	log_spy_full: "The spy mission has succeeded, the enemy has:",
@@ -11832,6 +13520,7 @@ const taVersion = "3.9.1";
   	log_tec_agricolture: "Being able to feed the population has always been the biggest problem for early human settlements. We can now build Farm",
   	log_tec_aid_request: "It seems that the natives have been attacked by giant two-headed creatures and some of them are prisoners. They require a helping hand to free their comrades. We send our scouts to see what this is all about",
   	log_tec_alchemical_reactions: "With saltpetre and mana, we can transmute matter and increase our productions",
+  	log_tec_alchemist_complex_t: "Now we can build Alchemist complex",
   	log_tec_ancient_balor_t: "Now we can summon the Ancient Balor",
   	log_tec_assembly_line: "Now we can build the Factory",
   	log_tec_astronomy: "By building observatories we will be able to train Skymancers",
@@ -11839,12 +13528,14 @@ const taVersion = "3.9.1";
   	log_tec_ancient_stockpile: "We can explore the ancient vault and guard its secrets",
   	log_tec_architecture: "We can now build the Carpenter workshop and the Mansion",
   	log_tec_artisan_complex: "We can now build the Artisan Complex",
+  	log_tec_avatar_fate: "We can now summon the Avatar of Fate",
   	log_tec_bandit_chief: "Skullface is somewhere in the neighboring provinces, we have to send our scouts and find him",
   	log_tec_banking: "Now we can build the Bank",
   	log_tec_barbarian_tribes: "Our scouts can now push further into the wastelands in search of even larger barbarian villages",
   	log_tec_besieging_engineers: "Now we can build the Siege Workshop",
   	log_tec_biology: "Better than servitude?",
   	log_tec_breeding: "We can now train light cavalry, a good and fast assault unit. Now we can build Stable",
+  	log_tec_boot_camp_t: "We can now build the Boot Camp",
   	log_tec_bronze_working: "We can train spearmen and warriors, our army can both defend and attack effectively. Units enter battle in a set order , in front will be the tanks and general melee units to absorb the blows while the firing units will be behind the lines and the last to die. Now we can build Barracks",
   	log_tec_burned_farms: "Farms were burned and all around the fields horribly mangled bodies were scattered. From the tracks it looks like the work of humanoid beings of great size. We must send our scouts",
   	log_tec_canava_mercenary: "Now we can recruit the Canava Guard, an elite mercenary troop from the nearby village",
@@ -11875,12 +13566,15 @@ const taVersion = "3.9.1";
   	log_tec_elf_warriors: "Now we can train the Elf warrior",
   	log_tec_espionage: "Now we can train spies, to get intel about our enemies",
   	log_tec_establish_boundaries: "As our city has expanded, we have realized that our borders are far from secure. Rumors of an approaching danger to the east are swirling among our scouts. We must be very careful",
+  	log_tec_embassy_nation: "Now we can build the Allied Embassy",
+  	log_tec_dark_crystal: "Behold the ominous dark crystal, pulsating with an aura of malevolence and wickedness. It is said to possess a power so corrupt and unholy that it can fuel the very heart of darkness itself. A tool of unspeakable evil, it can be wielded as a catalyst to summon forth the abominable Nikharul or as a source of inexhaustible energy to power the fortress and all its accursed devices",
   	log_tec_daylong_celebration: "You enter the square and are celebrated as a hero by all the residents, you have saved the settlement from certain death, and everyone will be eternally grateful. Your fame has increased, soon even the most distant peoples will know our deeds!",
   	log_tec_deserter_origin: "These deserters called themselves Sons of Atamar, we need to find out more with our scouts",
   	log_tec_dimensional_device: "Now we can train Jager. Shinzou wo sasageyo!",
   	log_tec_exterminate_competition: "We are one step away from being the richest ever, let's raise our treasure again and no one will be able to hinder us anymore",
   	log_tec_fairs_and_markets: "Now we can build a Great Fair",
   	log_tec_faith_world: "Now we can build the Pilgrim Camp",
+  	log_tec_favor_gods: "Now we can build the Glory of the Gods",
   	log_tec_feudalism: "Feudalism opened the door to a new concept of society, where the estates and fiefdoms of small and large lords prospered undisturbed. Now we can build the Fiefdom",
   	log_tec_financial_markets: "Now we can build the credit union and accumulate even more gold",
   	log_tec_field_artillery: "Now we can train cannons, who knows if they can shoot down giants as well?",
@@ -11912,10 +13606,13 @@ const taVersion = "3.9.1";
   	log_tec_herald_canava: "A laborer from the small border village, Canava, managed to get to the city. He brings with him alarming news of a goblin invasion from the east, the village of Canava has been destroyed. We must build some watchman outpost to survey the surroundings of the settlement",
   	log_tec_honor_humanity: "After the battle for Ogsog our infantry knows that orcs are a colossal enemy but they can never stop us! For victory!",
   	log_tec_holy_fury: "We can now train Battle Angels, to release the holy fury on the battlefield",
+  	log_tec_house_of_workers: "Now we can build the House of Workers",
   	log_tec_housing: "We can now build Common house",
+  	log_tec_huge_cave_t: "The cavern branches off into a maze of tunnels , we must send our explorers!",
+  	log_tec_illgotten_gains: "We can now train Smuggler",
   	log_tec_knighthood: "Knightly orders are the core of human nobility of Theresmore",
   	log_tec_kobold_nation: "Now we have to send our scouts to find the nation of Kobolds, but beware: I do not think they will be very friendly",
-  	log_tec_iron_working: "We can now train heavy warriors",
+  	log_tec_iron_working: "We can now train heavy warriors, our artisan can now make iron weapons",
   	log_tec_land_mine: "Let's undermine the territories around the city, let those damn goblins come back, pieces of wolfrider will fly everywhere",
   	log_tec_order_of_clerics: "With the construction of a few conclaves we will have access to higher spells",
   	log_tec_orcish_threat: "Our most valiant generals will study a battle plan, our scouts will have to find out more about Orcish territory. Expect increasingly powerful attacks; we are up against a formidable enemy",
@@ -11926,7 +13623,7 @@ const taVersion = "3.9.1";
   	log_tec_necromancy: "The necromancer had drawn his power from some dark force, we must follow its trail with the scouts",
   	log_tec_northern_star: "The Northern Star is imprisoned among the eternal ice. A monolith as black as night capable of radiating immense power. Our scholars must understand its workings, and soon we will be able to harness its power",
   	log_tec_new_old_gods: "Now we can build the Old Gods Church",
-  	log_tec_new_world_exploration: "Now we can send our scout to explore new places",
+  	log_tec_new_world_exploration: "Now we can send our scout to explore new places. Our artisan can now make mithril weapons",
   	log_tec_new_world_militia: "Now we can recruit the Colonial Militia",
   	log_tec_magic: "Now we can build the Magic circle",
   	log_tec_magic_arts_teaching: "Now we can build the Magical tower",
@@ -11936,6 +13633,7 @@ const taVersion = "3.9.1";
   	log_tec_mana_reactors: "Now we can build the Mana Reactor",
   	log_tec_mana_utilization: "We finish the third era by building a pit that can hold all the mana our sapients will need to discover fantastic new inventions",
   	log_tec_manufactures: "We can now create the builders' district to increase our wood and stone production",
+  	log_tec_master_history: "Now we can build the Archeological Dig",
   	log_tec_mathematic: "With the discovery of mathematics we begin to get serious about productions",
   	log_tec_mechanization: "With mechanization we can speed up all areas of our production. Now we can build the Industrial plant",
   	log_tec_mercenary_bands: "We can now recruit mercenary veterans",
@@ -11956,11 +13654,13 @@ const taVersion = "3.9.1";
   	log_tec_municipal_administration: "Now we can build the City Hall",
   	log_tec_natrocity: "Now we can build the City of Lights",
   	log_tec_natronite_storage: "Handle natronite with care. Now we can build Natronite depot",
+  	log_tec_oracle_t: "Now we can build the Oracle",
   	log_tec_overseas_refinery: "Now we can build the Refinery",
   	log_tec_outpost_tiny_island: "Now we can build the Island Outpost",
   	log_tec_path_children: "It seems that orcs kidnap children to turn them into their flame casters as adults. We must find Gulud Castle and put an end to this abomination",
   	log_tec_persuade_nobility: "We can now train cataphract",
   	log_tec_persuade_people: "We must find the Eternal Halls and defeat their guardians. Let us unleash our explorers.",
+  	log_tec_phalanx_combat: "We can now recruit Phalanx",
   	log_tec_plate_armor: "We can now recruit man at arms",
   	log_tec_plenty_valley: "Now we can build the Valley of plenty",
   	log_tec_pottery: "By working on the first pieces of craftsmanship, we can create tools. We can build the Artisan workshop",
@@ -11973,7 +13673,7 @@ const taVersion = "3.9.1";
   	log_tec_regional_markets: "From Canava and other nearby villages we can make several profits",
   	log_tec_religion: "By building a temple we will have access to prayers and spells",
   	log_tec_religious_orders: "Now we can build a Cathedral",
-  	log_tec_research_district: "Now we can build the Research plant",
+  	log_tec_research_district: "Now we can build the Research plant, our artisan can now make adamantium weapons",
   	log_tec_replicable_parts: "Now we can build the Automated Complex",
   	log_tec_remember_the_ancients: "We can now build a Library to hold the knowledge of past generations",
   	log_tec_safe_roads: "We can now build the tax revenue checkpoints",
@@ -11982,7 +13682,7 @@ const taVersion = "3.9.1";
   	log_tec_shores_theresmore: "We have identified a place far from the borders of other kingdoms where we can build a harbor, now we can research the Harbor Project",
   	log_tec_siege_techniques: "We can now train trebuchet",
   	log_tec_steel_flesh: "We can now train the Behemoth",
-  	log_tec_steeling: "A new resource made of other metals can now be produced and we can build the Steelworks",
+  	log_tec_steeling: "A new resource made of other metals can now be produced and we can build the Steelworks, our artisan can now make steel weapons",
   	log_tec_storage: "Now we can build the Store",
   	log_tec_storage_district: "Enough of these caps! Now we can build the Storage facility and the Large warehouse",
   	log_tec_storing_valuable_materials: "We can now build the Guarded warehouse",
@@ -11997,6 +13697,7 @@ const taVersion = "3.9.1";
   	log_tec_tome_ancient_lore: "The tome chronicles the cyclical history of humanity. Through its pages, we uncovered new techniques for production, research, and other untold secrets. The ancient text held within it a wealth of knowledge, illuminating paths forward and unlocking mysteries of the past",
   	log_tec_trail_blood: "We have a trail of blood. We still have to send our scouts to find the vampire",
   	log_tec_trail_power: "We have to win the approval of the kingdom, we can either persuade the nobility or win the hearts of the people. We choose carefully because one option EXCLUDES the other",
+  	log_tec_trained_longbowman: "We can now train Longbowman",
   	log_tec_training_militia: "We can now build the Castrum Militia",
   	log_tec_trenches: "Now we can build Trench and train Marksman",
   	log_tec_veteran_artillerymen: "We can now build the Artillery Firing Range",
@@ -12006,45 +13707,205 @@ const taVersion = "3.9.1";
   	log_tec_wood_cutting: "We can now build Lumberjack camp",
   	log_tec_wood_saw: "We can now build the Sawmill",
   	log_tec_writing: "We can now build the School",
+  	log_tec_underground_library: "Descending into the depths of the library, one encounters countless undead creatures lurking in the shadows. They seem bored but their gaze never leaves the intruder. As we proceed, the creatures become more numerous and aggressive. The air is thick with decay and we hear skittering sounds in the darkness. It's clear that the library was just the beginning of the challenges that lie ahead. Let's send our scout to explore",
   	log_tec_underground_kobold_mission: "Now our scouts can find out what lies behind the kobold tunnels",
+  	log_tec_zenix_familiar_t: "We can now train Zenix Familiar",
   	not_academy_of_freethinkers: "Freethinkers united",
   	not_academy_of_freethinkers_title: "Academy of Freethinkers",
   	not_arch_triumph: "Per omnia asperrima",
   	not_arch_triumph_title: "Arch of Triumph",
   	not_army_of_goblin: "Crushing goblins",
   	not_army_of_goblin_title: "Survive the moonlight night",
+  	not_army_of_goblin_dif_99: "Crushing goblins on Easy!",
+  	not_army_of_goblin_dif_99_title: "Survive the easy moonlight night",
   	not_army_of_goblin_dif_1: "Crushing goblins on Hard!",
   	not_army_of_goblin_dif_1_title: "Survive the hard moonlight night",
   	not_army_of_goblin_dif_2: "Crushing goblins on Impossible!",
   	not_army_of_goblin_dif_2_title: "Survive the impossible moonlight night",
+  	not_army_of_goblin_dif_3: "Crushing goblins on Deity!",
+  	not_army_of_goblin_dif_3_title: "Survive the deity moonlight night",
   	not_army_of_dragon: "Chasing away the dragon",
   	not_army_of_dragon_title: "Survive the dragon assault",
+  	not_army_of_dragon_dif_99: "Chasing away the dragon on Easy!",
+  	not_army_of_dragon_dif_99_title: "Survive the easy dragon assault",
   	not_army_of_dragon_dif_1: "Chasing away the dragon on Hard!",
   	not_army_of_dragon_dif_1_title: "Survive the hard dragon assault",
   	not_army_of_dragon_dif_2: "Chasing away the dragon on Impossible!",
   	not_army_of_dragon_dif_2_title: "Survive the impossible dragon assault",
+  	not_army_of_dragon_dif_3: "Chasing away the dragon on Deity!",
+  	not_army_of_dragon_dif_3_title: "Survive the deity dragon assault",
   	not_automated_complex: "Bip Bip Bip",
   	not_automated_complex_title: "Automated Complex",
+  	not_bugbear_war_party_dif_1: "Defeat the Bugbear War Party",
+  	not_bugbear_war_party_dif_1_title: "Defeat the Bugbear War Party on Hard",
+  	not_bugbear_war_party_dif_2: "Destroy the Bugbear War Party",
+  	not_bugbear_war_party_dif_2_title: "Defeat the Bugbear War Party on Impossible",
+  	not_bugbear_war_party_dif_3: "Eradicate the Bugbear War Party",
+  	not_bugbear_war_party_dif_3_title: "Defeat the Bugbear War Party on DEITY!",
+  	not_citadel_dead_dif_1: "Conquer the Citadel of the Dead",
+  	not_citadel_dead_dif_1_title: "Conquer the Citadel of the Dead on Hard",
+  	not_citadel_dead_dif_2: "Destroy the Citadel of the Dead",
+  	not_citadel_dead_dif_2_title: "Conquer the Citadel of the Dead on Impossible",
+  	not_citadel_dead_dif_3: "Purge the Citadel of the Dead",
+  	not_citadel_dead_dif_3_title: "Conquer the Citadel of the Dead on DEITY!",
   	not_city_lights: "A City of Lights",
   	not_city_lights_title: "City of Lights",
+  	not_demoness_castle_dif_1: "Conquer the Demoness Castle",
+  	not_demoness_castle_dif_1_title: "Conquer the Demoness Castle on Hard",
+  	not_demoness_castle_dif_2: "Demolish the Demoness Castle",
+  	not_demoness_castle_dif_2_title: "Demolish the Demoness Castle on Impossible",
+  	not_demoness_castle_dif_3: "Annihilate the Demoness Castle",
+  	not_demoness_castle_dif_3_title: "Annihilate the Demoness Castle on DEITY!",
   	not_fallen_angel_army_1: "Trusting the Druid",
   	not_fallen_angel_army_1_title: "Survive the Druid's betrayal",
+  	not_fallen_angel_army_1_dif_99: "Trusting the Druid on Easy!",
+  	not_fallen_angel_army_1_dif_99_title: "Survive the easy Druid's betrayal",
   	not_fallen_angel_army_1_dif_1: "Trusting the Druid on Hard!",
   	not_fallen_angel_army_1_dif_1_title: "Survive the hard Druid's betrayal",
   	not_fallen_angel_army_1_dif_2: "Trusting the Druid on Impossible!",
   	not_fallen_angel_army_1_dif_2_title: "Survive the impossible Druid's betrayal",
+  	not_fallen_angel_army_1_dif_3: "Trusting the Druid on Deity!",
+  	not_fallen_angel_army_1_dif_3_title: "Survive the deity Druid's betrayal",
   	not_fallen_angel_army_2: "Friend of no one",
   	not_fallen_angel_army_2_title: "Survive the Fallen Angel attack",
+  	not_fallen_angel_army_2_dif_99: "Friend of no one on Easy!",
+  	not_fallen_angel_army_2_dif_99_title: "Survive the easy Fallen Angel attack",
   	not_fallen_angel_army_2_dif_1: "Friend of no one on Hard!",
   	not_fallen_angel_army_2_dif_1_title: "Survive the hard Fallen Angel attack",
   	not_fallen_angel_army_2_dif_2: "Friend of no one on Impossible!",
   	not_fallen_angel_army_2_dif_2_title: "Survive the impossible Fallen Angel attack",
+  	not_fallen_angel_army_2_dif_3: "Friend of no one on Deity!",
+  	not_fallen_angel_army_2_dif_3_title: "Survive the deity Fallen Angel attack",
+  	not_gloomy_werewolf_forest_dif_1: "Slain Werewolf",
+  	not_gloomy_werewolf_forest_dif_1_title: "Conquer the Werewolf Forest on Hard",
+  	not_gloomy_werewolf_forest_dif_2: "Silverbullet",
+  	not_gloomy_werewolf_forest_dif_2_title: "Conquer the Werewolf Forest on Impossible",
+  	not_gloomy_werewolf_forest_dif_3: "Rain of silverbullets",
+  	not_gloomy_werewolf_forest_dif_3_title: "Conquer the Werewolf Forest on DEITY!",
+  	not_gold_mine_dif_1: "Secure the Gold Mine",
+  	not_gold_mine_dif_1_title: "Conquer the Gold Mine on Hard",
+  	not_gold_mine_dif_2: "Exploit the Gold Mine",
+  	not_gold_mine_dif_2_title: "Conquer the Gold Mine on Impossible",
+  	not_gold_mine_dif_3: "Master the Gold Mine",
+  	not_gold_mine_dif_3_title: "Conquer the Gold Mine on DEITY!",
+  	not_gnoll_camp_dif_1: "Clear the Gnoll Camp",
+  	not_gnoll_camp_dif_1_title: "Conquer the Gnoll Camp on Hard",
+  	not_gnoll_camp_dif_2: "Raid the Gnoll Camp",
+  	not_gnoll_camp_dif_2_title: "Conquer the Gnoll Camp on Impossible",
+  	not_gnoll_camp_dif_3: "Annihilate the Gnoll Camp",
+  	not_gnoll_camp_dif_3_title: "Conquer the Gnoll Camp on DEITY!",
+  	not_gulud_ugdun_dif_1: "Clear Gulud Ugdun",
+  	not_gulud_ugdun_dif_1_title: "Conquer Gulud Ugdun on Hard",
+  	not_gulud_ugdun_dif_2: "Conquer Gulud Ugdun",
+  	not_gulud_ugdun_dif_2_title: "Conquer Gulud Ugdun on Impossible",
+  	not_gulud_ugdun_dif_3: "Master Gulud Ugdun",
+  	not_gulud_ugdun_dif_3_title: "Conquer Gulud Ugdun on DEITY!",
+  	not_hell_hole_dif_1: "Exorcise demons",
+  	not_hell_hole_dif_1_title: "Clean up the hell hole on Hard",
+  	not_hell_hole_dif_2: "Destroying demons",
+  	not_hell_hole_dif_2_title: "Clean up the hell hole on Impossible",
+  	not_hell_hole_dif_3: "Exterminate demons",
+  	not_hell_hole_dif_3_title: "Clean up the hell hole on DEITY!",
+  	not_mountain_valley_dif_1: "Conquer the Mountain Valley",
+  	not_mountain_valley_dif_1_title: "Conquer the Mountain Valley on Hard",
+  	not_mountain_valley_dif_2: "Conquer the Mountain Valley",
+  	not_mountain_valley_dif_2_title: "Conquer the Mountain Valley on Impossible",
+  	not_mountain_valley_dif_3: "Master the Mountain Valley",
+  	not_mountain_valley_dif_3_title: "Conquer the Mountain Valley on DEITY!",
+  	not_sleeping_titan_dif_1: "Awaken the Sleeping Titan",
+  	not_sleeping_titan_dif_1_title: "Awaken the Sleeping Titan on Hard",
+  	not_sleeping_titan_dif_2: "Awaken the Sleeping Titan",
+  	not_sleeping_titan_dif_2_title: "Awaken the Sleeping Titan on Impossible",
+  	not_sleeping_titan_dif_3: "Awaken the Sleeping Titan",
+  	not_sleeping_titan_dif_3_title: "Awaken the Sleeping Titan on DEITY!",
+  	not_son_atamar_dif_1: "Discover the Son of Atamar",
+  	not_son_atamar_dif_1_title: "Discover Son Atamar on Hard",
+  	not_son_atamar_dif_2: "Unravel the Mysteries of Son Atamar",
+  	not_son_atamar_dif_2_title: "Unravel the Mysteries of Son Atamar on Impossible",
+  	not_son_atamar_dif_3: "Master the Son of Atamar",
+  	not_son_atamar_dif_3_title: "Master the Son of Atamar on DEITY!",
+  	not_succubus_library_dif_1: "Explore the Succubus Library",
+  	not_succubus_library_dif_1_title: "Explore the Succubus Library on Hard",
+  	not_succubus_library_dif_2: "Study the Succubus Library",
+  	not_succubus_library_dif_2_title: "Conquer the Succubus Library on Impossible",
+  	not_succubus_library_dif_3: "Conquer the Secrets of the Succubus Library",
+  	not_succubus_library_dif_3_title: "Conquer the Succubus Library on DEITY!",
+  	not_swarm_wasp_dif_1: "Defeat the Swarm of Wasp",
+  	not_swarm_wasp_dif_1_title: "Defeat the Swarm of Wasp on Hard",
+  	not_swarm_wasp_dif_2: "Exterminate the Swarm of Wasp Infestation",
+  	not_swarm_wasp_dif_2_title: "Exterminate the Swarm of Wasp on Impossible",
+  	not_swarm_wasp_dif_3: "Annihilate the Swarm of Wasp",
+  	not_swarm_wasp_dif_3_title: "Annihilate the Swarm of Wasp on DEITY!",
+  	not_huge_cave_dif_1: "Explore the Huge Cave",
+  	not_huge_cave_dif_1_title: "Explore the Huge Cave on Hard",
+  	not_huge_cave_dif_2: "Navigate the Treacherous Paths of the Huge Cave",
+  	not_huge_cave_dif_2_title: "Conquer the Huge Cave on Impossible",
+  	not_huge_cave_dif_3: "Conquer the Depths of the Huge Cave",
+  	not_huge_cave_dif_3_title: "Conquer the Depths of the Huge Cave on DEITY!",
+  	not_vampire_lair_dif_1: "Slay the Vampires",
+  	not_vampire_lair_dif_1_title: "Slay the Vampires on Hard",
+  	not_vampire_lair_dif_2: "Destroy the Vampire Lair",
+  	not_vampire_lair_dif_2_title: "Destroy the Vampire Lair on Impossible",
+  	not_vampire_lair_dif_3: "Eradicate the Vampiric Menace",
+  	not_vampire_lair_dif_3_title: "Eradicate the Vampiric Menace on DEITY!",
+  	not_forgotten_shelter_dif_1: "Uncover the Secrets of the Forgotten Shelter",
+  	not_forgotten_shelter_dif_1_title: "Uncover the Forgotten Shelter on Hard",
+  	not_forgotten_shelter_dif_2: "Survive the Dangers of the Forgotten Shelter",
+  	not_forgotten_shelter_dif_2_title: "Survive the Forgotten Shelter on Impossible",
+  	not_forgotten_shelter_dif_3: "Discover the Truth Behind the Forgotten Shelter",
+  	not_forgotten_shelter_dif_3_title: "Discover the Forgotten Shelter on DEITY!",
+  	not_ancient_giant_dif_1: "Defeat the Ancient Giant",
+  	not_ancient_giant_dif_1_title: "Defeat the Ancient Giant on Hard",
+  	not_ancient_giant_dif_2: "Subdue the Ancient Giant",
+  	not_ancient_giant_dif_2_title: "Subdue the Ancient Giant on Impossible",
+  	not_ancient_giant_dif_3: "Overcome the Ancient Giant",
+  	not_ancient_giant_dif_3_title: "Overcome the Ancient Giant on DEITY!",
+  	not_skullface_encampment_dif_1: "Infiltrate Skullface Encampment",
+  	not_skullface_encampment_dif_1_title: "Infiltrate Skullface Encampment on Hard",
+  	not_skullface_encampment_dif_2: "Raze Skullface Encampment",
+  	not_skullface_encampment_dif_2_title: "Raze Skullface Encampment on Impossible",
+  	not_skullface_encampment_dif_3: "Conquer Skullface Encampment",
+  	not_skullface_encampment_dif_3_title: "Conquer Skullface Encampment on DEITY!",
+  	not_minotaur_maze_dif_1: "Navigate the Minotaur Maze",
+  	not_minotaur_maze_dif_1_title: "Navigate the Minotaur Maze on Hard",
+  	not_minotaur_maze_dif_2: "Conquer the Minotaur Maze",
+  	not_minotaur_maze_dif_2_title: "Conquer the Minotaur Maze on Impossible",
+  	not_minotaur_maze_dif_3: "Master the Minotaur Maze",
+  	not_minotaur_maze_dif_3_title: "Master the Minotaur Maze on DEITY!",
+  	not_markanat_forest_dif_1: "Explore the Markanat Forest",
+  	not_markanat_forest_dif_1_title: "Explore the Markanat Forest on Hard",
+  	not_markanat_forest_dif_2: "Survive the Perils of the Markanat Forest",
+  	not_markanat_forest_dif_2_title: "Survive the Markanat Forest on Impossible",
+  	not_markanat_forest_dif_3: "Conquer the Dark Heart of the Markanat Forest",
+  	not_markanat_forest_dif_3_title: "Conquer the Markanat Forest on DEITY!",
+  	not_hydra_pit_dif_1: "Conquer the Hydra Pit",
+  	not_hydra_pit_dif_1_title: "Conquer the Hydra Pit on Hard",
+  	not_hydra_pit_dif_2: "Defeat the Ancient Hydra",
+  	not_hydra_pit_dif_2_title: "Defeat the Ancient Hydra on Impossible",
+  	not_hydra_pit_dif_3: "Slay the Legendary Hydra",
+  	not_hydra_pit_dif_3_title: "Slay the Legendary Hydra on DEITY!",
+  	not_hobgoblin_chieftain_dif_1: "Challenge the Hobgoblin Chieftain",
+  	not_hobgoblin_chieftain_dif_1_title: "Challenge the Hobgoblin Chieftain on Hard",
+  	not_hobgoblin_chieftain_dif_2: "Defeat the Hobgoblin Chieftain",
+  	not_hobgoblin_chieftain_dif_2_title: "Defeat the Hobgoblin Chieftain on Impossible",
+  	not_hobgoblin_chieftain_dif_3: "Overthrow the Hobgoblin Chieftain",
+  	not_hobgoblin_chieftain_dif_3_title: "Overthrow the Hobgoblin Chieftain on DEITY!",
+  	not_gorgon_cave_dif_1: "Explore the Gorgon Cave",
+  	not_gorgon_cave_dif_1_title: "Explore the Gorgon Cave on Hard",
+  	not_gorgon_cave_dif_2: "Survive the Gorgon Cave",
+  	not_gorgon_cave_dif_2_title: "Survive the Gorgon Cave on Impossible",
+  	not_gorgon_cave_dif_3: "Conquer the Gorgon Cave",
+  	not_gorgon_cave_dif_3_title: "Conquer the Gorgon Cave on DEITY!",
   	not_orc_horde_boss: "Human Last Stand",
   	not_orc_horde_boss_title: "Survive the Orc Horde",
+  	not_orc_horde_boss_dif_99: "Human Last Stand on Easy!",
+  	not_orc_horde_boss_dif_99_title: "Survive the easy Orc Horde",
   	not_orc_horde_boss_dif_1: "Human Last Stand on Hard!",
   	not_orc_horde_boss_dif_1_title: "Survive the hard Orc Horde",
   	not_orc_horde_boss_dif_2: "Human Last Stand on Impossible!",
   	not_orc_horde_boss_dif_2_title: "Survive the impossible Orc Horde",
+  	not_orc_horde_boss_dif_3: "Human Last Stand on Deity!",
+  	not_orc_horde_boss_dif_3_title: "Survive the deity Orc Horde",
   	not_harbor_district: "Seafaring",
   	not_harbor_district_title: "Harbor District",
   	not_holy_site: "Bastion of Faith!",
@@ -12063,6 +13924,12 @@ const taVersion = "3.9.1";
   	not_5_alchemic_laboratory_title: "5 Alchemic Laboratory",
   	not_15_alchemic_laboratory: "Midas Hand",
   	not_15_alchemic_laboratory_title: "15 Alchemic Laboratory",
+  	not_5_alchemist_complex: "Alchemy of the new world",
+  	not_5_alchemist_complex_title: "5 Alchemist Complex",
+  	not_15_alchemist_complex: "Producing Saltpetre",
+  	not_15_alchemist_complex_title: "15 Alchemist Complex",
+  	not_25_alchemist_complex: "Powderpuff",
+  	not_25_alchemist_complex_title: "25 Alchemist Complex",
   	not_5_altar_of_sacrifices: "Holy slaughter",
   	not_5_altar_of_sacrifices_title: "5 Altar of Sacrifices",
   	not_15_altar_of_sacrifices: "Aztec purification",
@@ -12293,6 +14160,18 @@ const taVersion = "3.9.1";
   	not_15_ministry_development_title: "15 Ministry of Development",
   	not_new_version: "A new version of Theresmore is available, close the notification to apply the update",
   	not_new_version_title: "New version",
+  	not_1_ng_reset: "Reaching a milestone+",
+  	not_1_ng_reset_title: "1 NG+",
+  	not_5_ng_reset: "Reaching 5 milestones+",
+  	not_5_ng_reset_title: "5 NG+",
+  	not_10_ng_reset: "Reaching 10 milestones+",
+  	not_10_ng_reset_title: "10 NG+",
+  	not_20_ng_reset: "Reaching 20 milestones+",
+  	not_20_ng_reset_title: "20 NG+",
+  	not_40_ng_reset: "Reaching 40 milestones+",
+  	not_40_ng_reset_title: "40 NG+",
+  	not_80_ng_reset: "Reaching 80 milestones+",
+  	not_80_ng_reset_title: "80 NG+",
   	not_5_observatory: "Skymancering",
   	not_5_observatory_title: "5 Observatory",
   	not_15_observatory: "New high of research",
@@ -12327,7 +14206,7 @@ const taVersion = "3.9.1";
   	not_refugee_district_title: "Refugee District",
   	not_remember_save: "Just a reminder that you may want to backup your save every once in a while, just in case",
   	not_remember_save_title: "Backup your save",
-  	not_5_school: "The beginning of scientific thought",
+  	not_5_school: "The beginning of science",
   	not_5_school_title: "5 School",
   	not_15_school: "Learning Theresmore",
   	not_15_school_title: "15 School",
@@ -12397,7 +14276,7 @@ const taVersion = "3.9.1";
   	not_25_trench_title: "25 Trench",
   	not_5_university: "The study of Theresmore",
   	not_5_university_title: "5 University",
-  	not_15_university: "Graduate at the university of Theresmore",
+  	not_15_university: "Graduate at Theresmore",
   	not_15_university_title: "15 University",
   	not_5_valley_of_plenty: "Toss a Coin",
   	not_5_valley_of_plenty_title: "5 Valley of Plenty",
@@ -12438,7 +14317,7 @@ const taVersion = "3.9.1";
   	res_horse: "Horse",
   	res_iron: "Iron",
   	res_legacy: "Legacy",
-  	res_luck: "Luck",
+  	res_luck: "Lucky Stone",
   	res_mana: "Mana",
   	res_natronite: "Natronite",
   	res_population: "Population",
@@ -12471,6 +14350,12 @@ const taVersion = "3.9.1";
   	stat_faith_title: "Faith spent",
   	stat_mana: "Mana",
   	stat_mana_title: "Mana earned",
+  	stat_ng_bonus: "Bonus from NG+",
+  	stat_ng_bonus_title: "Bonus earned from NG+ resets",
+  	stat_ng_reset: "NG+ reset",
+  	stat_ng_reset_title: "Number of NG+ reset",
+  	stat_oracle: "Oracle",
+  	stat_oracle_title: "Number of Oracle predictions",
   	stat_scout: "Scout",
   	stat_scout_title: "Scout missions started",
   	stat_spy: "Spy",
@@ -12483,6 +14368,14 @@ const taVersion = "3.9.1";
   	stat_dead_title: "Fallen soldiers",
   	stat_reset: "Resets",
   	stat_reset_title: "Resets obtained",
+  	tec_adamantium_projectiles: "Adamantium projectiles",
+  	tec_adamantium_projectiles_description: "Adamantium ammo",
+  	tec_adamantium_shield: "Adamantium shield",
+  	tec_adamantium_shield_description: "Adamantium shield to protect the army",
+  	tec_adamantium_sword: "Adamantium sword",
+  	tec_adamantium_sword_description: "Adamantium sword for our army",
+  	tec_adamantium_lance: "Adamantium lance",
+  	tec_adamantium_lance_description: "Adamantium lance for our cavarly",
   	tec_agricolture: "Agriculture",
   	tec_agricolture_description: "The hard work of cultivating the land always gives its fruits",
   	tec_agreement_passage_wanders: "Agreement with Wanders",
@@ -12491,8 +14384,12 @@ const taVersion = "3.9.1";
   	tec_aid_request_description: "The strange creatures were observing our colony in order to open a communication with us. They seem to have some kind of request. Our scholars must also interpret their language with the help of magic",
   	tec_alchemical_reactions: "Alchemical reactions",
   	tec_alchemical_reactions_description: "Through alchemy we will be able to further increase our productions",
+  	tec_alchemist_complex_t: "Alchemist complex",
+  	tec_alchemist_complex_t_description: "The production of a regular army needs a lot of saltpetre",
   	tec_ancient_balor_t: "Ancient Balor",
   	tec_ancient_balor_t_description: "Summon the Ancient Balor demon",
+  	tec_ancient_spell: "Ancient Spell",
+  	tec_ancient_spell_description: "A spell from the past",
   	tec_archery: "Archery",
   	tec_archery_description: "The bow will allow us to strike from a safe distance",
   	tec_architecture: "Architecture",
@@ -12511,6 +14408,8 @@ const taVersion = "3.9.1";
   	tec_ancient_stockpile_description: "Past generations have left us ancient warehouses",
   	tec_atomic_theory: "Atomic Theory",
   	tec_atomic_theory_description: "Elves have a deep knowledge of the stuff that things are made of",
+  	tec_avatar_fate: "The Avatar of Fate",
+  	tec_avatar_fate_description: "Summon the Avatar of Fate",
   	tec_bandit_chief: "Bandit chief",
   	tec_bandit_chief_description: "One bandit questioned for information told us about a leader calling himself Skullface from whom they all took orders",
   	tec_banking: "Banking",
@@ -12523,10 +14422,20 @@ const taVersion = "3.9.1";
   	tec_besieging_engineers_description: "With the advent of siege techniques, we can increase the strength of our artillery",
   	tec_biology: "Biology",
   	tec_biology_description: "Theresmore's nature study applied to the lives of citizens",
+  	tec_boot_camp_t: "Boot camp",
+  	tec_boot_camp_t_description: "A place where we can train our soldiers",
   	tec_breeding: "Breeding",
   	tec_breeding_description: "We will have to breed the best horses in Theresmore",
   	tec_bronze_working: "Bronze working",
   	tec_bronze_working_description: "The Bronze Age, one of my favorite eras!",
+  	tec_bronze_projectiles: "Bronze projectiles",
+  	tec_bronze_projectiles_description: "Bronze arrowheads",
+  	tec_bronze_shield: "Bronze shield",
+  	tec_bronze_shield_description: "Shield in bronze to protect the army",
+  	tec_bronze_sword: "Bronze sword",
+  	tec_bronze_sword_description: "Bronze sword for our warriors",
+  	tec_bronze_lance: "Bronze lance",
+  	tec_bronze_lance_description: "Bronze lance for our cavarly",
   	tec_burned_farms: "Burned farms",
   	tec_burned_farms_description: "We need to investigate what happened to the isolated farms, the disappearance of all the children is very disturbing",
   	tec_canava_mercenary: "Canava Guard",
@@ -12569,12 +14478,16 @@ const taVersion = "3.9.1";
   	tec_cuirassiers_description: "With firearms we can create very heavy mounted regiments",
   	tec_currency: "Currency",
   	tec_currency_description: "Everything has its price",
+  	tec_dark_crystal: "The Dark Crystal",
+  	tec_dark_crystal_description: "Nikharul source of power lies on the battlefield",
   	tec_daylong_celebration: "A daylong celebration",
   	tec_daylong_celebration_description: "After the victory over the goblins, the people gathered in the square to celebrate",
   	tec_deserter_origin: "Origin of deserter",
   	tec_deserter_origin_description: "We need to find out more about where these defectors came from",
   	tec_dimensional_device: "Dimensional device",
   	tec_dimensional_device_description: "A new way of fighting by exploiting natronite to give soldiers three dimensional movement capabilities for short periods",
+  	tec_dirty_money: "Dirty Money",
+  	tec_dirty_money_description: "From the Lucky Well gold for mercenaries",
   	tec_dragon_assault: "Dragon assault",
   	tec_dragon_assault_description: "One late summer afternoon, the sentries on the western walls discerned a dark spot on the horizon. Over the next few hours the spot became a cloud and then a storm that loomed over the city. A tempest as red as fire, the beast of fire was here to claim its artifact",
   	tec_drilling_operation: "Drilling operation",
@@ -12595,6 +14508,8 @@ const taVersion = "3.9.1";
   	tec_end_era_4_1_description: "Now that our city is safe we must build the Harbor District and start a new adventure",
   	tec_end_era_4_2: "Dreaming big",
   	tec_end_era_4_2_description: "Now that our city is safe we must build the Harbor District and start a new adventure",
+  	tec_embassy_nation: "Embassy for the nations",
+  	tec_embassy_nation_description: "Now that we are allied with powerful nations we will have to build an embassy",
   	tec_elf_last_village: "Elf last village",
   	tec_elf_last_village_description: "The elves, grateful for returning the precious temple to them, take us to their last village",
   	tec_elf_survivors: "Elf survivors",
@@ -12605,6 +14520,8 @@ const taVersion = "3.9.1";
   	tec_espionage_description: "Some of our scouts might specialize in the art of espionage",
   	tec_establish_boundaries: "Establish boundaries",
   	tec_establish_boundaries_description: "We need to create defined boundaries for our realm",
+  	tec_eureka: "Eureka!",
+  	tec_eureka_description: "Looks like some kind of refund!",
   	tec_exhibit_flame: "Exhibit the Flame",
   	tec_exhibit_flame_description: "We can exhibit the Flame of Atamar in the city center to enrich it enormously",
   	tec_exterminate_competition: "Erase competitors",
@@ -12615,6 +14532,10 @@ const taVersion = "3.9.1";
   	tec_faith_world_description: "We bring the faith of ancient gods to the new world",
   	tec_fallen_angel: "The Fallen Angel reveal",
   	tec_fallen_angel_description: "An army of demons is marching against the city, they are led by a knight with black wings! Let us prepare for battle!",
+  	tec_fate_blessing: "Fate Blessing",
+  	tec_fate_blessing_description: "Fate's blessing on our clerics",
+  	tec_favor_gods: "Favor of the Gods",
+  	tec_favor_gods_description: "The Gods admire your courage and grant you fame and glory",
   	tec_fertilizer: "Fertilizer",
   	tec_fertilizer_description: "New chemical components will increase our food production",
   	tec_feudalism: "Feudalism",
@@ -12623,6 +14544,8 @@ const taVersion = "3.9.1";
   	tec_field_artillery_description: "The evolution of the bombard are field cannons",
   	tec_financial_markets: "Financial markets",
   	tec_financial_markets_description: "New ideas on how to accumulate money",
+  	tec_fine_lucky_wood: "Fine lucky wood",
+  	tec_fine_lucky_wood_description: "We find a good type of wood in the Lucky Grove",
   	tec_fine_woods: "Fine woods",
   	tec_fine_woods_description: "Our carvers are specializing more and more",
   	tec_fine_marbles: "Fine marbles",
@@ -12645,6 +14568,8 @@ const taVersion = "3.9.1";
   	tec_fortified_colony_description: "We turn the colony into a fortress",
   	tec_fortune_sanctuary: "Fortune sanctuary",
   	tec_fortune_sanctuary_description: "We must build a place where the goddess of luck can infuse her power",
+  	tec_fountain_gold: "Fountain of Gold",
+  	tec_fountain_gold_description: "A fountain of gold from the Lucky Well",
   	tec_free_old_outpost: "Free an old outpost",
   	tec_free_old_outpost_description: "Cpt Galliard knows the location of an old outpost to be cleared",
   	tec_galliard_mercenary: "Captain Galliard services",
@@ -12691,8 +14616,12 @@ const taVersion = "3.9.1";
   	tec_herald_canava_description: "The messenger from the Kingdom of Canava comes galloping into the city. This research will allow us to build watchman outposts, crucial to the advance into the new era",
   	tec_honor_humanity: "The honor of Humanity",
   	tec_honor_humanity_description: "Honor will guide us to victory! For humanity!",
+  	tec_house_of_workers: "House of Workers",
+  	tec_house_of_workers_description: "A living place for our workers",
   	tec_housing: "Housing",
   	tec_housing_description: "It's time to construct some dwellings",
+  	tec_huge_cave_t: "Huge cavern",
+  	tec_huge_cave_t_description: "We have to explore the cavern beneath the Library",
   	tec_knighthood: "Knighthood",
   	tec_knighthood_description: "The code of chivalry is the creed of the nobles of Theresmore",
   	tec_kobold_nation: "Kobold nation",
@@ -12705,6 +14634,14 @@ const taVersion = "3.9.1";
   	tec_infuse_flame_description: "Infuse the flame to aid our army",
   	tec_iron_working: "Iron working",
   	tec_iron_working_description: "Iron is a much stronger material than bronze, its uses will be multiple",
+  	tec_iron_projectiles: "Iron projectiles",
+  	tec_iron_projectiles_description: "Iron arrowheads and quarrels",
+  	tec_iron_shield: "Iron shield",
+  	tec_iron_shield_description: "Iron shield to protect the army",
+  	tec_iron_sword: "Iron sword",
+  	tec_iron_sword_description: "Iron sword for our warriors",
+  	tec_iron_lance: "Iron lance",
+  	tec_iron_lance_description: "Iron lance for our cavarly",
   	tec_land_mine: "Land mine",
   	tec_land_mine_description: "We will be able to use explosives to protect the surroundings of the city",
   	tec_landed_estates: "Landed estates",
@@ -12729,12 +14666,22 @@ const taVersion = "3.9.1";
   	tec_long_expedition_description: "With the new machines we can push our explorations much further",
   	tec_loved_people: "Loved by the people",
   	tec_loved_people_description: "At last the people of the west consider us their rightful ruler. Let us enjoy our reward",
+  	tec_lucky_idea: "Lucky Idea",
+  	tec_lucky_idea_description: "The Eureka Halls bring some lucky ideas",
+  	tec_illgotten_gains: "Illgotten Gains",
+  	tec_illgotten_gains_description: "We can use these funds to attract smugglers",
+  	tec_lucky_investments: "Lucky Investments",
+  	tec_lucky_investments_description: "We need investors in the Amusement Quarter",
+  	tec_lucky_little_city: "Lucky little city",
+  	tec_lucky_little_city_description: "The Amusement Quarter is like a little city now",
   	tec_overseas_refinery: "Overseas refinery",
   	tec_overseas_refinery_description: "There is room for productive hubs in the new world",
   	tec_plate_armor: "Plate armor",
   	tec_plate_armor_description: "Full armors burst on the battlefield",
   	tec_preparation_war: "Preparation for the war",
   	tec_preparation_war_description: "Now that we know that an enemy is marching against us we must prepare defenses!",
+  	tec_prepare_tunnel: "Preparing Tunnel",
+  	tec_prepare_tunnel_description: "We have to setup a line of defense in the Underground Tunnel",
   	tec_printing_press: "Printing press",
   	tec_printing_press_description: "Free circulation of ideas",
   	tec_professional_soldier: "Professional soldier",
@@ -12761,10 +14708,14 @@ const taVersion = "3.9.1";
   	tec_mankind_darkest_description: "We triumphed over the Orcish citadel, but what was a victory soon turned into a distressing and terrible situation",
   	tec_manufactures: "Manufacture",
   	tec_manufactures_description: "Carvers and stonemasons create corporations in the city",
+  	tec_martial_arts: "Martial Arts",
+  	tec_martial_arts_description: "The discipline of fate in the martial arts",
   	tec_mass_transit: "Mass transit",
   	tec_mass_transit_description: "We need to develop our transportation system",
   	tec_master_craftsmen: "Master craftsmen",
   	tec_master_craftsmen_description: "True master craftsmen are emerging in the city",
+  	tec_master_history: "Master of History",
+  	tec_master_history_description: "In the Eureka Halls there is room for archeologists",
   	tec_mathematic: "Mathematics",
   	tec_mathematic_description: "Two plus two is always four",
   	tec_mechanization: "Mechanization",
@@ -12797,6 +14748,14 @@ const taVersion = "3.9.1";
   	tec_ministry_war_t_description: "Our civilization needs a ministry of war",
   	tec_ministry_worship_t: "Ministry of Worship",
   	tec_ministry_worship_t_description: "Souls need a shepherd",
+  	tec_mithril_projectiles: "Mithril projectiles",
+  	tec_mithril_projectiles_description: "Mithril ammo",
+  	tec_mithril_shield: "Mithril shield",
+  	tec_mithril_shield_description: "Mithril shield to protect the army",
+  	tec_mithril_sword: "Mithril sword",
+  	tec_mithril_sword_description: "Mithril sword for our army",
+  	tec_mithril_lance: "Mithril lance",
+  	tec_mithril_lance_description: "Mithril lance for our cavarly",
   	tec_monster_epuration: "Monster epuration",
   	tec_monster_epuration_description: "Now that we have wiped out the monstrosities that threatened Theresmore we need to study how to benefit from them",
   	tec_monster_hunting: "Monster hunting",
@@ -12825,6 +14784,8 @@ const taVersion = "3.9.1";
   	tec_new_world_militia_description: "We must create a militia capable of defending the colony",
   	tec_northern_star: "Northern Star",
   	tec_northern_star_description: "The Nightdale Protectorate held the Northern Star, a very powerful artifact from the earliest days of Theresmore",
+  	tec_oracle_t: "The Oracle",
+  	tec_oracle_t_description: "The Gods aid us with the Sphere of Foresight, a magical artifact kept at the Oracle. It will grant us to know the outcome of our battles",
   	tec_orc_horde: "The Orc Horde",
   	tec_orc_horde_description: "Even the last stronghold has fallen, the whole orc nation rushes upon us in a desperate bid for survival",
   	tec_orcish_citadel: "Orcish citadel",
@@ -12839,6 +14800,8 @@ const taVersion = "3.9.1";
   	tec_path_children_description: "In the citadel of Horith we found disturbing evidence",
   	tec_pentagram_tome: "Demoniac pentagram",
   	tec_pentagram_tome_description: "In the strange village we found a pentagram and a tome written in an obscure language. We must investigate",
+  	tec_phalanx_combat: "Oplitic Phalanx",
+  	tec_phalanx_combat_description: "We will train our men to fight as one!",
   	tec_portal_of_the_dead: "Portal of the dead",
   	tec_portal_of_the_dead_description: "From a place long forgotten and sealed away. Beware the dead guard the passage. Beware",
   	tec_pottery: "Pottery",
@@ -12883,6 +14846,16 @@ const taVersion = "3.9.1";
   	tec_steel_flesh_description: "A new unit of flesh and steel will destroy our enemies",
   	tec_steeling: "Steeling",
   	tec_steeling_description: "With steel we can raise our military level to new heights",
+  	tec_steel_projectiles: "Steel projectiles",
+  	tec_steel_projectiles_description: "Steel arrowheads and quarrels",
+  	tec_steel_shield: "Steel shield",
+  	tec_steel_shield_description: "Steel shield to protect the army",
+  	tec_steel_sword: "Steel sword",
+  	tec_steel_sword_description: "Steel sword for our army",
+  	tec_steel_lance: "Steel lance",
+  	tec_steel_lance_description: "Steel lance for our cavarly",
+  	tec_stocked_tunnel: "Stocked Tunnel",
+  	tec_stocked_tunnel_description: "A well prepared Tunnel",
   	tec_stone_extraction_tools: "Stone extraction tools",
   	tec_stone_extraction_tools_description: "New stone extraction and processing techniques",
   	tec_stone_masonry: "Stone masonry",
@@ -12925,16 +14898,26 @@ const taVersion = "3.9.1";
   	tec_underground_kobold_mission_description: "The tunnels of the kobolds branch off in several directions, we must explore them",
   	tec_the_triumph: "The Triumph",
   	tec_the_triumph_description: "We have defeated the orcs and our triumph is total",
+  	tec_throwing_coin: "Throwing Coin",
+  	tec_throwing_coin_description: "It seems that throwing coins in the Lucky Well bring luck",
   	tec_tome_ancient_lore: "Tome of ancient lore",
   	tec_tome_ancient_lore_description: "In the shelter of Galliard we found an ancient tome. We must study it",
+  	tec_trading_woods: "Selling wood",
+  	tec_trading_woods_description: "Let's make some gold and wood from the Lucky Grove",
   	tec_trail_blood: "Trail of blood",
   	tec_trail_blood_description: "The vampire crypt contained no coffin, we must look elsewhere",
   	tec_trail_power: "Trail of power",
   	tec_trail_power_description: "The Western Kingdom is conquered but its people are hostile to us. We have to come up with something",
+  	tec_trained_longbowman: "Longbowman",
+  	tec_trained_longbowman_description: "We can recruit Longbowman",
   	tec_training_militia: "Training militia",
   	tec_training_militia_description: "We have seen how ruthless Theresmore can be, we must create a militia force",
   	tec_trenches: "Trenches",
   	tec_trenches_description: "Building trenches will not only help us with defense but will allow us to train Marksmen",
+  	tec_tunnel_hq: "Tunnel HQ",
+  	tec_tunnel_hq_description: "We have to setup an headquarter in the Underground Tunnel",
+  	tec_underground_library: "Library secret",
+  	tec_underground_library_description: "The crypts under SouLs Library are dark places, we must explore them",
   	tec_warfare: "Warfare",
   	tec_warfare_description: "Appear weak when you are strong, and strong when you are weak",
   	tec_white_t_company: "White Company",
@@ -12953,6 +14936,8 @@ const taVersion = "3.9.1";
   	tec_wood_saw_description: "The production of wood needs new tools",
   	tec_writing: "Writing",
   	tec_writing_description: "Verba volant scripta manent",
+  	tec_zenix_familiar_t: "Zenix Familiar",
+  	tec_zenix_familiar_t_description: "With a little food we could attract those cute little animals",
   	uni_cat_1: "Ranged",
   	uni_cat_2: "Shock",
   	uni_cat_3: "Tank",
@@ -12964,6 +14949,12 @@ const taVersion = "3.9.1";
   	uni_ancient_giant_plural: "Ancient Giants",
   	uni_aqrabuamelu: "Aqrabuamelu",
   	uni_aqrabuamelu_plural: "Aqrabuamelus",
+  	uni_archmage_u: "Archmage",
+  	uni_archmage_u_description: "Feel the power of mana!",
+  	uni_archmage_u_plural: "Archmages",
+  	uni_armored_caravan_u: "Armored Caravan",
+  	uni_armored_caravan_u_description: "Caravan of armed merchants",
+  	uni_armored_caravan_u_plural: "Armored Caravans",
   	uni_arquebusier: "Arquebusier",
   	uni_arquebusier_description: "Men armed with arquebuses, provide excellent offensive power",
   	uni_arquebusier_plural: "Arquebusiers",
@@ -12977,6 +14968,9 @@ const taVersion = "3.9.1";
   	uni_artillery: "Artillery",
   	uni_artillery_description: "A rain of fire upon our enemies",
   	uni_artillery_plural: "Artilleries",
+  	uni_avatar_fate_u: "Avatar Of Fate",
+  	uni_avatar_fate_u_description: "The Fate himself on the battlefield",
+  	uni_avatar_fate_u_plural: "Avatars of Fate",
   	uni_balor: "Balor",
   	uni_balor_plural: "Balors",
   	uni_battle_angel: "Battle Angel",
@@ -13095,6 +15089,9 @@ const taVersion = "3.9.1";
   	uni_explorer_plural: "Explorers",
   	uni_fallen_angel: "Fallen Angel",
   	uni_fallen_angel_plural: "Fallen Angels",
+  	uni_familiar: "Familiar",
+  	uni_familiar_description: "Zenix Familiar are magical pets, they can scout pretty well",
+  	uni_familiar_plural: "Familiars",
   	uni_fire_elemental: "Fire elemental",
   	uni_fire_elemental_description: "Its breath is fiery and leaves behind lava pools",
   	uni_fire_elemental_plural: "Fire elementals",
@@ -13190,6 +15187,9 @@ const taVersion = "3.9.1";
   	uni_lizard_shaman_plural: "Sssarkat shamans",
   	uni_lizard_warrior: "Sssarkat warrior",
   	uni_lizard_warrior_plural: "Sssarkat warriors",
+  	uni_longbowman: "Longbowman",
+  	uni_longbowman_description: "Deadly at long distance",
+  	uni_longbowman_plural: "Longbowmen",
   	uni_knight: "Knight",
   	uni_knight_description: "The elite feudal soldiers in Theresmore, strong in both offense and defense",
   	uni_knight_plural: "Knights",
@@ -13205,6 +15205,9 @@ const taVersion = "3.9.1";
   	uni_heavy_warrior: "Heavy warrior",
   	uni_heavy_warrior_description: "The best unit of the ancient era. Effective in both offense and defense",
   	uni_heavy_warrior_plural: "Heavy warriors",
+  	uni_high_prelate_u: "High Prelate",
+  	uni_high_prelate_u_description: "The Faith Icon on Theresmore",
+  	uni_high_prelate_u_plural: "High Prelates",
   	uni_katana_samurai: "Katana samurai",
   	uni_katana_samurai_plural: "Katana samurai",
   	uni_imp: "Imp",
@@ -13216,6 +15219,9 @@ const taVersion = "3.9.1";
   	uni_light_cavarly: "Light Cavalry",
   	uni_light_cavarly_description: "Light cavalry, very effective against ranged units",
   	uni_light_cavarly_plural: "Light Cavalries",
+  	uni_mage_u: "Mage",
+  	uni_mage_u_description: "A glass cannon on the battlefield",
+  	uni_mage_u_plural: "Mages",
   	uni_markanat: "Markanat",
   	uni_markanat_plural: "Markanats",
   	uni_marksman: "Marksman",
@@ -13224,6 +15230,9 @@ const taVersion = "3.9.1";
   	uni_man_at_arms: "Man at arms",
   	uni_man_at_arms_description: "The direct evolution of heavy warriors but with armor and steel weapons",
   	uni_man_at_arms_plural: "Men at arms",
+  	uni_mana_fortress_u: "Mana Fortress",
+  	uni_mana_fortress_u_description: "A stronghold of mana on the battlefield",
+  	uni_mana_fortress_u_plural: "Mana Fortresses",
   	uni_mercenary_veteran: "Mercenary",
   	uni_mercenary_veteran_description: "Veterans in the pay of the highest bidder",
   	uni_mercenary_veteran_plural: "Mercenaries",
@@ -13242,6 +15251,14 @@ const taVersion = "3.9.1";
   	uni_naga: "Naga",
   	uni_naga_description: "Naga snakes evolved with 4 arms, usually use them to wield 4 swords",
   	uni_naga_plural: "Nagas",
+  	uni_naga_princess: "Naga Princess",
+  	uni_naga_princess_plural: "Nasa Princesses",
+  	uni_naga_royal_guard: "Naga Royal Guard",
+  	uni_naga_royal_guard_plural: "Naga Royal Guards",
+  	uni_nikharul: "Nikharul the Soulstealer",
+  	uni_nikharul_plural: "Nikharuls",
+  	uni_nikharul_soulstealer: "Nikharul Soulstealer",
+  	uni_nikharul_soulstealer_description: "The archlich Nikharul serve humanity, for now!",
   	uni_oni: "Oni",
   	uni_oni_plural: "Onis",
   	uni_orc_berserker: "Orc berserker",
@@ -13270,6 +15287,8 @@ const taVersion = "3.9.1";
   	uni_ranger: "Ranger",
   	uni_ranger_description: "With bow and sword, the forest has everything they need for their survival",
   	uni_ranger_plural: "Rangers",
+  	uni_raider: "Raider",
+  	uni_raider_plural: "Raiders",
   	uni_red_dragon: "Red Dragon",
   	uni_red_dragon_plural: "Red Dragons",
   	uni_sacred_golem: "Sacred Golem",
@@ -13312,6 +15331,9 @@ const taVersion = "3.9.1";
   	uni_spy_plural: "Spies",
   	uni_son_atamar: "Son of Atamar",
   	uni_son_atamar_plural: "Sons of Atamar",
+  	uni_smuggler: "Smuggler",
+  	uni_smuggler_description: "From the slums of the city know how to survive",
+  	uni_smuggler_plural: "Smugglers",
   	uni_strategist: "Strategist",
   	uni_strategist_description: "Are a master of both battle tactics and spells from behind lines",
   	uni_strategist_plural: "Strategists",
@@ -13323,6 +15345,9 @@ const taVersion = "3.9.1";
   	uni_swamp_horror_plural: "Swamp Horrors",
   	uni_ravenous_crab: "Ravenous crab",
   	uni_ravenous_crab_plural: "Ravenous crabs",
+  	uni_phalanx: "Phalanx",
+  	uni_phalanx_description: "A wall of hoplites to counter the enemy",
+  	uni_phalanx_plural: "Phalanxes",
   	uni_pillager: "Pillager",
   	uni_pillager_plural: "Pillagers",
   	uni_priest: "Priest",
@@ -13363,6 +15388,8 @@ const taVersion = "3.9.1";
   	uni_tamed_djinn_plural: "Tamed Djinns",
   	uni_titan: "Titan",
   	uni_titan_plural: "Titans",
+  	uni_trap: "Trap",
+  	uni_trap_plural: "Traps",
   	uni_trebuchet: "Trebuchet",
   	uni_trebuchet_description: "With the evolution of ballistics, we can deploy trebuchets. They have a very good offense",
   	uni_trebuchet_plural: "Trebuchets",
@@ -13795,6 +15822,3703 @@ const taVersion = "3.9.1";
   				type: "resource",
   				id: "gold",
   				value: -3
+  			}
+  		]
+  	}
+  ];
+
+  var legacies = [
+  	{
+  		id: "ancient_treasury",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 2
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "cap",
+  				id: "research",
+  				value: 1000
+  			},
+  			{
+  				type: "cap",
+  				id: "gold",
+  				value: 1000
+  			}
+  		]
+  	},
+  	{
+  		id: "enhanced_axes",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 2
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "wood",
+  				value: 5,
+  				perc: true
+  			},
+  			{
+  				type: "resource",
+  				id: "wood",
+  				value: 1,
+  				manual: true
+  			}
+  		]
+  	},
+  	{
+  		id: "fortune_teller",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 2
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "luck",
+  				value: 1,
+  				fix: true
+  			}
+  		]
+  	},
+  	{
+  		id: "irrigation_techniques",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 2
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "food",
+  				value: 5,
+  				perc: true
+  			},
+  			{
+  				type: "resource",
+  				id: "food",
+  				value: 1,
+  				manual: true
+  			}
+  		]
+  	},
+  	{
+  		id: "renowned_stonemasons",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 2
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "stone",
+  				value: 5,
+  				perc: true
+  			},
+  			{
+  				type: "resource",
+  				id: "stone",
+  				value: 1,
+  				manual: true
+  			}
+  		]
+  	},
+  	{
+  		id: "resource_cap",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 2
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "cap",
+  				id: "wood",
+  				value: 1000
+  			},
+  			{
+  				type: "cap",
+  				id: "stone",
+  				value: 1000
+  			},
+  			{
+  				type: "cap",
+  				id: "copper",
+  				value: 500
+  			},
+  			{
+  				type: "cap",
+  				id: "iron",
+  				value: 500
+  			}
+  		]
+  	},
+  	{
+  		id: "service_gods",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 2
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "cap",
+  				id: "faith",
+  				value: 1000
+  			},
+  			{
+  				type: "cap",
+  				id: "mana",
+  				value: 1000
+  			}
+  		]
+  	},
+  	{
+  		id: "charism",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 3
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "fame",
+  				value: 5,
+  				perc: true
+  			}
+  		]
+  	},
+  	{
+  		id: "gift_nature",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 3
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "food",
+  				value: 1
+  			},
+  			{
+  				type: "resource",
+  				id: "wood",
+  				value: 1
+  			},
+  			{
+  				type: "resource",
+  				id: "stone",
+  				value: 1
+  			}
+  		]
+  	},
+  	{
+  		id: "shopkeepers_and_breeders",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 3
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "tools",
+  				value: 10,
+  				perc: true
+  			},
+  			{
+  				type: "resource",
+  				id: "cow",
+  				value: 10,
+  				perc: true
+  			},
+  			{
+  				type: "resource",
+  				id: "horse",
+  				value: 10,
+  				perc: true
+  			}
+  		]
+  	},
+  	{
+  		id: "stock_resources",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 3
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "gold",
+  				value: 300,
+  				fix: true
+  			},
+  			{
+  				type: "resource",
+  				id: "wood",
+  				value: 300,
+  				fix: true
+  			},
+  			{
+  				type: "resource",
+  				id: "stone",
+  				value: 300,
+  				fix: true
+  			}
+  		]
+  	},
+  	{
+  		id: "strong_workers",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 3
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "food",
+  				value: 2,
+  				manual: true
+  			},
+  			{
+  				type: "resource",
+  				id: "stone",
+  				value: 2,
+  				manual: true
+  			},
+  			{
+  				type: "resource",
+  				id: "wood",
+  				value: 2,
+  				manual: true
+  			}
+  		]
+  	},
+  	{
+  		id: "powered_weapons",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 3
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "archer",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 2,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "spearman",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 2,
+  				perc: false
+  			}
+  		]
+  	},
+  	{
+  		id: "clever_villagers",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 4
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "research",
+  				value: 10,
+  				perc: true
+  			}
+  		]
+  	},
+  	{
+  		id: "deep_pockets",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 4
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "gold",
+  				value: 10,
+  				perc: true
+  			}
+  		]
+  	},
+  	{
+  		id: "enhanced_pickaxes",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 4
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "copper",
+  				value: 7,
+  				perc: true
+  			},
+  			{
+  				type: "resource",
+  				id: "iron",
+  				value: 7,
+  				perc: true
+  			}
+  		]
+  	},
+  	{
+  		id: "free_hands",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 4
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "population",
+  				id: "unemployed",
+  				value: 2
+  			}
+  		]
+  	},
+  	{
+  		id: "gift_creators",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 4
+  			},
+  			{
+  				type: "legacy",
+  				id: "gift_nature",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "copper",
+  				value: 0.5
+  			},
+  			{
+  				type: "resource",
+  				id: "iron",
+  				value: 0.5
+  			},
+  			{
+  				type: "resource",
+  				id: "tools",
+  				value: 0.5
+  			}
+  		]
+  	},
+  	{
+  		id: "resource_cap_II",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 4
+  			},
+  			{
+  				type: "legacy",
+  				id: "resource_cap",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "cap",
+  				id: "wood",
+  				value: 2500
+  			},
+  			{
+  				type: "cap",
+  				id: "stone",
+  				value: 2500
+  			},
+  			{
+  				type: "cap",
+  				id: "copper",
+  				value: 1000
+  			},
+  			{
+  				type: "cap",
+  				id: "iron",
+  				value: 1000
+  			},
+  			{
+  				type: "cap",
+  				id: "tools",
+  				value: 1000
+  			},
+  			{
+  				type: "cap",
+  				id: "cow",
+  				value: 250
+  			},
+  			{
+  				type: "cap",
+  				id: "horse",
+  				value: 250
+  			}
+  		]
+  	},
+  	{
+  		id: "service_gods_II",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 4
+  			},
+  			{
+  				type: "legacy",
+  				id: "service_gods",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "cap",
+  				id: "faith",
+  				value: 2500
+  			},
+  			{
+  				type: "cap",
+  				id: "mana",
+  				value: 2500
+  			}
+  		]
+  	},
+  	{
+  		id: "soothsayer",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 4
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "luck",
+  				value: 2,
+  				fix: true
+  			}
+  		]
+  	},
+  	{
+  		id: "spikes_and_pits",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 4
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "settlement_defenses",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 40,
+  				perc: false
+  			}
+  		]
+  	},
+  	{
+  		id: "strengthening_faith",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 4
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "faith",
+  				value: 10,
+  				perc: true
+  			},
+  			{
+  				type: "resource",
+  				id: "mana",
+  				value: 5,
+  				perc: true
+  			}
+  		]
+  	},
+  	{
+  		id: "zenix_familiar_l",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 4
+  			}
+  		]
+  	},
+  	{
+  		id: "enhanced_axes_II",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 5
+  			},
+  			{
+  				type: "legacy",
+  				id: "enhanced_axes",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "wood",
+  				value: 10,
+  				perc: true
+  			},
+  			{
+  				type: "resource",
+  				id: "wood",
+  				value: 1,
+  				manual: true
+  			}
+  		]
+  	},
+  	{
+  		id: "irrigation_techniques_II",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 5
+  			},
+  			{
+  				type: "legacy",
+  				id: "irrigation_techniques",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "food",
+  				value: 10,
+  				perc: true
+  			},
+  			{
+  				type: "resource",
+  				id: "food",
+  				value: 1,
+  				manual: true
+  			}
+  		]
+  	},
+  	{
+  		id: "renowned_stonemasons_II",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 5
+  			},
+  			{
+  				type: "legacy",
+  				id: "renowned_stonemasons",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "stone",
+  				value: 10,
+  				perc: true
+  			},
+  			{
+  				type: "resource",
+  				id: "stone",
+  				value: 1,
+  				manual: true
+  			}
+  		]
+  	},
+  	{
+  		id: "ancient_treasury_II",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 5
+  			},
+  			{
+  				type: "legacy",
+  				id: "ancient_treasury",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "cap",
+  				id: "research",
+  				value: 2500
+  			},
+  			{
+  				type: "cap",
+  				id: "gold",
+  				value: 2500
+  			}
+  		]
+  	},
+  	{
+  		id: "ancient_vault",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 5
+  			},
+  			{
+  				type: "legacy",
+  				id: "library_theresmore",
+  				value: 1
+  			}
+  		]
+  	},
+  	{
+  		id: "army_of_men",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 5
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "cap",
+  				id: "army",
+  				value: 15
+  			}
+  		]
+  	},
+  	{
+  		id: "stock_resources_II",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 5
+  			},
+  			{
+  				type: "legacy",
+  				id: "stock_resources",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "gold",
+  				value: 600,
+  				fix: true
+  			},
+  			{
+  				type: "resource",
+  				id: "wood",
+  				value: 600,
+  				fix: true
+  			},
+  			{
+  				type: "resource",
+  				id: "stone",
+  				value: 600,
+  				fix: true
+  			},
+  			{
+  				type: "cap",
+  				id: "gold",
+  				value: 500
+  			}
+  		]
+  	},
+  	{
+  		id: "craftmen",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 6
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "supplies",
+  				value: 15,
+  				perc: true
+  			},
+  			{
+  				type: "resource",
+  				id: "building_material",
+  				value: 15,
+  				perc: true
+  			},
+  			{
+  				type: "resource",
+  				id: "crystal",
+  				value: 15,
+  				perc: true
+  			},
+  			{
+  				type: "resource",
+  				id: "steel",
+  				value: 15,
+  				perc: true
+  			}
+  		]
+  	},
+  	{
+  		id: "powered_weapons_II",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 6
+  			},
+  			{
+  				type: "legacy",
+  				id: "powered_weapons",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "archer",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 2,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "spearman",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 2,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "warrior",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 3,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "heavy_warrior",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 3,
+  				perc: false
+  			}
+  		]
+  	},
+  	{
+  		id: "resource_cap_III",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 6
+  			},
+  			{
+  				type: "legacy",
+  				id: "resource_cap_II",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "cap",
+  				id: "wood",
+  				value: 5000
+  			},
+  			{
+  				type: "cap",
+  				id: "stone",
+  				value: 5000
+  			},
+  			{
+  				type: "cap",
+  				id: "building_material",
+  				value: 1000
+  			},
+  			{
+  				type: "cap",
+  				id: "steel",
+  				value: 1000
+  			},
+  			{
+  				type: "cap",
+  				id: "supplies",
+  				value: 1000
+  			},
+  			{
+  				type: "cap",
+  				id: "saltpetre",
+  				value: 1000
+  			},
+  			{
+  				type: "cap",
+  				id: "crystal",
+  				value: 1000
+  			}
+  		]
+  	},
+  	{
+  		id: "shieldbearer",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 6
+  			}
+  		]
+  	},
+  	{
+  		id: "shopkeepers_and_breeders_II",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 6
+  			},
+  			{
+  				type: "legacy",
+  				id: "shopkeepers_and_breeders",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "tools",
+  				value: 15,
+  				perc: true
+  			},
+  			{
+  				type: "resource",
+  				id: "cow",
+  				value: 15,
+  				perc: true
+  			},
+  			{
+  				type: "resource",
+  				id: "horse",
+  				value: 15,
+  				perc: true
+  			}
+  		]
+  	},
+  	{
+  		id: "strong_workers_II",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 6
+  			},
+  			{
+  				type: "legacy",
+  				id: "strong_workers",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "food",
+  				value: 4,
+  				manual: true
+  			},
+  			{
+  				type: "resource",
+  				id: "stone",
+  				value: 4,
+  				manual: true
+  			},
+  			{
+  				type: "resource",
+  				id: "wood",
+  				value: 4,
+  				manual: true
+  			}
+  		]
+  	},
+  	{
+  		id: "coin_mercenary",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 7
+  			},
+  			{
+  				type: "resource",
+  				id: "coin",
+  				value: 1
+  			}
+  		]
+  	},
+  	{
+  		id: "enhanced_pickaxes_II",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 7
+  			},
+  			{
+  				type: "legacy",
+  				id: "enhanced_pickaxes",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "copper",
+  				value: 15,
+  				perc: true
+  			},
+  			{
+  				type: "resource",
+  				id: "iron",
+  				value: 15,
+  				perc: true
+  			}
+  		]
+  	},
+  	{
+  		id: "grain_storage",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 7
+  			}
+  		]
+  	},
+  	{
+  		id: "heirloom_horseshoes",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 7
+  			},
+  			{
+  				type: "legacy",
+  				id: "monument_1",
+  				value: 1
+  			}
+  		]
+  	},
+  	{
+  		id: "heirloom_momento",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 7
+  			},
+  			{
+  				type: "legacy",
+  				id: "heirloom_horseshoes",
+  				value: 1
+  			}
+  		]
+  	},
+  	{
+  		id: "heirloom_contract",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 7
+  			},
+  			{
+  				type: "legacy",
+  				id: "heirloom_momento",
+  				value: 1
+  			}
+  		]
+  	},
+  	{
+  		id: "heirloom_wisdom",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 7
+  			},
+  			{
+  				type: "resource",
+  				id: "tome_wisdom",
+  				value: 1
+  			},
+  			{
+  				type: "legacy",
+  				id: "heirloom_contract",
+  				value: 1
+  			}
+  		]
+  	},
+  	{
+  		id: "heirloom_death",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 7
+  			},
+  			{
+  				type: "resource",
+  				id: "relic",
+  				value: 1
+  			},
+  			{
+  				type: "legacy",
+  				id: "heirloom_wisdom",
+  				value: 1
+  			}
+  		]
+  	},
+  	{
+  		id: "heirloom_wealth",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 7
+  			},
+  			{
+  				type: "resource",
+  				id: "coin",
+  				value: 1
+  			},
+  			{
+  				type: "legacy",
+  				id: "heirloom_death",
+  				value: 1
+  			}
+  		]
+  	},
+  	{
+  		id: "monument_1",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 7
+  			}
+  		]
+  	},
+  	{
+  		id: "spikes_and_pits_II",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 7
+  			},
+  			{
+  				type: "legacy",
+  				id: "spikes_and_pits",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "settlement_defenses",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 80,
+  				perc: false
+  			}
+  		]
+  	},
+  	{
+  		id: "strengthening_faith_II",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 7
+  			},
+  			{
+  				type: "legacy",
+  				id: "strengthening_faith",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "faith",
+  				value: 20,
+  				perc: true
+  			},
+  			{
+  				type: "resource",
+  				id: "mana",
+  				value: 10,
+  				perc: true
+  			}
+  		]
+  	},
+  	{
+  		id: "ancient_treasury_III",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 8
+  			},
+  			{
+  				type: "legacy",
+  				id: "ancient_treasury_II",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "cap",
+  				id: "research",
+  				value: 5000
+  			},
+  			{
+  				type: "cap",
+  				id: "gold",
+  				value: 5000
+  			}
+  		]
+  	},
+  	{
+  		id: "charism_II",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 8
+  			},
+  			{
+  				type: "legacy",
+  				id: "charism",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "fame",
+  				value: 10,
+  				perc: true
+  			}
+  		]
+  	},
+  	{
+  		id: "clairvoyant",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 8
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "luck",
+  				value: 3,
+  				fix: true
+  			}
+  		]
+  	},
+  	{
+  		id: "defensive_rampart",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 8
+  			},
+  			{
+  				type: "resource",
+  				id: "coin",
+  				value: 1
+  			}
+  		]
+  	},
+  	{
+  		id: "guild_craftsmen",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 8
+  			}
+  		]
+  	},
+  	{
+  		id: "library_theresmore",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 8
+  			}
+  		]
+  	},
+  	{
+  		id: "monastic_orders",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 8
+  			}
+  		]
+  	},
+  	{
+  		id: "resource_cap_IV",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 8
+  			},
+  			{
+  				type: "legacy",
+  				id: "resource_cap_III",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "cap",
+  				id: "wood",
+  				value: 10000
+  			},
+  			{
+  				type: "cap",
+  				id: "stone",
+  				value: 10000
+  			},
+  			{
+  				type: "cap",
+  				id: "copper",
+  				value: 7500
+  			},
+  			{
+  				type: "cap",
+  				id: "iron",
+  				value: 7500
+  			},
+  			{
+  				type: "cap",
+  				id: "tools",
+  				value: 7500
+  			},
+  			{
+  				type: "cap",
+  				id: "building_material",
+  				value: 5000
+  			},
+  			{
+  				type: "cap",
+  				id: "steel",
+  				value: 5000
+  			},
+  			{
+  				type: "cap",
+  				id: "crystal",
+  				value: 2500
+  			},
+  			{
+  				type: "cap",
+  				id: "supplies",
+  				value: 2500
+  			},
+  			{
+  				type: "cap",
+  				id: "saltpetre",
+  				value: 2500
+  			}
+  		]
+  	},
+  	{
+  		id: "service_gods_III",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 8
+  			},
+  			{
+  				type: "legacy",
+  				id: "service_gods_II",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "cap",
+  				id: "faith",
+  				value: 6000
+  			},
+  			{
+  				type: "cap",
+  				id: "mana",
+  				value: 6000
+  			}
+  		]
+  	},
+  	{
+  		id: "white_m_company",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 8
+  			},
+  			{
+  				type: "resource",
+  				id: "coin",
+  				value: 1
+  			}
+  		]
+  	},
+  	{
+  		id: "cpt_galliard_story",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 9
+  			},
+  			{
+  				type: "legacy",
+  				id: "cpt_galliard_l",
+  				value: 1
+  			}
+  		]
+  	},
+  	{
+  		id: "deep_pockets_II",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 9
+  			},
+  			{
+  				type: "legacy",
+  				id: "deep_pockets",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "gold",
+  				value: 20,
+  				perc: true
+  			}
+  		]
+  	},
+  	{
+  		id: "elysian_field",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 9
+  			},
+  			{
+  				type: "resource",
+  				id: "tome_wisdom",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "cap",
+  				id: "food",
+  				value: 5000
+  			},
+  			{
+  				type: "cap",
+  				id: "cow",
+  				value: 4000
+  			},
+  			{
+  				type: "cap",
+  				id: "horse",
+  				value: 2000
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "battle_angel",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 2,
+  				perc: false
+  			}
+  		]
+  	},
+  	{
+  		id: "free_hands_II",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 9
+  			},
+  			{
+  				type: "legacy",
+  				id: "free_hands",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "population",
+  				id: "unemployed",
+  				value: 5
+  			}
+  		]
+  	},
+  	{
+  		id: "mercenary_agreements",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 9
+  			},
+  			{
+  				type: "resource",
+  				id: "coin",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "mercenary_veteran",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 3,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "canava_guard",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 5,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "white_company",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 5,
+  				perc: false
+  			}
+  		]
+  	},
+  	{
+  		id: "powered_weapons_III",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 9
+  			},
+  			{
+  				type: "legacy",
+  				id: "powered_weapons_II",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "warrior",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 3,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "heavy_warrior",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 3,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "crossbowman",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 5,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "man_at_arms",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 5,
+  				perc: false
+  			}
+  		]
+  	},
+  	{
+  		id: "stonemason_l",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 9
+  			},
+  			{
+  				type: "legacy",
+  				id: "renowned_stonemasons_II",
+  				value: 1
+  			}
+  		]
+  	},
+  	{
+  		id: "woodworking",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 9
+  			},
+  			{
+  				type: "legacy",
+  				id: "enhanced_axes_II",
+  				value: 1
+  			}
+  		]
+  	},
+  	{
+  		id: "army_of_men_II",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 10
+  			},
+  			{
+  				type: "legacy",
+  				id: "army_of_men",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "cap",
+  				id: "army",
+  				value: 30
+  			}
+  		]
+  	},
+  	{
+  		id: "clever_villagers_II",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 10
+  			},
+  			{
+  				type: "legacy",
+  				id: "clever_villagers",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "research",
+  				value: 20,
+  				perc: true
+  			}
+  		]
+  	},
+  	{
+  		id: "militia_recruitment",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 10
+  			}
+  		]
+  	},
+  	{
+  		id: "priest",
+  		req: [
+  			{
+  				type: "legacy",
+  				id: "shieldbearer",
+  				value: 1
+  			},
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 10
+  			}
+  		]
+  	},
+  	{
+  		id: "resource_cap_V",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 10
+  			},
+  			{
+  				type: "legacy",
+  				id: "resource_cap_IV",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "cap",
+  				id: "wood",
+  				value: 20000
+  			},
+  			{
+  				type: "cap",
+  				id: "stone",
+  				value: 20000
+  			},
+  			{
+  				type: "cap",
+  				id: "copper",
+  				value: 15000
+  			},
+  			{
+  				type: "cap",
+  				id: "iron",
+  				value: 15000
+  			},
+  			{
+  				type: "cap",
+  				id: "tools",
+  				value: 15000
+  			},
+  			{
+  				type: "cap",
+  				id: "building_material",
+  				value: 10000
+  			},
+  			{
+  				type: "cap",
+  				id: "steel",
+  				value: 10000
+  			},
+  			{
+  				type: "cap",
+  				id: "crystal",
+  				value: 5000
+  			},
+  			{
+  				type: "cap",
+  				id: "supplies",
+  				value: 5000
+  			},
+  			{
+  				type: "cap",
+  				id: "saltpetre",
+  				value: 5000
+  			},
+  			{
+  				type: "cap",
+  				id: "natronite",
+  				value: 2500
+  			}
+  		]
+  	},
+  	{
+  		id: "shopkeepers_and_breeders_III",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 10
+  			},
+  			{
+  				type: "legacy",
+  				id: "shopkeepers_and_breeders_II",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "tools",
+  				value: 30,
+  				perc: true
+  			},
+  			{
+  				type: "resource",
+  				id: "cow",
+  				value: 30,
+  				perc: true
+  			},
+  			{
+  				type: "resource",
+  				id: "horse",
+  				value: 30,
+  				perc: true
+  			}
+  		]
+  	},
+  	{
+  		id: "enhanced_axes_III",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 11
+  			},
+  			{
+  				type: "legacy",
+  				id: "enhanced_axes_II",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "wood",
+  				value: 20,
+  				perc: true
+  			},
+  			{
+  				type: "resource",
+  				id: "wood",
+  				value: 3,
+  				manual: true
+  			}
+  		]
+  	},
+  	{
+  		id: "irrigation_techniques_III",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 11
+  			},
+  			{
+  				type: "legacy",
+  				id: "irrigation_techniques_II",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "food",
+  				value: 20,
+  				perc: true
+  			},
+  			{
+  				type: "resource",
+  				id: "food",
+  				value: 3,
+  				manual: true
+  			}
+  		]
+  	},
+  	{
+  		id: "renowned_stonemasons_III",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 11
+  			},
+  			{
+  				type: "legacy",
+  				id: "renowned_stonemasons_II",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "stone",
+  				value: 20,
+  				perc: true
+  			},
+  			{
+  				type: "resource",
+  				id: "stone",
+  				value: 3,
+  				manual: true
+  			}
+  		]
+  	},
+  	{
+  		id: "enhanced_pickaxes_III",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 12
+  			},
+  			{
+  				type: "legacy",
+  				id: "enhanced_pickaxes_II",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "copper",
+  				value: 30,
+  				perc: true
+  			},
+  			{
+  				type: "resource",
+  				id: "iron",
+  				value: 30,
+  				perc: true
+  			}
+  		]
+  	},
+  	{
+  		id: "mercenary_agreements_II",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 12
+  			},
+  			{
+  				type: "resource",
+  				id: "coin",
+  				value: 1
+  			},
+  			{
+  				type: "legacy",
+  				id: "mercenary_agreements",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "mercenary_veteran",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 3,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "canava_guard",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 5,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "white_company",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 5,
+  				perc: false
+  			}
+  		]
+  	},
+  	{
+  		id: "regional_market",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 12
+  			},
+  			{
+  				type: "resource",
+  				id: "coin",
+  				value: 1
+  			}
+  		]
+  	},
+  	{
+  		id: "resource_cap_VI",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 12
+  			},
+  			{
+  				type: "legacy",
+  				id: "resource_cap_V",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "cap",
+  				id: "wood",
+  				value: 40000
+  			},
+  			{
+  				type: "cap",
+  				id: "stone",
+  				value: 40000
+  			},
+  			{
+  				type: "cap",
+  				id: "copper",
+  				value: 30000
+  			},
+  			{
+  				type: "cap",
+  				id: "iron",
+  				value: 30000
+  			},
+  			{
+  				type: "cap",
+  				id: "tools",
+  				value: 30000
+  			},
+  			{
+  				type: "cap",
+  				id: "building_material",
+  				value: 20000
+  			},
+  			{
+  				type: "cap",
+  				id: "steel",
+  				value: 20000
+  			},
+  			{
+  				type: "cap",
+  				id: "crystal",
+  				value: 10000
+  			},
+  			{
+  				type: "cap",
+  				id: "supplies",
+  				value: 10000
+  			},
+  			{
+  				type: "cap",
+  				id: "saltpetre",
+  				value: 10000
+  			},
+  			{
+  				type: "cap",
+  				id: "natronite",
+  				value: 5000
+  			}
+  		]
+  	},
+  	{
+  		id: "ancient_treasury_IV",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 14
+  			},
+  			{
+  				type: "legacy",
+  				id: "ancient_treasury_III",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "cap",
+  				id: "research",
+  				value: 10000
+  			},
+  			{
+  				type: "cap",
+  				id: "gold",
+  				value: 10000
+  			}
+  		]
+  	},
+  	{
+  		id: "craftmen_II",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 14
+  			},
+  			{
+  				type: "legacy",
+  				id: "craftmen",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "supplies",
+  				value: 25,
+  				perc: true
+  			},
+  			{
+  				type: "resource",
+  				id: "building_material",
+  				value: 25,
+  				perc: true
+  			},
+  			{
+  				type: "resource",
+  				id: "crystal",
+  				value: 25,
+  				perc: true
+  			},
+  			{
+  				type: "resource",
+  				id: "steel",
+  				value: 25,
+  				perc: true
+  			}
+  		]
+  	},
+  	{
+  		id: "free_hands_III",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 14
+  			},
+  			{
+  				type: "legacy",
+  				id: "free_hands_II",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "population",
+  				id: "unemployed",
+  				value: 10
+  			}
+  		]
+  	},
+  	{
+  		id: "resource_cap_VII",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 14
+  			},
+  			{
+  				type: "legacy",
+  				id: "resource_cap_VI",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "cap",
+  				id: "wood",
+  				value: 80000
+  			},
+  			{
+  				type: "cap",
+  				id: "stone",
+  				value: 80000
+  			},
+  			{
+  				type: "cap",
+  				id: "copper",
+  				value: 60000
+  			},
+  			{
+  				type: "cap",
+  				id: "iron",
+  				value: 60000
+  			},
+  			{
+  				type: "cap",
+  				id: "tools",
+  				value: 60000
+  			},
+  			{
+  				type: "cap",
+  				id: "building_material",
+  				value: 40000
+  			},
+  			{
+  				type: "cap",
+  				id: "steel",
+  				value: 40000
+  			},
+  			{
+  				type: "cap",
+  				id: "crystal",
+  				value: 20000
+  			},
+  			{
+  				type: "cap",
+  				id: "supplies",
+  				value: 20000
+  			},
+  			{
+  				type: "cap",
+  				id: "saltpetre",
+  				value: 20000
+  			},
+  			{
+  				type: "cap",
+  				id: "natronite",
+  				value: 10000
+  			}
+  		]
+  	},
+  	{
+  		id: "spikes_and_pits_III",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 14
+  			},
+  			{
+  				type: "resource",
+  				id: "relic",
+  				value: 1
+  			},
+  			{
+  				type: "legacy",
+  				id: "spikes_and_pits_II",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "settlement_defenses",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 150,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "juggernaut",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 3,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "juggernaut",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 6,
+  				perc: false
+  			}
+  		]
+  	},
+  	{
+  		id: "angel",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 15
+  			},
+  			{
+  				type: "resource",
+  				id: "tome_wisdom",
+  				value: 1
+  			}
+  		]
+  	},
+  	{
+  		id: "army_of_men_III",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 15
+  			},
+  			{
+  				type: "legacy",
+  				id: "army_of_men_II",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "cap",
+  				id: "army",
+  				value: 50
+  			}
+  		]
+  	},
+  	{
+  		id: "elysian_field_II",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 15
+  			},
+  			{
+  				type: "resource",
+  				id: "tome_wisdom",
+  				value: 1
+  			},
+  			{
+  				type: "legacy",
+  				id: "elysian_field",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "cap",
+  				id: "food",
+  				value: 10000
+  			},
+  			{
+  				type: "cap",
+  				id: "cow",
+  				value: 8000
+  			},
+  			{
+  				type: "cap",
+  				id: "horse",
+  				value: 4000
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "battle_angel",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 4,
+  				perc: false
+  			}
+  		]
+  	},
+  	{
+  		id: "juggernaut",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 15
+  			},
+  			{
+  				type: "resource",
+  				id: "relic",
+  				value: 1
+  			}
+  		]
+  	},
+  	{
+  		id: "mercenary_agreements_III",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 15
+  			},
+  			{
+  				type: "resource",
+  				id: "coin",
+  				value: 1
+  			},
+  			{
+  				type: "legacy",
+  				id: "mercenary_agreements_II",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "canava_guard",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 5,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "canava_guard",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 7,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "white_company",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 7,
+  				perc: false
+  			}
+  		]
+  	},
+  	{
+  		id: "powered_weapons_IV",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 15
+  			},
+  			{
+  				type: "legacy",
+  				id: "powered_weapons_III",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "crossbowman",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 5,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "man_at_arms",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 5,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "knight",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 8,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "commander",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 12,
+  				perc: false
+  			}
+  		]
+  	},
+  	{
+  		id: "cartomancer",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 16
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "luck",
+  				value: 4,
+  				fix: true
+  			}
+  		]
+  	},
+  	{
+  		id: "deep_pockets_III",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 16
+  			},
+  			{
+  				type: "legacy",
+  				id: "deep_pockets_II",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "gold",
+  				value: 40,
+  				perc: true
+  			}
+  		]
+  	},
+  	{
+  		id: "hall_dead",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 16
+  			},
+  			{
+  				type: "resource",
+  				id: "relic",
+  				value: 1
+  			}
+  		]
+  	},
+  	{
+  		id: "hall_wisdom",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 16
+  			},
+  			{
+  				type: "resource",
+  				id: "tome_wisdom",
+  				value: 1
+  			}
+  		]
+  	},
+  	{
+  		id: "machines_gods",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 16
+  			},
+  			{
+  				type: "resource",
+  				id: "tome_wisdom",
+  				value: 1
+  			}
+  		]
+  	},
+  	{
+  		id: "undead_herds",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 16
+  			},
+  			{
+  				type: "resource",
+  				id: "relic",
+  				value: 1
+  			}
+  		]
+  	},
+  	{
+  		id: "resource_cap_VIII",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 16
+  			},
+  			{
+  				type: "legacy",
+  				id: "resource_cap_VII",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "cap",
+  				id: "wood",
+  				value: 160000
+  			},
+  			{
+  				type: "cap",
+  				id: "stone",
+  				value: 160000
+  			},
+  			{
+  				type: "cap",
+  				id: "copper",
+  				value: 120000
+  			},
+  			{
+  				type: "cap",
+  				id: "iron",
+  				value: 120000
+  			},
+  			{
+  				type: "cap",
+  				id: "tools",
+  				value: 120000
+  			},
+  			{
+  				type: "cap",
+  				id: "building_material",
+  				value: 80000
+  			},
+  			{
+  				type: "cap",
+  				id: "steel",
+  				value: 80000
+  			},
+  			{
+  				type: "cap",
+  				id: "crystal",
+  				value: 40000
+  			},
+  			{
+  				type: "cap",
+  				id: "supplies",
+  				value: 40000
+  			},
+  			{
+  				type: "cap",
+  				id: "saltpetre",
+  				value: 40000
+  			},
+  			{
+  				type: "cap",
+  				id: "natronite",
+  				value: 20000
+  			}
+  		]
+  	},
+  	{
+  		id: "service_gods_IV",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 16
+  			},
+  			{
+  				type: "legacy",
+  				id: "service_gods_III",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "cap",
+  				id: "faith",
+  				value: 12000
+  			},
+  			{
+  				type: "cap",
+  				id: "mana",
+  				value: 12000
+  			}
+  		]
+  	},
+  	{
+  		id: "clever_villagers_III",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 18
+  			},
+  			{
+  				type: "legacy",
+  				id: "clever_villagers_II",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "research",
+  				value: 40,
+  				perc: true
+  			}
+  		]
+  	},
+  	{
+  		id: "cpt_galliard_l",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 18
+  			},
+  			{
+  				type: "resource",
+  				id: "coin",
+  				value: 2
+  			},
+  			{
+  				type: "resource",
+  				id: "gem",
+  				value: 1
+  			},
+  			{
+  				type: "legacy",
+  				id: "white_m_company",
+  				value: 1
+  			}
+  		]
+  	},
+  	{
+  		id: "enhanced_axes_IV",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 19
+  			},
+  			{
+  				type: "legacy",
+  				id: "enhanced_axes_III",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "wood",
+  				value: 30,
+  				perc: true
+  			}
+  		]
+  	},
+  	{
+  		id: "irrigation_techniques_IV",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 19
+  			},
+  			{
+  				type: "legacy",
+  				id: "irrigation_techniques_III",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "food",
+  				value: 30,
+  				perc: true
+  			}
+  		]
+  	},
+  	{
+  		id: "renowned_stonemasons_IV",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 19
+  			},
+  			{
+  				type: "legacy",
+  				id: "renowned_stonemasons_III",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "stone",
+  				value: 30,
+  				perc: true
+  			}
+  		]
+  	},
+  	{
+  		id: "enhanced_pickaxes_IV",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 19
+  			},
+  			{
+  				type: "legacy",
+  				id: "enhanced_pickaxes_III",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "copper",
+  				value: 40,
+  				perc: true
+  			},
+  			{
+  				type: "resource",
+  				id: "iron",
+  				value: 40,
+  				perc: true
+  			}
+  		]
+  	},
+  	{
+  		id: "ministry_interior_l",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 20
+  			},
+  			{
+  				type: "resource",
+  				id: "gem",
+  				value: 1
+  			}
+  		]
+  	},
+  	{
+  		id: "ministry_war_l",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 20
+  			},
+  			{
+  				type: "resource",
+  				id: "gem",
+  				value: 1
+  			}
+  		]
+  	},
+  	{
+  		id: "ministry_worship_l",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 20
+  			},
+  			{
+  				type: "resource",
+  				id: "gem",
+  				value: 1
+  			}
+  		]
+  	},
+  	{
+  		id: "powered_weapons_V",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 20
+  			},
+  			{
+  				type: "legacy",
+  				id: "powered_weapons_IV",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "arquebusier",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 5,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "line_infantry",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 5,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "line_infantry",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 5,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "cuirassier",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 8,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "general",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 12,
+  				perc: false
+  			}
+  		]
+  	},
+  	{
+  		id: "craftmen_III",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 21
+  			},
+  			{
+  				type: "legacy",
+  				id: "craftmen_II",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "supplies",
+  				value: 40,
+  				perc: true
+  			},
+  			{
+  				type: "resource",
+  				id: "building_material",
+  				value: 40,
+  				perc: true
+  			},
+  			{
+  				type: "resource",
+  				id: "crystal",
+  				value: 40,
+  				perc: true
+  			},
+  			{
+  				type: "resource",
+  				id: "steel",
+  				value: 40,
+  				perc: true
+  			}
+  		]
+  	},
+  	{
+  		id: "army_of_men_IV",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 25
+  			},
+  			{
+  				type: "legacy",
+  				id: "army_of_men_III",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "cap",
+  				id: "army",
+  				value: 100
+  			}
+  		]
+  	},
+  	{
+  		id: "train_colonial",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 25
+  			},
+  			{
+  				type: "resource",
+  				id: "gem",
+  				value: 1
+  			},
+  			{
+  				type: "legacy",
+  				id: "ministry_war_l",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "colonial_militia",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 2,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "elf_warrior",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 7,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "paladin",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 7,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "jager",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 7,
+  				perc: false
+  			}
+  		]
+  	},
+  	{
+  		id: "free_hands_IV",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 28
+  			},
+  			{
+  				type: "legacy",
+  				id: "free_hands_III",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "population",
+  				id: "unemployed",
+  				value: 15
+  			}
+  		]
+  	},
+  	{
+  		id: "spikes_and_pits_IV",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 28
+  			},
+  			{
+  				type: "resource",
+  				id: "relic",
+  				value: 1
+  			},
+  			{
+  				type: "legacy",
+  				id: "spikes_and_pits_III",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "settlement_defenses",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 200,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "juggernaut",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 6,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "juggernaut",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 12,
+  				perc: false
+  			}
+  		]
+  	},
+  	{
+  		id: "ancient_balor_l",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 30
+  			},
+  			{
+  				type: "resource",
+  				id: "relic",
+  				value: 2
+  			},
+  			{
+  				type: "resource",
+  				id: "gem",
+  				value: 1
+  			},
+  			{
+  				type: "legacy",
+  				id: "juggernaut",
+  				value: 1
+  			}
+  		]
+  	},
+  	{
+  		id: "craftmen_IV",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 30
+  			},
+  			{
+  				type: "legacy",
+  				id: "craftmen_III",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "saltpetre",
+  				value: 15,
+  				perc: true
+  			},
+  			{
+  				type: "resource",
+  				id: "natronite",
+  				value: 15,
+  				perc: true
+  			}
+  		]
+  	},
+  	{
+  		id: "elysian_field_III",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 30
+  			},
+  			{
+  				type: "resource",
+  				id: "tome_wisdom",
+  				value: 1
+  			},
+  			{
+  				type: "legacy",
+  				id: "elysian_field_II",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "cap",
+  				id: "food",
+  				value: 20000
+  			},
+  			{
+  				type: "cap",
+  				id: "cow",
+  				value: 16000
+  			},
+  			{
+  				type: "cap",
+  				id: "horse",
+  				value: 8000
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "battle_angel",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 8,
+  				perc: false
+  			}
+  		]
+  	},
+  	{
+  		id: "seraphim_l",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 30
+  			},
+  			{
+  				type: "resource",
+  				id: "tome_wisdom",
+  				value: 2
+  			},
+  			{
+  				type: "resource",
+  				id: "gem",
+  				value: 1
+  			},
+  			{
+  				type: "legacy",
+  				id: "angel",
+  				value: 1
+  			}
+  		]
+  	},
+  	{
+  		id: "acolyte_fate",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 32
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "luck",
+  				value: 6,
+  				fix: true
+  			}
+  		]
+  	},
+  	{
+  		id: "service_gods_V",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 32
+  			},
+  			{
+  				type: "legacy",
+  				id: "service_gods_IV",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "cap",
+  				id: "faith",
+  				value: 25000
+  			},
+  			{
+  				type: "cap",
+  				id: "mana",
+  				value: 25000
+  			}
+  		]
+  	},
+  	{
+  		id: "powered_weapons_VI",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 45
+  			},
+  			{
+  				type: "resource",
+  				id: "gem",
+  				value: 1
+  			},
+  			{
+  				type: "legacy",
+  				id: "powered_weapons_V",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "man_at_arms",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 5,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "man_at_arms",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 5,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "shieldbearer",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 8,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "artillery",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 20,
+  				perc: false
+  			}
+  		]
+  	},
+  	{
+  		id: "army_of_men_V",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 50
+  			},
+  			{
+  				type: "legacy",
+  				id: "army_of_men_IV",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "cap",
+  				id: "army",
+  				value: 150
+  			}
+  		]
+  	},
+  	{
+  		id: "craftmen_V",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 50
+  			},
+  			{
+  				type: "legacy",
+  				id: "craftmen_IV",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "saltpetre",
+  				value: 30,
+  				perc: true
+  			},
+  			{
+  				type: "resource",
+  				id: "natronite",
+  				value: 30,
+  				perc: true
+  			}
+  		]
+  	},
+  	{
+  		id: "train_colonial_II",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 50
+  			},
+  			{
+  				type: "resource",
+  				id: "gem",
+  				value: 1
+  			},
+  			{
+  				type: "legacy",
+  				id: "train_colonial",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "colonial_militia",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 2,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "elf_warrior",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 14,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "behemoth",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 14,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "jager",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 14,
+  				perc: false
+  			}
+  		]
+  	},
+  	{
+  		id: "spikes_and_pits_V",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 56
+  			},
+  			{
+  				type: "resource",
+  				id: "relic",
+  				value: 1
+  			},
+  			{
+  				type: "legacy",
+  				id: "spikes_and_pits_IV",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "settlement_defenses",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 350,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "juggernaut",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 10,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "juggernaut",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 20,
+  				perc: false
+  			}
+  		]
+  	},
+  	{
+  		id: "architecture_titan",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 60
+  			},
+  			{
+  				type: "resource",
+  				id: "titan_gift",
+  				value: 1
+  			}
+  		]
+  	},
+  	{
+  		id: "wall_titan",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 60
+  			},
+  			{
+  				type: "resource",
+  				id: "titan_gift",
+  				value: 1
+  			}
+  		]
+  	},
+  	{
+  		id: "weapons_titan",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 60
+  			},
+  			{
+  				type: "resource",
+  				id: "titan_gift",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "spearman",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 10,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "man_at_arms",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 10,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "arquebusier",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 10,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "cuirassier",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 10,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "line_infantry",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 10,
+  				perc: false
+  			}
+  		]
+  	},
+  	{
+  		id: "powered_weapons_VII",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "legacy",
+  				value: 80
+  			},
+  			{
+  				type: "resource",
+  				id: "gem",
+  				value: 1
+  			},
+  			{
+  				type: "legacy",
+  				id: "powered_weapons_VI",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "line_infantry",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 8,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "line_infantry",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 8,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "cuirassier",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 8,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "artillery",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 20,
+  				perc: false
   			}
   		]
   	}
@@ -14444,6 +20168,52 @@ const taVersion = "3.9.1";
   		]
   	},
   	{
+  		id: "dense_oasis",
+  		found: [
+  			29
+  		],
+  		esp: 48,
+  		level: 5,
+  		army: [
+  			{
+  				id: "naga",
+  				value: 180
+  			},
+  			{
+  				id: "naga_royal_guard",
+  				value: 115
+  			},
+  			{
+  				id: "naga_princess",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "fame",
+  				value: 20,
+  				fix: true
+  			},
+  			{
+  				type: "resource",
+  				id: "luck",
+  				value: 2,
+  				fix: true
+  			},
+  			{
+  				type: "resource",
+  				id: "food",
+  				value: 3
+  			},
+  			{
+  				type: "resource",
+  				id: "wood",
+  				value: 3
+  			}
+  		]
+  	},
+  	{
   		id: "hell_hole",
   		found: [
   			12
@@ -14464,11 +20234,11 @@ const taVersion = "3.9.1";
   			},
   			{
   				id: "greater_demon",
-  				value: 22
+  				value: 52
   			},
   			{
   				id: "lesser_demon",
-  				value: 48
+  				value: 98
   			}
   		],
   		gen: [
@@ -14984,6 +20754,10 @@ const taVersion = "3.9.1";
   			{
   				id: "werewolf",
   				value: 1
+  			},
+  			{
+  				id: "wolf",
+  				value: 130
   			}
   		],
   		gen: [
@@ -15054,6 +20828,10 @@ const taVersion = "3.9.1";
   			{
   				id: "gorgon",
   				value: 1
+  			},
+  			{
+  				id: "naga",
+  				value: 70
   			}
   		],
   		gen: [
@@ -15365,6 +21143,10 @@ const taVersion = "3.9.1";
   			{
   				id: "hydra",
   				value: 1
+  			},
+  			{
+  				id: "giant_snake",
+  				value: 110
   			}
   		],
   		gen: [
@@ -15421,6 +21203,35 @@ const taVersion = "3.9.1";
   				type: "resource",
   				id: "iron",
   				value: 1
+  			}
+  		]
+  	},
+  	{
+  		id: "leprechaun_den",
+  		found: [
+  			37,
+  			38,
+  			39
+  		],
+  		esp: 11,
+  		level: 2,
+  		army: [
+  			{
+  				id: "trap",
+  				value: 36
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "luck",
+  				value: 1,
+  				fix: true
+  			},
+  			{
+  				type: "resource",
+  				id: "gold",
+  				value: 0.2
   			}
   		]
   	},
@@ -15547,6 +21358,28 @@ const taVersion = "3.9.1";
   		]
   	},
   	{
+  		id: "kobold_stash",
+  		found: [
+  			11
+  		],
+  		esp: 9,
+  		level: 2,
+  		army: [
+  			{
+  				id: "kobold",
+  				value: 26
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "luck",
+  				value: 1,
+  				fix: true
+  			}
+  		]
+  	},
+  	{
   		id: "korrigan_dolmen",
   		found: [
   			7
@@ -15594,6 +21427,10 @@ const taVersion = "3.9.1";
   			{
   				id: "markanat",
   				value: 1
+  			},
+  			{
+  				id: "giant_spider",
+  				value: 140
   			}
   		],
   		gen: [
@@ -15628,6 +21465,10 @@ const taVersion = "3.9.1";
   			{
   				id: "minotaur",
   				value: 1
+  			},
+  			{
+  				id: "kobold",
+  				value: 210
   			}
   		],
   		gen: [
@@ -16243,6 +22084,33 @@ const taVersion = "3.9.1";
   		]
   	},
   	{
+  		id: "raider_hideout",
+  		found: [
+  			22
+  		],
+  		esp: 11,
+  		level: 2,
+  		army: [
+  			{
+  				id: "raider",
+  				value: 40
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "luck",
+  				value: 1,
+  				fix: true
+  			},
+  			{
+  				type: "resource",
+  				id: "gold",
+  				value: 0.4
+  			}
+  		]
+  	},
+  	{
   		id: "rusted_warehouse",
   		found: [
   			31,
@@ -16302,6 +22170,10 @@ const taVersion = "3.9.1";
   			{
   				id: "titan",
   				value: 1
+  			},
+  			{
+  				id: "golem",
+  				value: 750
   			}
   		],
   		gen: [
@@ -16335,7 +22207,7 @@ const taVersion = "3.9.1";
   			},
   			{
   				id: "bandit",
-  				value: 55
+  				value: 75
   			}
   		],
   		gen: [
@@ -16354,6 +22226,44 @@ const taVersion = "3.9.1";
   				type: "resource",
   				id: "food",
   				value: 1
+  			}
+  		]
+  	},
+  	{
+  		id: "smuggler_warehouse",
+  		found: [
+  			35,
+  			36,
+  			37
+  		],
+  		esp: 31,
+  		level: 4,
+  		army: [
+  			{
+  				id: "bandit",
+  				value: 96
+  			},
+  			{
+  				id: "smuggler",
+  				value: 56
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "luck",
+  				value: 1,
+  				fix: true
+  			},
+  			{
+  				type: "resource",
+  				id: "building_material",
+  				value: 0.4
+  			},
+  			{
+  				type: "resource",
+  				id: "steel",
+  				value: 0.4
   			}
   		]
   	},
@@ -16708,6 +22618,38 @@ const taVersion = "3.9.1";
   				type: "resource",
   				id: "research",
   				value: 1
+  			}
+  		]
+  	},
+  	{
+  		id: "huge_cave",
+  		found: [
+  			11
+  		],
+  		esp: 26,
+  		level: 5,
+  		reqFound: [
+  			{
+  				type: "tech",
+  				id: "underground_library",
+  				value: 1
+  			}
+  		],
+  		army: [
+  			{
+  				id: "skeletal_knight",
+  				value: 50
+  			},
+  			{
+  				id: "skeleton",
+  				value: 750
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "research",
+  				value: 1.5
   			}
   		]
   	},
@@ -17257,6 +23199,22 @@ const taVersion = "3.9.1";
   		]
   	},
   	{
+  		id: "lucky_grove_f",
+  		type: "prayer",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "faith",
+  				value: 600
+  			},
+  			{
+  				type: "building",
+  				id: "fortune_grove",
+  				value: 1
+  			}
+  		]
+  	},
+  	{
   		id: "sacrifices_gods",
   		type: "prayer",
   		req: [
@@ -17342,6 +23300,22 @@ const taVersion = "3.9.1";
   			{
   				type: "building",
   				id: "stable",
+  				value: 3
+  			}
+  		]
+  	},
+  	{
+  		id: "lucky_well_f",
+  		type: "prayer",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "faith",
+  				value: 1000
+  			},
+  			{
+  				type: "building",
+  				id: "fortune_grove",
   				value: 3
   			}
   		]
@@ -17517,6 +23491,22 @@ const taVersion = "3.9.1";
   			{
   				type: "prayer",
   				id: "blessing",
+  				value: 1
+  			}
+  		]
+  	},
+  	{
+  		id: "ancient_spell_p",
+  		type: "prayer",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "faith",
+  				value: 1250
+  			},
+  			{
+  				type: "tech",
+  				id: "ancient_spell",
   				value: 1
   			}
   		]
@@ -17726,6 +23716,138 @@ const taVersion = "3.9.1";
   		]
   	},
   	{
+  		id: "focus_development",
+  		type: "prayer",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "faith",
+  				value: 2000
+  			},
+  			{
+  				type: "building",
+  				id: "magic_circle",
+  				value: 3
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "prayer",
+  				id: "focus_research",
+  				value: -1
+  			},
+  			{
+  				type: "prayer",
+  				id: "focus_magic",
+  				value: -1
+  			}
+  		]
+  	},
+  	{
+  		id: "focus_magic",
+  		type: "prayer",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "faith",
+  				value: 2000
+  			},
+  			{
+  				type: "building",
+  				id: "magic_circle",
+  				value: 3
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "prayer",
+  				id: "focus_research",
+  				value: -1
+  			},
+  			{
+  				type: "prayer",
+  				id: "focus_development",
+  				value: -1
+  			}
+  		]
+  	},
+  	{
+  		id: "focus_research",
+  		type: "prayer",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "faith",
+  				value: 2000
+  			},
+  			{
+  				type: "building",
+  				id: "magic_circle",
+  				value: 3
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "prayer",
+  				id: "focus_development",
+  				value: -1
+  			},
+  			{
+  				type: "prayer",
+  				id: "focus_magic",
+  				value: -1
+  			}
+  		]
+  	},
+  	{
+  		id: "life_magic_p",
+  		type: "prayer",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "faith",
+  				value: 2000
+  			},
+  			{
+  				type: "prayer",
+  				id: "focus_development",
+  				value: 1
+  			}
+  		]
+  	},
+  	{
+  		id: "highlightment_p",
+  		type: "prayer",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "faith",
+  				value: 2000
+  			},
+  			{
+  				type: "prayer",
+  				id: "focus_research",
+  				value: 1
+  			}
+  		]
+  	},
+  	{
+  		id: "mana_flowers_p",
+  		type: "prayer",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "faith",
+  				value: 2000
+  			},
+  			{
+  				type: "prayer",
+  				id: "focus_magic",
+  				value: 1
+  			}
+  		]
+  	},
+  	{
   		id: "demonology",
   		type: "prayer",
   		req: [
@@ -17791,6 +23913,22 @@ const taVersion = "3.9.1";
   				type: "tech",
   				id: "construction_of_automata",
   				value: 1
+  			}
+  		]
+  	},
+  	{
+  		id: "eureka_halls_f",
+  		type: "prayer",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "faith",
+  				value: 2500
+  			},
+  			{
+  				type: "building",
+  				id: "fortune_grove",
+  				value: 5
   			}
   		]
   	},
@@ -17869,6 +24007,38 @@ const taVersion = "3.9.1";
   		]
   	},
   	{
+  		id: "mage_p",
+  		type: "prayer",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "faith",
+  				value: 2600
+  			},
+  			{
+  				type: "prayer",
+  				id: "mage_academy_f",
+  				value: 1
+  			}
+  		]
+  	},
+  	{
+  		id: "mana_armor_p",
+  		type: "prayer",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "faith",
+  				value: 2600
+  			},
+  			{
+  				type: "prayer",
+  				id: "mage_fields_f",
+  				value: 1
+  			}
+  		]
+  	},
+  	{
   		id: "the_aid",
   		type: "prayer",
   		req: [
@@ -17881,6 +24051,69 @@ const taVersion = "3.9.1";
   				type: "tech",
   				id: "the_scourge",
   				value: 1
+  			}
+  		]
+  	},
+  	{
+  		id: "sacred_den_f",
+  		type: "prayer",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "faith",
+  				value: 4000
+  			},
+  			{
+  				type: "prayer",
+  				id: "focus_development",
+  				value: 1
+  			},
+  			{
+  				type: "building",
+  				id: "magic_circle",
+  				value: 6
+  			}
+  		]
+  	},
+  	{
+  		id: "mage_academy_f",
+  		type: "prayer",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "faith",
+  				value: 4000
+  			},
+  			{
+  				type: "prayer",
+  				id: "focus_research",
+  				value: 1
+  			},
+  			{
+  				type: "building",
+  				id: "magic_circle",
+  				value: 6
+  			}
+  		]
+  	},
+  	{
+  		id: "mage_fields_f",
+  		type: "prayer",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "faith",
+  				value: 4000
+  			},
+  			{
+  				type: "prayer",
+  				id: "focus_magic",
+  				value: 1
+  			},
+  			{
+  				type: "building",
+  				id: "magic_circle",
+  				value: 6
   			}
   		]
   	},
@@ -18113,6 +24346,78 @@ const taVersion = "3.9.1";
   		]
   	},
   	{
+  		id: "legion_light_p",
+  		type: "prayer",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "faith",
+  				value: 6000
+  			},
+  			{
+  				type: "building",
+  				id: "magic_circle",
+  				value: 8
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "warrior_monk",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 4,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "sacred_golem",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 8,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "battle_angel",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 8,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "battle_angel",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 6,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "seraphim",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 120,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "seraphim",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 80,
+  				perc: false
+  			}
+  		]
+  	},
+  	{
   		id: "old_small_one_2",
   		type: "prayer",
   		req: [
@@ -18145,6 +24450,22 @@ const taVersion = "3.9.1";
   		]
   	},
   	{
+  		id: "amusement_quarter_f",
+  		type: "prayer",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "faith",
+  				value: 6700
+  			},
+  			{
+  				type: "building",
+  				id: "fortune_grove",
+  				value: 7
+  			}
+  		]
+  	},
+  	{
   		id: "northern_star_power",
   		type: "prayer",
   		req: [
@@ -18161,6 +24482,38 @@ const taVersion = "3.9.1";
   			{
   				type: "tech",
   				id: "northern_star",
+  				value: 1
+  			}
+  		]
+  	},
+  	{
+  		id: "archmage_p",
+  		type: "prayer",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "faith",
+  				value: 10000
+  			},
+  			{
+  				type: "prayer",
+  				id: "highschool_magic_f",
+  				value: 1
+  			}
+  		]
+  	},
+  	{
+  		id: "armored_caravan_p",
+  		type: "prayer",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "faith",
+  				value: 10000
+  			},
+  			{
+  				type: "prayer",
+  				id: "philosopher_stone_p",
   				value: 1
   			}
   		]
@@ -18198,6 +24551,101 @@ const taVersion = "3.9.1";
   				gen: "attack",
   				value: 5,
   				perc: false
+  			}
+  		]
+  	},
+  	{
+  		id: "highschool_magic_f",
+  		type: "prayer",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "faith",
+  				value: 10000
+  			},
+  			{
+  				type: "prayer",
+  				id: "focus_research",
+  				value: 1
+  			},
+  			{
+  				type: "building",
+  				id: "magic_circle",
+  				value: 9
+  			}
+  		]
+  	},
+  	{
+  		id: "magic_workshop_f",
+  		type: "prayer",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "faith",
+  				value: 10000
+  			},
+  			{
+  				type: "prayer",
+  				id: "mana_forest_p",
+  				value: 1
+  			}
+  		]
+  	},
+  	{
+  		id: "mana_forest_p",
+  		type: "prayer",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "faith",
+  				value: 10000
+  			},
+  			{
+  				type: "prayer",
+  				id: "focus_magic",
+  				value: 1
+  			},
+  			{
+  				type: "building",
+  				id: "magic_circle",
+  				value: 9
+  			}
+  		]
+  	},
+  	{
+  		id: "philosopher_stone_p",
+  		type: "prayer",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "faith",
+  				value: 10000
+  			},
+  			{
+  				type: "prayer",
+  				id: "focus_development",
+  				value: 1
+  			},
+  			{
+  				type: "building",
+  				id: "magic_circle",
+  				value: 9
+  			}
+  		]
+  	},
+  	{
+  		id: "spell_book_p",
+  		type: "prayer",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "faith",
+  				value: 10000
+  			},
+  			{
+  				type: "prayer",
+  				id: "highschool_magic_f",
+  				value: 1
   			}
   		]
   	},
@@ -18285,6 +24733,22 @@ const taVersion = "3.9.1";
   		]
   	},
   	{
+  		id: "underground_tunnel_f",
+  		type: "prayer",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "faith",
+  				value: 11000
+  			},
+  			{
+  				type: "building",
+  				id: "fortune_grove",
+  				value: 8
+  			}
+  		]
+  	},
+  	{
   		id: "protection_power",
   		type: "prayer",
   		req: [
@@ -18352,6 +24816,133 @@ const taVersion = "3.9.1";
   			{
   				type: "tech",
   				id: "faith_world",
+  				value: 1
+  			}
+  		]
+  	},
+  	{
+  		id: "ivory_tower_f",
+  		type: "prayer",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "faith",
+  				value: 18000
+  			},
+  			{
+  				type: "prayer",
+  				id: "focus_research",
+  				value: 1
+  			},
+  			{
+  				type: "building",
+  				id: "magic_circle",
+  				value: 13
+  			}
+  		]
+  	},
+  	{
+  		id: "magic_stable_f",
+  		type: "prayer",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "faith",
+  				value: 18000
+  			},
+  			{
+  				type: "prayer",
+  				id: "mana_fortress_p",
+  				value: 1
+  			}
+  		]
+  	},
+  	{
+  		id: "mana_fortress_p",
+  		type: "prayer",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "faith",
+  				value: 18000
+  			},
+  			{
+  				type: "prayer",
+  				id: "mana_spiral_p",
+  				value: 1
+  			}
+  		]
+  	},
+  	{
+  		id: "mana_materials_p",
+  		type: "prayer",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "faith",
+  				value: 18000
+  			},
+  			{
+  				type: "prayer",
+  				id: "steel_palace_f",
+  				value: 1
+  			}
+  		]
+  	},
+  	{
+  		id: "mana_spiral_p",
+  		type: "prayer",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "faith",
+  				value: 18000
+  			},
+  			{
+  				type: "prayer",
+  				id: "focus_magic",
+  				value: 1
+  			},
+  			{
+  				type: "building",
+  				id: "magic_circle",
+  				value: 13
+  			}
+  		]
+  	},
+  	{
+  		id: "steel_palace_f",
+  		type: "prayer",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "faith",
+  				value: 18000
+  			},
+  			{
+  				type: "prayer",
+  				id: "focus_development",
+  				value: 1
+  			},
+  			{
+  				type: "building",
+  				id: "magic_circle",
+  				value: 13
+  			}
+  		]
+  	},
+  	{
+  		id: "tome_wisdom_p",
+  		type: "prayer",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "faith",
+  				value: 18000
+  			},
+  			{
+  				type: "prayer",
+  				id: "ivory_tower_f",
   				value: 1
   			}
   		]
@@ -18442,8 +25033,71 @@ const taVersion = "3.9.1";
   		]
   	},
   	{
+  		id: "fate_shrine_f",
+  		type: "prayer",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "faith",
+  				value: 17000
+  			},
+  			{
+  				type: "building",
+  				id: "fortune_grove",
+  				value: 9
+  			}
+  		]
+  	},
+  	{
+  		id: "summon_nikharul",
+  		type: "prayer",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "faith",
+  				value: 20000
+  			},
+  			{
+  				type: "tech",
+  				id: "dark_crystal",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "prayer",
+  				id: "control_fortress",
+  				value: -1
+  			}
+  		]
+  	},
+  	{
+  		id: "control_fortress",
+  		type: "prayer",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "faith",
+  				value: 20000
+  			},
+  			{
+  				type: "tech",
+  				id: "dark_crystal",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "prayer",
+  				id: "summon_nikharul",
+  				value: -1
+  			}
+  		]
+  	},
+  	{
   		id: "temple_ritual",
   		type: "spell",
+  		cat: "resource",
   		req: [
   			{
   				type: "prayer",
@@ -18472,6 +25126,7 @@ const taVersion = "3.9.1";
   	{
   		id: "minor_blessing",
   		type: "spell",
+  		cat: "resource",
   		req: [
   			{
   				type: "prayer",
@@ -18502,6 +25157,7 @@ const taVersion = "3.9.1";
   	{
   		id: "acolyte_hymn",
   		type: "spell",
+  		cat: "resource",
   		req: [
   			{
   				type: "prayer",
@@ -18532,6 +25188,7 @@ const taVersion = "3.9.1";
   	{
   		id: "great_seeker_blessing",
   		type: "spell",
+  		cat: "army",
   		req: [
   			{
   				type: "prayer",
@@ -18573,6 +25230,7 @@ const taVersion = "3.9.1";
   	{
   		id: "great_warrior_blessing",
   		type: "spell",
+  		cat: "army",
   		req: [
   			{
   				type: "prayer",
@@ -18642,6 +25300,7 @@ const taVersion = "3.9.1";
   	{
   		id: "mana_energy_shield",
   		type: "spell",
+  		cat: "defense",
   		req: [
   			{
   				type: "prayer",
@@ -18669,6 +25328,7 @@ const taVersion = "3.9.1";
   	{
   		id: "mother_earth_blessing",
   		type: "spell",
+  		cat: "resource",
   		req: [
   			{
   				type: "prayer",
@@ -18699,6 +25359,7 @@ const taVersion = "3.9.1";
   	{
   		id: "old_small_one_blessing",
   		type: "spell",
+  		cat: "resource",
   		req: [
   			{
   				type: "prayer",
@@ -18735,6 +25396,7 @@ const taVersion = "3.9.1";
   	{
   		id: "sacred_armor",
   		type: "spell",
+  		cat: "army",
   		req: [
   			{
   				type: "prayer",
@@ -18769,8 +25431,98 @@ const taVersion = "3.9.1";
   		]
   	},
   	{
+  		id: "mana_armor_s",
+  		type: "spell",
+  		req: [
+  			{
+  				type: "prayer",
+  				id: "mana_armor_p",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "mana",
+  				value: -25
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "light_cavarly",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 7,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "knight",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 7,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "commander",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 12,
+  				perc: false
+  			}
+  		]
+  	},
+  	{
+  		id: "spell_ancient",
+  		type: "spell",
+  		cat: "resource",
+  		req: [
+  			{
+  				type: "prayer",
+  				id: "ancient_spell_p",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "mana",
+  				value: -5
+  			},
+  			{
+  				type: "resource",
+  				id: "food",
+  				value: 3
+  			},
+  			{
+  				type: "resource",
+  				id: "wood",
+  				value: 2
+  			},
+  			{
+  				type: "resource",
+  				id: "stone",
+  				value: 2
+  			},
+  			{
+  				type: "resource",
+  				id: "copper",
+  				value: 1.5
+  			},
+  			{
+  				type: "resource",
+  				id: "iron",
+  				value: 1
+  			}
+  		]
+  	},
+  	{
   		id: "theresmore_revealed",
   		type: "spell",
+  		cat: "resource",
   		req: [
   			{
   				type: "prayer",
@@ -18800,6 +25552,7 @@ const taVersion = "3.9.1";
   	{
   		id: "wild_man_blessing",
   		type: "spell",
+  		cat: "resource",
   		req: [
   			{
   				type: "prayer",
@@ -18830,6 +25583,7 @@ const taVersion = "3.9.1";
   	{
   		id: "wild_man_spear",
   		type: "spell",
+  		cat: "army",
   		req: [
   			{
   				type: "prayer",
@@ -18866,6 +25620,7 @@ const taVersion = "3.9.1";
   	{
   		id: "growth_of_nature",
   		type: "spell",
+  		cat: "resource",
   		req: [
   			{
   				type: "prayer",
@@ -18887,8 +25642,34 @@ const taVersion = "3.9.1";
   		]
   	},
   	{
+  		id: "mana_flowers_s",
+  		type: "spell",
+  		cat: "resource",
+  		req: [
+  			{
+  				type: "prayer",
+  				id: "mana_flowers_p",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "mana",
+  				value: 10
+  			},
+  			{
+  				type: "resource",
+  				id: "mana",
+  				value: 2,
+  				perc: true
+  			}
+  		]
+  	},
+  	{
   		id: "lighten_of_rocks",
   		type: "spell",
+  		cat: "resource",
   		req: [
   			{
   				type: "prayer",
@@ -18912,6 +25693,7 @@ const taVersion = "3.9.1";
   	{
   		id: "magic_tools",
   		type: "spell",
+  		cat: "resource",
   		req: [
   			{
   				type: "prayer",
@@ -18935,6 +25717,7 @@ const taVersion = "3.9.1";
   	{
   		id: "magic_lights",
   		type: "spell",
+  		cat: "resource",
   		req: [
   			{
   				type: "prayer",
@@ -18963,6 +25746,7 @@ const taVersion = "3.9.1";
   	{
   		id: "mirune_blessing",
   		type: "spell",
+  		cat: "resource",
   		req: [
   			{
   				type: "prayer",
@@ -18991,6 +25775,7 @@ const taVersion = "3.9.1";
   	{
   		id: "dark_ritual",
   		type: "spell",
+  		cat: "army",
   		req: [
   			{
   				type: "prayer",
@@ -19036,6 +25821,7 @@ const taVersion = "3.9.1";
   	{
   		id: "great_builder_blessing",
   		type: "spell",
+  		cat: "resource",
   		req: [
   			{
   				type: "prayer",
@@ -19076,6 +25862,7 @@ const taVersion = "3.9.1";
   	{
   		id: "mana_dome",
   		type: "spell",
+  		cat: "defense",
   		req: [
   			{
   				type: "prayer",
@@ -19103,6 +25890,7 @@ const taVersion = "3.9.1";
   	{
   		id: "mysterious_arcane_blessing",
   		type: "spell",
+  		cat: "resource",
   		req: [
   			{
   				type: "prayer",
@@ -19132,6 +25920,7 @@ const taVersion = "3.9.1";
   	{
   		id: "sacred_weapon",
   		type: "spell",
+  		cat: "army",
   		req: [
   			{
   				type: "prayer",
@@ -19168,6 +25957,7 @@ const taVersion = "3.9.1";
   	{
   		id: "church_ritual",
   		type: "spell",
+  		cat: "army",
   		req: [
   			{
   				type: "prayer",
@@ -19209,6 +25999,7 @@ const taVersion = "3.9.1";
   	{
   		id: "great_seeker_eyesight",
   		type: "spell",
+  		cat: "army",
   		req: [
   			{
   				type: "prayer",
@@ -19250,6 +26041,7 @@ const taVersion = "3.9.1";
   	{
   		id: "great_warrior_fury",
   		type: "spell",
+  		cat: "army",
   		req: [
   			{
   				type: "prayer",
@@ -19304,6 +26096,7 @@ const taVersion = "3.9.1";
   	{
   		id: "mother_earth_grace",
   		type: "spell",
+  		cat: "resource",
   		req: [
   			{
   				type: "prayer",
@@ -19334,6 +26127,7 @@ const taVersion = "3.9.1";
   	{
   		id: "new_world_chant",
   		type: "spell",
+  		cat: "army",
   		req: [
   			{
   				type: "prayer",
@@ -19385,6 +26179,7 @@ const taVersion = "3.9.1";
   	{
   		id: "old_small_one_grace",
   		type: "spell",
+  		cat: "resource",
   		req: [
   			{
   				type: "prayer",
@@ -19421,6 +26216,7 @@ const taVersion = "3.9.1";
   	{
   		id: "wild_man_dexterity",
   		type: "spell",
+  		cat: "army",
   		req: [
   			{
   				type: "prayer",
@@ -19475,6 +26271,7 @@ const taVersion = "3.9.1";
   	{
   		id: "dragon_armor",
   		type: "spell",
+  		cat: "army",
   		req: [
   			{
   				type: "prayer",
@@ -19529,6 +26326,7 @@ const taVersion = "3.9.1";
   	{
   		id: "dragon_weapon",
   		type: "spell",
+  		cat: "army",
   		req: [
   			{
   				type: "prayer",
@@ -19581,8 +26379,110 @@ const taVersion = "3.9.1";
   		]
   	},
   	{
+  		id: "life_magic_s",
+  		type: "spell",
+  		cat: "resource",
+  		req: [
+  			{
+  				type: "prayer",
+  				id: "life_magic_p",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "mana",
+  				value: -25
+  			},
+  			{
+  				type: "resource",
+  				id: "food",
+  				value: 4
+  			},
+  			{
+  				type: "resource",
+  				id: "wood",
+  				value: 4
+  			},
+  			{
+  				type: "resource",
+  				id: "stone",
+  				value: 4
+  			}
+  		]
+  	},
+  	{
+  		id: "highlightment_s",
+  		type: "spell",
+  		cat: "resource",
+  		req: [
+  			{
+  				type: "prayer",
+  				id: "highlightment_p",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "mana",
+  				value: -25
+  			},
+  			{
+  				type: "resource",
+  				id: "research",
+  				value: 5
+  			},
+  			{
+  				type: "resource",
+  				id: "research",
+  				value: 3,
+  				perc: true
+  			}
+  		]
+  	},
+  	{
+  		id: "spell_book_s",
+  		type: "spell",
+  		cat: "army",
+  		req: [
+  			{
+  				type: "prayer",
+  				id: "spell_book_p",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "mana",
+  				value: -25
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "mage_u",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 12,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "mage_u",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 12,
+  				perc: false
+  			}
+  		]
+  	},
+  	{
   		id: "mana_armor",
   		type: "spell",
+  		cat: "army",
   		req: [
   			{
   				type: "prayer",
@@ -19635,8 +26535,34 @@ const taVersion = "3.9.1";
   		]
   	},
   	{
+  		id: "mana_forest_s",
+  		type: "spell",
+  		cat: "resource",
+  		req: [
+  			{
+  				type: "prayer",
+  				id: "mana_forest_p",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "mana",
+  				value: 35
+  			},
+  			{
+  				type: "resource",
+  				id: "mana",
+  				value: 3,
+  				perc: true
+  			}
+  		]
+  	},
+  	{
   		id: "druid_blessing",
   		type: "spell",
+  		cat: "resource",
   		req: [
   			{
   				type: "prayer",
@@ -19671,6 +26597,7 @@ const taVersion = "3.9.1";
   	{
   		id: "blessing_city",
   		type: "spell",
+  		cat: "resource",
   		req: [
   			{
   				type: "prayer",
@@ -19718,6 +26645,7 @@ const taVersion = "3.9.1";
   	{
   		id: "northern_star_protection",
   		type: "spell",
+  		cat: "defense",
   		req: [
   			{
   				type: "prayer",
@@ -19745,6 +26673,7 @@ const taVersion = "3.9.1";
   	{
   		id: "northern_star_incremental",
   		type: "spell",
+  		cat: "resource",
   		req: [
   			{
   				type: "prayer",
@@ -19797,8 +26726,39 @@ const taVersion = "3.9.1";
   		]
   	},
   	{
+  		id: "philosopher_stone_s",
+  		type: "spell",
+  		cat: "resource",
+  		req: [
+  			{
+  				type: "prayer",
+  				id: "philosopher_stone_p",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "mana",
+  				value: -50
+  			},
+  			{
+  				type: "resource",
+  				id: "gold",
+  				value: 15
+  			},
+  			{
+  				type: "resource",
+  				id: "gold",
+  				value: 3,
+  				perc: true
+  			}
+  		]
+  	},
+  	{
   		id: "army_blessing",
   		type: "spell",
+  		cat: "army",
   		req: [
   			{
   				type: "prayer",
@@ -19842,8 +26802,133 @@ const taVersion = "3.9.1";
   		]
   	},
   	{
+  		id: "mana_materials_s",
+  		type: "spell",
+  		cat: "resource",
+  		req: [
+  			{
+  				type: "prayer",
+  				id: "mana_materials_p",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "mana",
+  				value: -75
+  			},
+  			{
+  				type: "resource",
+  				id: "building_material",
+  				value: 7
+  			},
+  			{
+  				type: "resource",
+  				id: "steel",
+  				value: 7
+  			},
+  			{
+  				type: "resource",
+  				id: "supplies",
+  				value: 7
+  			},
+  			{
+  				type: "resource",
+  				id: "crystal",
+  				value: 7
+  			},
+  			{
+  				type: "resource",
+  				id: "saltpetre",
+  				value: 7
+  			}
+  		]
+  	},
+  	{
+  		id: "tome_wisdom_s",
+  		type: "spell",
+  		cat: "army",
+  		req: [
+  			{
+  				type: "prayer",
+  				id: "tome_wisdom_p",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "mana",
+  				value: -75
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "mage_u",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 24,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "mage_u",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 12,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "archmage_u",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 120,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "archmage_u",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 80,
+  				perc: false
+  			}
+  		]
+  	},
+  	{
+  		id: "mana_spiral_s",
+  		type: "spell",
+  		cat: "resource",
+  		req: [
+  			{
+  				type: "prayer",
+  				id: "mana_spiral_p",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "mana",
+  				value: 100
+  			},
+  			{
+  				type: "resource",
+  				id: "mana",
+  				value: 7,
+  				perc: true
+  			}
+  		]
+  	},
+  	{
   		id: "children_hope",
   		type: "spell",
+  		cat: "resource",
   		req: [
   			{
   				type: "prayer",
@@ -19898,6 +26983,524 @@ const taVersion = "3.9.1";
   ];
 
   var tech = [
+  	{
+  		id: "trading_woods",
+  		req: [
+  			{
+  				type: "building",
+  				id: "lucky_grove_b",
+  				value: 5
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "gold",
+  				value: 2,
+  				perc: true
+  			},
+  			{
+  				type: "resource",
+  				id: "wood",
+  				value: 6,
+  				perc: true
+  			}
+  		]
+  	},
+  	{
+  		id: "fine_lucky_wood",
+  		req: [
+  			{
+  				type: "building",
+  				id: "lucky_grove_b",
+  				value: 10
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "wood",
+  				value: 10,
+  				perc: true
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "archer",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 2,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "crossbowman",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 4,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "elf_warrior",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 6,
+  				perc: false
+  			}
+  		]
+  	},
+  	{
+  		id: "trained_longbowman",
+  		req: [
+  			{
+  				type: "building",
+  				id: "lucky_grove_b",
+  				value: 15
+  			}
+  		]
+  	},
+  	{
+  		id: "throwing_coin",
+  		req: [
+  			{
+  				type: "building",
+  				id: "lucky_well_b",
+  				value: 5
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "gold",
+  				value: 5,
+  				perc: true
+  			}
+  		]
+  	},
+  	{
+  		id: "dirty_money",
+  		req: [
+  			{
+  				type: "building",
+  				id: "lucky_well_b",
+  				value: 10
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "gold",
+  				value: 10,
+  				perc: true
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "white_company",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 8,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "white_company",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 8,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "mercenary_veteran",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 8,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "mercenary_veteran",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 8,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "canava_guard",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 8,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "canava_guard",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 8,
+  				perc: false
+  			}
+  		]
+  	},
+  	{
+  		id: "fountain_gold",
+  		req: [
+  			{
+  				type: "building",
+  				id: "lucky_well_b",
+  				value: 15
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "gold",
+  				value: 10
+  			},
+  			{
+  				type: "resource",
+  				id: "gold",
+  				value: 20,
+  				perc: true
+  			}
+  		]
+  	},
+  	{
+  		id: "lucky_idea",
+  		req: [
+  			{
+  				type: "building",
+  				id: "eureka_halls_b",
+  				value: 5
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "research",
+  				value: 2
+  			},
+  			{
+  				type: "resource",
+  				id: "research",
+  				value: 5,
+  				perc: true
+  			}
+  		]
+  	},
+  	{
+  		id: "eureka",
+  		req: [
+  			{
+  				type: "building",
+  				id: "eureka_halls_b",
+  				value: 10
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "research",
+  				value: 7
+  			},
+  			{
+  				type: "resource",
+  				id: "luck",
+  				value: 7,
+  				fix: true
+  			}
+  		]
+  	},
+  	{
+  		id: "master_history",
+  		req: [
+  			{
+  				type: "building",
+  				id: "eureka_halls_b",
+  				value: 15
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "research",
+  				value: 5
+  			},
+  			{
+  				type: "resource",
+  				id: "research",
+  				value: 10,
+  				perc: true
+  			}
+  		]
+  	},
+  	{
+  		id: "lucky_investments",
+  		req: [
+  			{
+  				type: "building",
+  				id: "amusement_quarter_b",
+  				value: 5
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "gold",
+  				value: 4
+  			},
+  			{
+  				type: "population",
+  				id: "unemployed",
+  				value: 2
+  			}
+  		]
+  	},
+  	{
+  		id: "lucky_little_city",
+  		req: [
+  			{
+  				type: "building",
+  				id: "amusement_quarter_b",
+  				value: 10
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "research",
+  				value: 3
+  			},
+  			{
+  				type: "resource",
+  				id: "gold",
+  				value: 3
+  			},
+  			{
+  				type: "resource",
+  				id: "luck",
+  				value: 3,
+  				fix: true
+  			},
+  			{
+  				type: "population",
+  				id: "unemployed",
+  				value: 3
+  			}
+  		]
+  	},
+  	{
+  		id: "illgotten_gains",
+  		req: [
+  			{
+  				type: "building",
+  				id: "amusement_quarter_b",
+  				value: 15
+  			}
+  		]
+  	},
+  	{
+  		id: "prepare_tunnel",
+  		req: [
+  			{
+  				type: "building",
+  				id: "underground_tunnel_b",
+  				value: 5
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "settlement_defenses",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 400,
+  				perc: false
+  			},
+  			{
+  				type: "cap",
+  				id: "army",
+  				value: 10
+  			}
+  		]
+  	},
+  	{
+  		id: "tunnel_hq",
+  		req: [
+  			{
+  				type: "building",
+  				id: "underground_tunnel_b",
+  				value: 10
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "commander",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 40,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "commander",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 40,
+  				perc: false
+  			},
+  			{
+  				type: "cap",
+  				id: "army",
+  				value: 15
+  			}
+  		]
+  	},
+  	{
+  		id: "stocked_tunnel",
+  		req: [
+  			{
+  				type: "building",
+  				id: "underground_tunnel_b",
+  				value: 15
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "food",
+  				value: 7
+  			},
+  			{
+  				type: "resource",
+  				id: "stone",
+  				value: 7
+  			},
+  			{
+  				type: "resource",
+  				id: "supplies",
+  				value: 3
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "settlement_defenses",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 700,
+  				perc: false
+  			},
+  			{
+  				type: "cap",
+  				id: "army",
+  				value: 35
+  			}
+  		]
+  	},
+  	{
+  		id: "martial_arts",
+  		req: [
+  			{
+  				type: "building",
+  				id: "fate_shrine_b",
+  				value: 5
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "faith",
+  				value: 5
+  			},
+  			{
+  				type: "resource",
+  				id: "mana",
+  				value: 5
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "warrior_monk",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 7,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "warrior_monk",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 7,
+  				perc: false
+  			}
+  		]
+  	},
+  	{
+  		id: "fate_blessing",
+  		req: [
+  			{
+  				type: "building",
+  				id: "fate_shrine_b",
+  				value: 10
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "faith",
+  				value: 10
+  			},
+  			{
+  				type: "resource",
+  				id: "mana",
+  				value: 10
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "cleric",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 7,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "cleric",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 7,
+  				perc: false
+  			}
+  		]
+  	},
+  	{
+  		id: "avatar_fate",
+  		req: [
+  			{
+  				type: "building",
+  				id: "fate_shrine_b",
+  				value: 15
+  			}
+  		]
+  	},
   	{
   		id: "housing"
   	},
@@ -20508,6 +28111,26 @@ const taVersion = "3.9.1";
   		]
   	},
   	{
+  		id: "house_of_workers",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "research",
+  				value: 250
+  			},
+  			{
+  				type: "tech",
+  				id: "mining",
+  				value: 1
+  			},
+  			{
+  				type: "stat",
+  				id: "ng_reset",
+  				value: 1
+  			}
+  		]
+  	},
+  	{
   		id: "architecture_titan_t",
   		req: [
   			{
@@ -20663,6 +28286,178 @@ const taVersion = "3.9.1";
   		]
   	},
   	{
+  		id: "bronze_projectiles",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "copper",
+  				value: 500
+  			},
+  			{
+  				type: "tech",
+  				id: "bronze_working",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "archer",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 1,
+  				perc: false
+  			}
+  		]
+  	},
+  	{
+  		id: "bronze_shield",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "wood",
+  				value: 500
+  			},
+  			{
+  				type: "resource",
+  				id: "copper",
+  				value: 500
+  			},
+  			{
+  				type: "tech",
+  				id: "bronze_working",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "spearman",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 1,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "phalanx",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 1,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "shieldbearer",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 1,
+  				perc: false
+  			}
+  		]
+  	},
+  	{
+  		id: "bronze_sword",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "copper",
+  				value: 750
+  			},
+  			{
+  				type: "tech",
+  				id: "bronze_working",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "warrior",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 1,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "warrior",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 1,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "heavy_warrior",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 1,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "heavy_warrior",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 1,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "mercenary_veteran",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 1,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "mercenary_veteran",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 1,
+  				perc: false
+  			}
+  		]
+  	},
+  	{
+  		id: "bronze_lance",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "copper",
+  				value: 600
+  			},
+  			{
+  				type: "tech",
+  				id: "bronze_working",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "light_cavarly",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 2,
+  				perc: false
+  			}
+  		]
+  	},
+  	{
   		id: "ancient_balor_t",
   		req: [
   			{
@@ -20713,6 +28508,21 @@ const taVersion = "3.9.1";
   		]
   	},
   	{
+  		id: "oracle_t",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "faith",
+  				value: 500
+  			},
+  			{
+  				type: "tech",
+  				id: "religion",
+  				value: 1
+  			}
+  		]
+  	},
+  	{
   		id: "magic",
   		req: [
   			{
@@ -20723,6 +28533,51 @@ const taVersion = "3.9.1";
   			{
   				type: "tech",
   				id: "religion",
+  				value: 1
+  			}
+  		]
+  	},
+  	{
+  		id: "ancient_spell",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "faith",
+  				value: 1250
+  			},
+  			{
+  				type: "tech",
+  				id: "magic",
+  				value: 1
+  			},
+  			{
+  				type: "stat",
+  				id: "ng_reset",
+  				value: 1
+  			}
+  		]
+  	},
+  	{
+  		id: "zenix_familiar_t",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "research",
+  				value: 720
+  			},
+  			{
+  				type: "resource",
+  				id: "food",
+  				value: 500
+  			},
+  			{
+  				type: "tech",
+  				id: "magic",
+  				value: 1
+  			},
+  			{
+  				type: "legacy",
+  				id: "zenix_familiar_l",
   				value: 1
   			}
   		]
@@ -21029,6 +28884,46 @@ const taVersion = "3.9.1";
   				id: "fame",
   				value: 25,
   				fix: true
+  			}
+  		]
+  	},
+  	{
+  		id: "phalanx_combat",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "research",
+  				value: 2500
+  			},
+  			{
+  				type: "tech",
+  				id: "warfare",
+  				value: 1
+  			},
+  			{
+  				type: "stat",
+  				id: "ng_reset",
+  				value: 2
+  			}
+  		]
+  	},
+  	{
+  		id: "boot_camp_t",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "research",
+  				value: 3000
+  			},
+  			{
+  				type: "tech",
+  				id: "phalanx_combat",
+  				value: 1
+  			},
+  			{
+  				type: "stat",
+  				id: "ng_reset",
+  				value: 2
   			}
   		]
   	},
@@ -21356,6 +29251,268 @@ const taVersion = "3.9.1";
   				type: "cap",
   				id: "army",
   				value: 3
+  			}
+  		]
+  	},
+  	{
+  		id: "iron_projectiles",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "iron",
+  				value: 2500
+  			},
+  			{
+  				type: "tech",
+  				id: "iron_working",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "archer",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 2,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "crossbowman",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 2,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "white_company",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 2,
+  				perc: false
+  			}
+  		]
+  	},
+  	{
+  		id: "iron_shield",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "wood",
+  				value: 5000
+  			},
+  			{
+  				type: "resource",
+  				id: "iron",
+  				value: 4000
+  			},
+  			{
+  				type: "tech",
+  				id: "iron_working",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "spearman",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 2,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "phalanx",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 2,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "shieldbearer",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 2,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "cleric",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 2,
+  				perc: false
+  			}
+  		]
+  	},
+  	{
+  		id: "iron_sword",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "iron",
+  				value: 7500
+  			},
+  			{
+  				type: "tech",
+  				id: "iron_working",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "warrior",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 2,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "warrior",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 1,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "heavy_warrior",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 2,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "heavy_warrior",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 1,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "mercenary_veteran",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 2,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "mercenary_veteran",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 1,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "canava_guard",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 2,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "canava_guard",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 1,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "man_at_arms",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 2,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "man_at_arms",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 1,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "commander",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 2,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "commander",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 1,
+  				perc: false
+  			}
+  		]
+  	},
+  	{
+  		id: "iron_lance",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "iron",
+  				value: 6500
+  			},
+  			{
+  				type: "tech",
+  				id: "iron_working",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "light_cavarly",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 3,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "knight",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 3,
+  				perc: false
   			}
   		]
   	},
@@ -21922,6 +30079,36 @@ const taVersion = "3.9.1";
   		]
   	},
   	{
+  		id: "embassy_nation",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "gold",
+  				value: 25000
+  			},
+  			{
+  				type: "diplomacy_alliance",
+  				id: "theresmore_wanders",
+  				value: 1
+  			},
+  			{
+  				type: "diplomacy_alliance",
+  				id: "nightdale_protectorate",
+  				value: 1
+  			},
+  			{
+  				type: "diplomacy_alliance",
+  				id: "zultan_emirate",
+  				value: 1
+  			},
+  			{
+  				type: "diplomacy_alliance",
+  				id: "western_kingdom",
+  				value: 1
+  			}
+  		]
+  	},
+  	{
   		id: "liturgical_rites",
   		req: [
   			{
@@ -22168,6 +30355,287 @@ const taVersion = "3.9.1";
   				type: "tech",
   				id: "metal_casting",
   				value: 1
+  			}
+  		]
+  	},
+  	{
+  		id: "steel_projectiles",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "steel",
+  				value: 2500
+  			},
+  			{
+  				type: "tech",
+  				id: "steeling",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "archer",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 3,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "crossbowman",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 3,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "white_company",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 3,
+  				perc: false
+  			}
+  		]
+  	},
+  	{
+  		id: "steel_shield",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "wood",
+  				value: 15000
+  			},
+  			{
+  				type: "resource",
+  				id: "steel",
+  				value: 4000
+  			},
+  			{
+  				type: "tech",
+  				id: "steeling",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "spearman",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 3,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "phalanx",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 3,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "shieldbearer",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 3,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "cleric",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 3,
+  				perc: false
+  			}
+  		]
+  	},
+  	{
+  		id: "steel_sword",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "iron",
+  				value: 12500
+  			},
+  			{
+  				type: "resource",
+  				id: "steel",
+  				value: 7500
+  			},
+  			{
+  				type: "tech",
+  				id: "steeling",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "warrior",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 3,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "warrior",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 1,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "heavy_warrior",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 3,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "heavy_warrior",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 1,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "mercenary_veteran",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 3,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "mercenary_veteran",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 1,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "canava_guard",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 3,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "canava_guard",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 1,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "man_at_arms",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 3,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "man_at_arms",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 1,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "commander",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 3,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "commander",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 1,
+  				perc: false
+  			}
+  		]
+  	},
+  	{
+  		id: "steel_lance",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "iron",
+  				value: 16500
+  			},
+  			{
+  				type: "resource",
+  				id: "steel",
+  				value: 6500
+  			},
+  			{
+  				type: "tech",
+  				id: "steeling",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "light_cavarly",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 4,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "knight",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 4,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "cataphract",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 4,
+  				perc: false
   			}
   		]
   	},
@@ -22593,6 +31061,46 @@ const taVersion = "3.9.1";
   			{
   				type: "tech",
   				id: "moonlight_night",
+  				value: 1
+  			}
+  		]
+  	},
+  	{
+  		id: "favor_gods",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "research",
+  				value: 18000
+  			},
+  			{
+  				type: "resource",
+  				id: "faith",
+  				value: 5000
+  			},
+  			{
+  				type: "tech",
+  				id: "end_feudal_era",
+  				value: 1
+  			}
+  		]
+  	},
+  	{
+  		id: "underground_library",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "research",
+  				value: 25000
+  			},
+  			{
+  				type: "resource",
+  				id: "faith",
+  				value: 7000
+  			},
+  			{
+  				type: "building",
+  				id: "library_souls",
   				value: 1
   			}
   		]
@@ -23756,6 +32264,335 @@ const taVersion = "3.9.1";
   		]
   	},
   	{
+  		id: "adamantium_projectiles",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "steel",
+  				value: 10000
+  			},
+  			{
+  				type: "resource",
+  				id: "crystal",
+  				value: 5000
+  			},
+  			{
+  				type: "resource",
+  				id: "saltpetre",
+  				value: 5000
+  			},
+  			{
+  				type: "tech",
+  				id: "research_district",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "archer",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 4,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "crossbowman",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 4,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "white_company",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 4,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "arquebusier",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 4,
+  				perc: false
+  			}
+  		]
+  	},
+  	{
+  		id: "adamantium_shield",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "wood",
+  				value: 25000
+  			},
+  			{
+  				type: "resource",
+  				id: "steel",
+  				value: 10000
+  			},
+  			{
+  				type: "resource",
+  				id: "crystal",
+  				value: 5000
+  			},
+  			{
+  				type: "resource",
+  				id: "saltpetre",
+  				value: 5000
+  			},
+  			{
+  				type: "tech",
+  				id: "research_district",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "spearman",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 4,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "phalanx",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 4,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "shieldbearer",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 4,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "cleric",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 4,
+  				perc: false
+  			}
+  		]
+  	},
+  	{
+  		id: "adamantium_sword",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "steel",
+  				value: 15000
+  			},
+  			{
+  				type: "resource",
+  				id: "crystal",
+  				value: 7500
+  			},
+  			{
+  				type: "resource",
+  				id: "saltpetre",
+  				value: 7500
+  			},
+  			{
+  				type: "tech",
+  				id: "research_district",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "warrior",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 3,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "warrior",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 2,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "heavy_warrior",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 3,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "heavy_warrior",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 2,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "mercenary_veteran",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 3,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "mercenary_veteran",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 2,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "canava_guard",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 3,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "canava_guard",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 2,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "man_at_arms",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 3,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "man_at_arms",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 2,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "commander",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 3,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "commander",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 2,
+  				perc: false
+  			}
+  		]
+  	},
+  	{
+  		id: "adamantium_lance",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "steel",
+  				value: 12000
+  			},
+  			{
+  				type: "resource",
+  				id: "crystal",
+  				value: 5500
+  			},
+  			{
+  				type: "resource",
+  				id: "saltpetre",
+  				value: 5500
+  			},
+  			{
+  				type: "tech",
+  				id: "research_district",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "light_cavarly",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 5,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "knight",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 5,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "cataphract",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 5,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "cuirassier",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 5,
+  				perc: false
+  			}
+  		]
+  	},
+  	{
   		id: "harbor_project",
   		req: [
   			{
@@ -24337,6 +33174,21 @@ const taVersion = "3.9.1";
   		]
   	},
   	{
+  		id: "huge_cave_t",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "research",
+  				value: 125000
+  			},
+  			{
+  				type: "enemy",
+  				id: "huge_cave",
+  				value: 1
+  			}
+  		]
+  	},
+  	{
   		id: "colonial_trade",
   		req: [
   			{
@@ -24727,6 +33579,26 @@ const taVersion = "3.9.1";
   		]
   	},
   	{
+  		id: "alchemist_complex_t",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "research",
+  				value: 128000
+  			},
+  			{
+  				type: "building",
+  				id: "colony_hall",
+  				value: 5
+  			},
+  			{
+  				type: "tech",
+  				id: "artisan_complex",
+  				value: 1
+  			}
+  		]
+  	},
+  	{
   		id: "large_shed_t",
   		req: [
   			{
@@ -24783,6 +33655,400 @@ const taVersion = "3.9.1";
   				type: "tech",
   				id: "seafaring",
   				value: 1
+  			}
+  		]
+  	},
+  	{
+  		id: "mithril_projectiles",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "steel",
+  				value: 25000
+  			},
+  			{
+  				type: "resource",
+  				id: "natronite",
+  				value: 5000
+  			},
+  			{
+  				type: "tech",
+  				id: "new_world_exploration",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "archer",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 5,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "crossbowman",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 5,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "white_company",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 5,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "arquebusier",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 5,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "ranger",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 5,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "elf_warrior",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 5,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "marksman",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 5,
+  				perc: false
+  			}
+  		]
+  	},
+  	{
+  		id: "mithril_shield",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "steel",
+  				value: 20000
+  			},
+  			{
+  				type: "resource",
+  				id: "natronite",
+  				value: 7000
+  			},
+  			{
+  				type: "tech",
+  				id: "new_world_exploration",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "spearman",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 5,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "phalanx",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 5,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "shieldbearer",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 5,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "cleric",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 5,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "paladin",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 5,
+  				perc: false
+  			}
+  		]
+  	},
+  	{
+  		id: "mithril_sword",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "steel",
+  				value: 30000
+  			},
+  			{
+  				type: "resource",
+  				id: "natronite",
+  				value: 12500
+  			},
+  			{
+  				type: "tech",
+  				id: "new_world_exploration",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "warrior",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 3,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "warrior",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 3,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "heavy_warrior",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 3,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "heavy_warrior",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 3,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "mercenary_veteran",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 3,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "mercenary_veteran",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 3,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "canava_guard",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 3,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "canava_guard",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 3,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "man_at_arms",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 3,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "man_at_arms",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 3,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "line_infantry",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 3,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "line_infantry",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 3,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "colonial_militia",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 3,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "colonial_militia",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 3,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "commander",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 3,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "commander",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 3,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "general",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 3,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "general",
+  				type_gen: "stat",
+  				gen: "defense",
+  				value: 3,
+  				perc: false
+  			}
+  		]
+  	},
+  	{
+  		id: "mithril_lance",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "steel",
+  				value: 17000
+  			},
+  			{
+  				type: "resource",
+  				id: "natronite",
+  				value: 10000
+  			},
+  			{
+  				type: "tech",
+  				id: "new_world_exploration",
+  				value: 1
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "light_cavarly",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 6,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "knight",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 6,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "cataphract",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 6,
+  				perc: false
+  			},
+  			{
+  				type: "modifier",
+  				type_id: "army",
+  				id: "cuirassier",
+  				type_gen: "stat",
+  				gen: "attack",
+  				value: 6,
+  				perc: false
   			}
   		]
   	},
@@ -25257,6 +34523,21 @@ const taVersion = "3.9.1";
   				fix: true
   			}
   		]
+  	},
+  	{
+  		id: "dark_crystal",
+  		req: [
+  			{
+  				type: "resource",
+  				id: "research",
+  				value: 200000
+  			},
+  			{
+  				type: "diplomacy_owned",
+  				id: "lich_fortress",
+  				value: 1
+  			}
+  		]
   	}
   ];
 
@@ -25354,6 +34635,51 @@ const taVersion = "3.9.1";
   				type: "resource",
   				id: "food",
   				value: -0.2
+  			}
+  		]
+  	},
+  	{
+  		id: "familiar",
+  		type: "recon",
+  		attack: 4,
+  		defense: 4,
+  		order: 3,
+  		cap: 5,
+  		category: 0,
+  		req: [
+  			{
+  				type: "tech",
+  				id: "zenix_familiar_t",
+  				value: 1
+  			},
+  			{
+  				type: "resource",
+  				id: "food",
+  				value: 100
+  			},
+  			{
+  				type: "resource",
+  				id: "mana",
+  				value: 100
+  			}
+  		],
+  		reqAttack: [
+  			{
+  				type: "resource",
+  				id: "food",
+  				value: 100
+  			},
+  			{
+  				type: "resource",
+  				id: "mana",
+  				value: 100
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "research",
+  				value: 0.4
   			}
   		]
   	},
@@ -25662,6 +34988,56 @@ const taVersion = "3.9.1";
   		]
   	},
   	{
+  		id: "mage_u",
+  		type: "army",
+  		attack: 48,
+  		defense: 1,
+  		order: 3,
+  		cap: 50,
+  		category: 1,
+  		req: [
+  			{
+  				type: "prayer",
+  				id: "mage_p",
+  				value: 1
+  			},
+  			{
+  				type: "resource",
+  				id: "faith",
+  				value: 1250
+  			},
+  			{
+  				type: "resource",
+  				id: "mana",
+  				value: 1000
+  			}
+  		],
+  		reqAttack: [
+  			{
+  				type: "resource",
+  				id: "faith",
+  				value: 500
+  			},
+  			{
+  				type: "resource",
+  				id: "mana",
+  				value: 250
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "mana",
+  				value: 1.2
+  			},
+  			{
+  				type: "resource",
+  				id: "gold",
+  				value: -1.5
+  			}
+  		]
+  	},
+  	{
   		id: "arquebusier",
   		type: "army",
   		attack: 16,
@@ -25848,6 +35224,66 @@ const taVersion = "3.9.1";
   		]
   	},
   	{
+  		id: "archmage_u",
+  		type: "army",
+  		attack: 260,
+  		defense: 120,
+  		order: 3,
+  		cap: 5,
+  		category: 1,
+  		req: [
+  			{
+  				type: "prayer",
+  				id: "archmage_p",
+  				value: 1
+  			},
+  			{
+  				type: "resource",
+  				id: "faith",
+  				value: 7000
+  			},
+  			{
+  				type: "resource",
+  				id: "mana",
+  				value: 7000
+  			}
+  		],
+  		reqAttack: [
+  			{
+  				type: "resource",
+  				id: "faith",
+  				value: 1200
+  			},
+  			{
+  				type: "resource",
+  				id: "mana",
+  				value: 1200
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "food",
+  				value: -12
+  			},
+  			{
+  				type: "resource",
+  				id: "gold",
+  				value: -12
+  			},
+  			{
+  				type: "resource",
+  				id: "mana",
+  				value: 7
+  			},
+  			{
+  				type: "resource",
+  				id: "crystal",
+  				value: 3
+  			}
+  		]
+  	},
+  	{
   		id: "ranger",
   		type: "army",
   		attack: 22,
@@ -25992,6 +35428,50 @@ const taVersion = "3.9.1";
   		]
   	},
   	{
+  		id: "longbowman",
+  		type: "army",
+  		attack: 91,
+  		defense: 2,
+  		order: 3,
+  		category: 1,
+  		req: [
+  			{
+  				type: "tech",
+  				id: "trained_longbowman",
+  				value: 1
+  			},
+  			{
+  				type: "resource",
+  				id: "gold",
+  				value: 8000
+  			},
+  			{
+  				type: "resource",
+  				id: "wood",
+  				value: 8000
+  			}
+  		],
+  		reqAttack: [
+  			{
+  				type: "resource",
+  				id: "gold",
+  				value: 50
+  			},
+  			{
+  				type: "resource",
+  				id: "food",
+  				value: 10
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "food",
+  				value: -0.25
+  			}
+  		]
+  	},
+  	{
   		id: "spearman",
   		type: "army",
   		attack: 2,
@@ -26037,6 +35517,55 @@ const taVersion = "3.9.1";
   				type: "resource",
   				id: "food",
   				value: -0.2
+  			}
+  		]
+  	},
+  	{
+  		id: "phalanx",
+  		type: "army",
+  		attack: 6,
+  		defense: 20,
+  		order: 1,
+  		category: 3,
+  		req: [
+  			{
+  				type: "tech",
+  				id: "phalanx_combat",
+  				value: 1
+  			},
+  			{
+  				type: "resource",
+  				id: "gold",
+  				value: 200
+  			},
+  			{
+  				type: "resource",
+  				id: "wood",
+  				value: 150
+  			},
+  			{
+  				type: "resource",
+  				id: "iron",
+  				value: 150
+  			}
+  		],
+  		reqAttack: [
+  			{
+  				type: "resource",
+  				id: "gold",
+  				value: 30
+  			},
+  			{
+  				type: "resource",
+  				id: "food",
+  				value: 30
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "food",
+  				value: -0.3
   			}
   		]
   	},
@@ -26218,6 +35747,51 @@ const taVersion = "3.9.1";
   				type: "resource",
   				id: "mana",
   				value: -1
+  			}
+  		]
+  	},
+  	{
+  		id: "armored_caravan_u",
+  		type: "army",
+  		attack: 3,
+  		defense: 44,
+  		order: 2,
+  		category: 3,
+  		cap: 50,
+  		req: [
+  			{
+  				type: "prayer",
+  				id: "armored_caravan_p",
+  				value: 1
+  			},
+  			{
+  				type: "resource",
+  				id: "wood",
+  				value: 10000
+  			},
+  			{
+  				type: "resource",
+  				id: "steel",
+  				value: 2000
+  			}
+  		],
+  		reqAttack: [
+  			{
+  				type: "resource",
+  				id: "wood",
+  				value: 120
+  			},
+  			{
+  				type: "resource",
+  				id: "steel",
+  				value: 60
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "gold",
+  				value: 3
   			}
   		]
   	},
@@ -26475,6 +36049,155 @@ const taVersion = "3.9.1";
   				type: "resource",
   				id: "mana",
   				value: -30
+  			}
+  		]
+  	},
+  	{
+  		id: "smuggler",
+  		type: "army",
+  		attack: 2,
+  		defense: 52,
+  		order: 1,
+  		category: 3,
+  		req: [
+  			{
+  				type: "tech",
+  				id: "illgotten_gains",
+  				value: 1
+  			},
+  			{
+  				type: "resource",
+  				id: "gold",
+  				value: 250
+  			},
+  			{
+  				type: "resource",
+  				id: "tools",
+  				value: 250
+  			}
+  		],
+  		reqAttack: [
+  			{
+  				type: "resource",
+  				id: "gold",
+  				value: 25
+  			},
+  			{
+  				type: "resource",
+  				id: "tools",
+  				value: 15
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "food",
+  				value: -0.2
+  			}
+  		]
+  	},
+  	{
+  		id: "mana_fortress_u",
+  		type: "army",
+  		attack: 20,
+  		defense: 2250,
+  		order: 1,
+  		cap: 1,
+  		category: 3,
+  		req: [
+  			{
+  				type: "prayer",
+  				id: "mana_fortress_p",
+  				value: 1
+  			},
+  			{
+  				type: "resource",
+  				id: "stone",
+  				value: 25000
+  			},
+  			{
+  				type: "resource",
+  				id: "mana",
+  				value: 20000
+  			}
+  		],
+  		reqAttack: [
+  			{
+  				type: "resource",
+  				id: "stone",
+  				value: 10000
+  			},
+  			{
+  				type: "resource",
+  				id: "mana",
+  				value: 10000
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "mana",
+  				value: -100
+  			}
+  		]
+  	},
+  	{
+  		id: "high_prelate_u",
+  		type: "army",
+  		attack: 400,
+  		defense: 900,
+  		order: 3,
+  		cap: 1,
+  		category: 3,
+  		req: [
+  			{
+  				type: "building",
+  				id: "ivory_tower_b",
+  				value: 1
+  			},
+  			{
+  				type: "resource",
+  				id: "faith",
+  				value: 25000
+  			},
+  			{
+  				type: "resource",
+  				id: "mana",
+  				value: 25000
+  			}
+  		],
+  		reqAttack: [
+  			{
+  				type: "resource",
+  				id: "faith",
+  				value: 12000
+  			},
+  			{
+  				type: "resource",
+  				id: "mana",
+  				value: 12000
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "gold",
+  				value: 35
+  			},
+  			{
+  				type: "resource",
+  				id: "mana",
+  				value: 35
+  			},
+  			{
+  				type: "resource",
+  				id: "crystal",
+  				value: 7
+  			},
+  			{
+  				type: "resource",
+  				id: "natronite",
+  				value: 7
   			}
   		]
   	},
@@ -27051,6 +36774,41 @@ const taVersion = "3.9.1";
   		]
   	},
   	{
+  		id: "nikharul_soulstealer",
+  		type: "army",
+  		attack: 1200,
+  		defense: 150,
+  		order: 2,
+  		cap: 1,
+  		category: 2,
+  		req: [
+  			{
+  				type: "prayer",
+  				id: "summon_nikharul",
+  				value: 1
+  			},
+  			{
+  				type: "resource",
+  				id: "mana",
+  				value: 12500
+  			}
+  		],
+  		reqAttack: [
+  			{
+  				type: "resource",
+  				id: "mana",
+  				value: 6000
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "mana",
+  				value: -100
+  			}
+  		]
+  	},
+  	{
   		id: "light_cavarly",
   		type: "army",
   		attack: 10,
@@ -27302,6 +37060,56 @@ const taVersion = "3.9.1";
   		]
   	},
   	{
+  		id: "avatar_fate_u",
+  		type: "army",
+  		attack: 1250,
+  		defense: 1000,
+  		order: 2,
+  		cap: 1,
+  		category: 4,
+  		req: [
+  			{
+  				type: "tech",
+  				id: "avatar_fate",
+  				value: 1
+  			},
+  			{
+  				type: "resource",
+  				id: "faith",
+  				value: 90000
+  			},
+  			{
+  				type: "resource",
+  				id: "mana",
+  				value: 90000
+  			}
+  		],
+  		reqAttack: [
+  			{
+  				type: "resource",
+  				id: "faith",
+  				value: 9000
+  			},
+  			{
+  				type: "resource",
+  				id: "mana",
+  				value: 9000
+  			}
+  		],
+  		gen: [
+  			{
+  				type: "resource",
+  				id: "faith",
+  				value: 25
+  			},
+  			{
+  				type: "resource",
+  				id: "mana",
+  				value: 25
+  			}
+  		]
+  	},
+  	{
   		id: "ancient_giant",
   		type: "enemy",
   		attack: 250,
@@ -27309,6 +37117,14 @@ const taVersion = "3.9.1";
   		order: 3,
   		cap: 1,
   		category: 3
+  	},
+  	{
+  		id: "aqrabuamelu",
+  		type: "enemy",
+  		attack: 46,
+  		defense: 63,
+  		order: 1,
+  		category: 2
   	},
   	{
   		id: "archdemon",
@@ -27328,12 +37144,12 @@ const taVersion = "3.9.1";
   		category: 1
   	},
   	{
-  		id: "aqrabuamelu",
+  		id: "ball_lightning",
   		type: "enemy",
-  		attack: 46,
-  		defense: 63,
+  		attack: 55,
+  		defense: 20,
   		order: 1,
-  		category: 2
+  		category: 4
   	},
   	{
   		id: "balor",
@@ -27342,6 +37158,72 @@ const taVersion = "3.9.1";
   		defense: 150,
   		order: 1,
   		category: 2
+  	},
+  	{
+  		id: "bandit",
+  		type: "enemy",
+  		attack: 3,
+  		defense: 4,
+  		order: 1,
+  		category: 2
+  	},
+  	{
+  		id: "barbarian_chosen",
+  		type: "enemy",
+  		attack: 30,
+  		defense: 12,
+  		order: 1,
+  		category: 2
+  	},
+  	{
+  		id: "barbarian_drummer",
+  		type: "enemy",
+  		attack: 6,
+  		defense: 18,
+  		order: 2,
+  		category: 3
+  	},
+  	{
+  		id: "barbarian_leader",
+  		type: "enemy",
+  		attack: 48,
+  		defense: 22,
+  		order: 1,
+  		category: 2
+  	},
+  	{
+  		id: "barbarian_king",
+  		type: "enemy",
+  		attack: 76,
+  		defense: 56,
+  		order: 3,
+  		cap: 1,
+  		category: 2
+  	},
+  	{
+  		id: "barbarian_warrior",
+  		type: "enemy",
+  		attack: 13,
+  		defense: 6,
+  		order: 1,
+  		category: 2
+  	},
+  	{
+  		id: "basilisk",
+  		type: "enemy",
+  		attack: 35,
+  		defense: 16,
+  		order: 1,
+  		category: 1
+  	},
+  	{
+  		id: "black_mage",
+  		type: "enemy",
+  		attack: 52,
+  		defense: 22,
+  		order: 3,
+  		cap: 1,
+  		category: 1
   	},
   	{
   		id: "bugbear",
@@ -27367,23 +37249,6 @@ const taVersion = "3.9.1";
   		defense: 110,
   		order: 1,
   		category: 4
-  	},
-  	{
-  		id: "basilisk",
-  		type: "enemy",
-  		attack: 35,
-  		defense: 16,
-  		order: 1,
-  		category: 1
-  	},
-  	{
-  		id: "black_mage",
-  		type: "enemy",
-  		attack: 52,
-  		defense: 22,
-  		order: 3,
-  		cap: 1,
-  		category: 1
   	},
   	{
   		id: "cavarly_archer",
@@ -27445,6 +37310,14 @@ const taVersion = "3.9.1";
   		category: 2
   	},
   	{
+  		id: "deserter",
+  		type: "enemy",
+  		attack: 7,
+  		defense: 6,
+  		order: 2,
+  		category: 2
+  	},
+  	{
   		id: "dirty_rat",
   		type: "enemy",
   		attack: 1,
@@ -27453,12 +37326,13 @@ const taVersion = "3.9.1";
   		category: 4
   	},
   	{
-  		id: "draconic_warrior",
+  		id: "djinn",
   		type: "enemy",
-  		attack: 8,
-  		defense: 14,
-  		order: 1,
-  		category: 2
+  		attack: 46,
+  		defense: 36,
+  		order: 2,
+  		cap: 1,
+  		category: 1
   	},
   	{
   		id: "draconic_diver",
@@ -27469,6 +37343,14 @@ const taVersion = "3.9.1";
   		category: 4
   	},
   	{
+  		id: "draconic_leader",
+  		type: "enemy",
+  		attack: 80,
+  		defense: 65,
+  		order: 3,
+  		category: 1
+  	},
+  	{
   		id: "draconic_mage",
   		type: "enemy",
   		attack: 32,
@@ -27477,12 +37359,20 @@ const taVersion = "3.9.1";
   		category: 1
   	},
   	{
-  		id: "draconic_leader",
+  		id: "draconic_warrior",
   		type: "enemy",
-  		attack: 80,
-  		defense: 65,
-  		order: 3,
-  		category: 1
+  		attack: 8,
+  		defense: 14,
+  		order: 1,
+  		category: 2
+  	},
+  	{
+  		id: "earth_elemental",
+  		type: "enemy",
+  		attack: 20,
+  		defense: 48,
+  		order: 1,
+  		category: 3
   	},
   	{
   		id: "eternal_guardian",
@@ -27510,6 +37400,22 @@ const taVersion = "3.9.1";
   		category: 2
   	},
   	{
+  		id: "fire_elemental",
+  		type: "enemy",
+  		attack: 28,
+  		defense: 28,
+  		order: 1,
+  		category: 1
+  	},
+  	{
+  		id: "fire_salamander",
+  		type: "enemy",
+  		attack: 32,
+  		defense: 20,
+  		order: 1,
+  		category: 4
+  	},
+  	{
   		id: "frost_elemental",
   		type: "enemy",
   		attack: 20,
@@ -27527,12 +37433,13 @@ const taVersion = "3.9.1";
   		category: 3
   	},
   	{
-  		id: "fire_elemental",
+  		id: "galliard",
   		type: "enemy",
-  		attack: 28,
-  		defense: 28,
-  		order: 1,
-  		category: 1
+  		attack: 70,
+  		defense: 120,
+  		order: 2,
+  		cap: 1,
+  		category: 2
   	},
   	{
   		id: "gargoyle",
@@ -27543,12 +37450,135 @@ const taVersion = "3.9.1";
   		category: 3
   	},
   	{
+  		id: "ghast",
+  		type: "enemy",
+  		attack: 6,
+  		defense: 8,
+  		order: 2,
+  		category: 4
+  	},
+  	{
+  		id: "ghoul",
+  		type: "enemy",
+  		attack: 4,
+  		defense: 5,
+  		order: 1,
+  		category: 2
+  	},
+  	{
+  		id: "ghost",
+  		type: "enemy",
+  		attack: 5,
+  		defense: 5,
+  		order: 2,
+  		category: 4
+  	},
+  	{
+  		id: "giant_snake",
+  		type: "enemy",
+  		attack: 16,
+  		defense: 8,
+  		order: 2,
+  		category: 4
+  	},
+  	{
+  		id: "giant_spider",
+  		type: "enemy",
+  		attack: 10,
+  		defense: 8,
+  		order: 2,
+  		category: 4
+  	},
+  	{
+  		id: "giant_wasp",
+  		type: "enemy",
+  		attack: 8,
+  		defense: 4,
+  		order: 1,
+  		category: 4
+  	},
+  	{
+  		id: "gnoll_leader",
+  		type: "enemy",
+  		attack: 23,
+  		defense: 18,
+  		order: 2,
+  		cap: 1,
+  		category: 2
+  	},
+  	{
+  		id: "gnoll_raider",
+  		type: "enemy",
+  		attack: 6,
+  		defense: 5,
+  		order: 1,
+  		category: 2
+  	},
+  	{
+  		id: "goblin_marauder",
+  		type: "enemy",
+  		attack: 3,
+  		defense: 3,
+  		order: 1,
+  		category: 1
+  	},
+  	{
+  		id: "goblin_overlord",
+  		type: "enemy",
+  		attack: 20,
+  		defense: 15,
+  		order: 3,
+  		cap: 1,
+  		category: 2
+  	},
+  	{
+  		id: "goblin_warrior",
+  		type: "enemy",
+  		attack: 3,
+  		defense: 4,
+  		order: 2,
+  		category: 2
+  	},
+  	{
+  		id: "goblin_wolfrider",
+  		type: "enemy",
+  		attack: 6,
+  		defense: 7,
+  		order: 2,
+  		category: 4
+  	},
+  	{
   		id: "golem",
   		type: "enemy",
   		attack: 11,
   		defense: 42,
   		order: 1,
   		category: 3
+  	},
+  	{
+  		id: "gorgon",
+  		type: "enemy",
+  		attack: 950,
+  		defense: 600,
+  		order: 1,
+  		cap: 1,
+  		category: 2
+  	},
+  	{
+  		id: "greater_demon",
+  		type: "enemy",
+  		attack: 16,
+  		defense: 16,
+  		order: 3,
+  		category: 2
+  	},
+  	{
+  		id: "griffin",
+  		type: "enemy",
+  		attack: 42,
+  		defense: 58,
+  		order: 1,
+  		category: 4
   	},
   	{
   		id: "gulud",
@@ -27560,36 +37590,20 @@ const taVersion = "3.9.1";
   		category: 1
   	},
   	{
-  		id: "korrigan_slinger",
-  		type: "enemy",
-  		attack: 3,
-  		defense: 2,
-  		order: 2,
-  		category: 1
-  	},
-  	{
-  		id: "korrigan_swindler",
-  		type: "enemy",
-  		attack: 3,
-  		defense: 5,
-  		order: 1,
-  		category: 2
-  	},
-  	{
-  		id: "earth_elemental",
-  		type: "enemy",
-  		attack: 20,
-  		defense: 48,
-  		order: 1,
-  		category: 3
-  	},
-  	{
   		id: "harpy",
   		type: "enemy",
   		attack: 6,
   		defense: 6,
   		order: 1,
   		category: 4
+  	},
+  	{
+  		id: "hill_giant",
+  		type: "enemy",
+  		attack: 20,
+  		defense: 36,
+  		order: 1,
+  		category: 3
   	},
   	{
   		id: "hobgoblin_archer",
@@ -27626,12 +37640,60 @@ const taVersion = "3.9.1";
   		category: 4
   	},
   	{
-  		id: "gorgon",
+  		id: "imp",
   		type: "enemy",
-  		attack: 950,
-  		defense: 600,
+  		attack: 3,
+  		defense: 1,
+  		order: 2,
+  		category: 1
+  	},
+  	{
+  		id: "katana_samurai",
+  		type: "enemy",
+  		attack: 26,
+  		defense: 28,
+  		order: 1,
+  		category: 2
+  	},
+  	{
+  		id: "kobold",
+  		type: "enemy",
+  		attack: 3,
+  		defense: 2,
+  		order: 1,
+  		category: 2
+  	},
+  	{
+  		id: "kobold_champion",
+  		type: "enemy",
+  		attack: 5,
+  		defense: 12,
+  		order: 1,
+  		category: 3
+  	},
+  	{
+  		id: "kobold_king",
+  		type: "enemy",
+  		attack: 42,
+  		defense: 48,
   		order: 1,
   		cap: 1,
+  		category: 2
+  	},
+  	{
+  		id: "korrigan_slinger",
+  		type: "enemy",
+  		attack: 3,
+  		defense: 2,
+  		order: 2,
+  		category: 1
+  	},
+  	{
+  		id: "korrigan_swindler",
+  		type: "enemy",
+  		attack: 3,
+  		defense: 5,
+  		order: 1,
   		category: 2
   	},
   	{
@@ -27643,136 +37705,12 @@ const taVersion = "3.9.1";
   		category: 3
   	},
   	{
-  		id: "bandit",
-  		type: "enemy",
-  		attack: 3,
-  		defense: 4,
-  		order: 1,
-  		category: 2
-  	},
-  	{
-  		id: "barbarian_warrior",
-  		type: "enemy",
-  		attack: 13,
-  		defense: 6,
-  		order: 1,
-  		category: 2
-  	},
-  	{
-  		id: "barbarian_chosen",
-  		type: "enemy",
-  		attack: 30,
-  		defense: 12,
-  		order: 1,
-  		category: 2
-  	},
-  	{
-  		id: "barbarian_drummer",
-  		type: "enemy",
-  		attack: 6,
-  		defense: 18,
-  		order: 2,
-  		category: 3
-  	},
-  	{
-  		id: "barbarian_leader",
-  		type: "enemy",
-  		attack: 48,
-  		defense: 22,
-  		order: 1,
-  		category: 2
-  	},
-  	{
-  		id: "barbarian_king",
-  		type: "enemy",
-  		attack: 76,
-  		defense: 56,
-  		order: 3,
-  		cap: 1,
-  		category: 2
-  	},
-  	{
-  		id: "djinn",
-  		type: "enemy",
-  		attack: 46,
-  		defense: 36,
-  		order: 2,
-  		cap: 1,
-  		category: 1
-  	},
-  	{
-  		id: "fire_salamander",
-  		type: "enemy",
-  		attack: 32,
-  		defense: 20,
-  		order: 1,
-  		category: 4
-  	},
-  	{
-  		id: "galliard",
-  		type: "enemy",
-  		attack: 70,
-  		defense: 120,
-  		order: 2,
-  		cap: 1,
-  		category: 2
-  	},
-  	{
-  		id: "ghast",
-  		type: "enemy",
-  		attack: 6,
-  		defense: 8,
-  		order: 2,
-  		category: 4
-  	},
-  	{
-  		id: "ghoul",
-  		type: "enemy",
-  		attack: 4,
-  		defense: 5,
-  		order: 1,
-  		category: 2
-  	},
-  	{
-  		id: "giant_wasp",
+  		id: "lesser_demon",
   		type: "enemy",
   		attack: 8,
-  		defense: 4,
+  		defense: 8,
   		order: 1,
-  		category: 4
-  	},
-  	{
-  		id: "goblin_marauder",
-  		type: "enemy",
-  		attack: 3,
-  		defense: 3,
-  		order: 1,
-  		category: 1
-  	},
-  	{
-  		id: "goblin_warrior",
-  		type: "enemy",
-  		attack: 3,
-  		defense: 4,
-  		order: 2,
-  		category: 2
-  	},
-  	{
-  		id: "goblin_wolfrider",
-  		type: "enemy",
-  		attack: 6,
-  		defense: 7,
-  		order: 2,
-  		category: 4
-  	},
-  	{
-  		id: "goblin_overlord",
-  		type: "enemy",
-  		attack: 20,
-  		defense: 15,
-  		order: 3,
-  		cap: 1,
-  		category: 2
+  		category: 3
   	},
   	{
   		id: "lich",
@@ -27784,34 +37722,10 @@ const taVersion = "3.9.1";
   		category: 1
   	},
   	{
-  		id: "ball_lightning",
-  		type: "enemy",
-  		attack: 55,
-  		defense: 20,
-  		order: 1,
-  		category: 4
-  	},
-  	{
-  		id: "lizard_warrior",
-  		type: "enemy",
-  		attack: 12,
-  		defense: 12,
-  		order: 1,
-  		category: 2
-  	},
-  	{
   		id: "lizard_archer",
   		type: "enemy",
   		attack: 13,
   		defense: 6,
-  		order: 3,
-  		category: 1
-  	},
-  	{
-  		id: "lizard_shaman",
-  		type: "enemy",
-  		attack: 22,
-  		defense: 32,
   		order: 3,
   		category: 1
   	},
@@ -27824,10 +37738,18 @@ const taVersion = "3.9.1";
   		category: 1
   	},
   	{
-  		id: "katana_samurai",
+  		id: "lizard_shaman",
   		type: "enemy",
-  		attack: 26,
-  		defense: 28,
+  		attack: 22,
+  		defense: 32,
+  		order: 3,
+  		category: 1
+  	},
+  	{
+  		id: "lizard_warrior",
+  		type: "enemy",
+  		attack: 12,
+  		defense: 12,
   		order: 1,
   		category: 2
   	},
@@ -27839,30 +37761,6 @@ const taVersion = "3.9.1";
   		order: 1,
   		cap: 1,
   		category: 4
-  	},
-  	{
-  		id: "myconid",
-  		type: "enemy",
-  		attack: 3,
-  		defense: 10,
-  		order: 1,
-  		category: 3
-  	},
-  	{
-  		id: "musket_ashigaru",
-  		type: "enemy",
-  		attack: 22,
-  		defense: 18,
-  		order: 2,
-  		category: 2
-  	},
-  	{
-  		id: "hill_giant",
-  		type: "enemy",
-  		attack: 20,
-  		defense: 36,
-  		order: 1,
-  		category: 3
   	},
   	{
   		id: "minotaur",
@@ -27882,168 +37780,63 @@ const taVersion = "3.9.1";
   		category: 3
   	},
   	{
-  		id: "pillager",
+  		id: "musket_ashigaru",
   		type: "enemy",
-  		attack: 3,
-  		defense: 5,
-  		order: 1,
-  		category: 2
-  	},
-  	{
-  		id: "deserter",
-  		type: "enemy",
-  		attack: 7,
-  		defense: 6,
+  		attack: 22,
+  		defense: 18,
   		order: 2,
   		category: 2
   	},
   	{
-  		id: "snake",
-  		type: "enemy",
-  		attack: 4,
-  		defense: 4,
-  		order: 1,
-  		category: 4
-  	},
-  	{
-  		id: "giant_snake",
-  		type: "enemy",
-  		attack: 16,
-  		defense: 8,
-  		order: 2,
-  		category: 4
-  	},
-  	{
-  		id: "ravenous_crab",
-  		type: "enemy",
-  		attack: 2,
-  		defense: 1,
-  		order: 1,
-  		category: 4
-  	},
-  	{
-  		id: "spider",
+  		id: "myconid",
   		type: "enemy",
   		attack: 3,
-  		defense: 2,
-  		order: 1,
-  		category: 4
-  	},
-  	{
-  		id: "sluagh",
-  		type: "enemy",
-  		attack: 26,
-  		defense: 6,
-  		order: 1,
-  		category: 4
-  	},
-  	{
-  		id: "giant_spider",
-  		type: "enemy",
-  		attack: 10,
-  		defense: 8,
-  		order: 2,
-  		category: 4
-  	},
-  	{
-  		id: "skeleton",
-  		type: "enemy",
-  		attack: 2,
-  		defense: 2,
+  		defense: 10,
   		order: 1,
   		category: 3
   	},
   	{
-  		id: "skeletal_knight",
+  		id: "naga",
   		type: "enemy",
-  		attack: 18,
-  		defense: 22,
+  		attack: 12,
+  		defense: 12,
   		order: 1,
+  		category: 4
+  	},
+  	{
+  		id: "naga_princess",
+  		type: "enemy",
+  		attack: 380,
+  		defense: 1020,
+  		order: 3,
+  		cap: 1,
+  		category: 4
+  	},
+  	{
+  		id: "naga_royal_guard",
+  		type: "enemy",
+  		attack: 110,
+  		defense: 80,
+  		order: 2,
   		category: 2
   	},
   	{
-  		id: "skullface",
+  		id: "necromancer",
   		type: "enemy",
-  		attack: 76,
-  		defense: 60,
+  		attack: 28,
+  		defense: 15,
   		order: 3,
   		cap: 1,
   		category: 1
   	},
   	{
-  		id: "son_atamar",
+  		id: "nikharul",
   		type: "enemy",
-  		attack: 22,
-  		defense: 20,
-  		order: 1,
-  		category: 2
-  	},
-  	{
-  		id: "swamp_horror",
-  		type: "enemy",
-  		attack: 900,
-  		defense: 1400,
-  		order: 1,
-  		cap: 1,
-  		category: 3
-  	},
-  	{
-  		id: "spectra_memory",
-  		type: "enemy",
-  		attack: 5,
-  		defense: 8,
-  		order: 1,
-  		category: 3
-  	},
-  	{
-  		id: "succubus",
-  		type: "enemy",
-  		attack: 37,
-  		defense: 23,
-  		order: 1,
-  		category: 2
-  	},
-  	{
-  		id: "succubus_queen",
-  		type: "enemy",
-  		attack: 1500,
-  		defense: 1750,
-  		order: 2,
+  		attack: 780,
+  		defense: 1020,
+  		order: 3,
   		cap: 1,
   		category: 1
-  	},
-  	{
-  		id: "zombie",
-  		type: "enemy",
-  		attack: 3,
-  		defense: 3,
-  		order: 1,
-  		category: 3
-  	},
-  	{
-  		id: "ghost",
-  		type: "enemy",
-  		attack: 5,
-  		defense: 5,
-  		order: 2,
-  		category: 4
-  	},
-  	{
-  		id: "gnoll_leader",
-  		type: "enemy",
-  		attack: 23,
-  		defense: 18,
-  		order: 2,
-  		cap: 1,
-  		category: 2
-  	},
-  	{
-  		id: "gnoll_raider",
-  		type: "enemy",
-  		attack: 6,
-  		defense: 5,
-  		order: 1,
-  		category: 2
   	},
   	{
   		id: "oni",
@@ -28134,76 +37927,26 @@ const taVersion = "3.9.1";
   		category: 3
   	},
   	{
-  		id: "necromancer",
-  		type: "enemy",
-  		attack: 28,
-  		defense: 15,
-  		order: 3,
-  		cap: 1,
-  		category: 1
-  	},
-  	{
-  		id: "imp",
+  		id: "pillager",
   		type: "enemy",
   		attack: 3,
-  		defense: 1,
-  		order: 2,
-  		category: 1
-  	},
-  	{
-  		id: "lesser_demon",
-  		type: "enemy",
-  		attack: 8,
-  		defense: 8,
+  		defense: 5,
   		order: 1,
-  		category: 3
-  	},
-  	{
-  		id: "greater_demon",
-  		type: "enemy",
-  		attack: 16,
-  		defense: 16,
-  		order: 3,
   		category: 2
   	},
   	{
-  		id: "griffin",
+  		id: "raider",
   		type: "enemy",
-  		attack: 42,
-  		defense: 58,
+  		attack: 22,
+  		defense: 10,
   		order: 1,
   		category: 4
   	},
   	{
-  		id: "kobold",
+  		id: "ravenous_crab",
   		type: "enemy",
-  		attack: 3,
-  		defense: 2,
-  		order: 1,
-  		category: 2
-  	},
-  	{
-  		id: "kobold_champion",
-  		type: "enemy",
-  		attack: 5,
-  		defense: 12,
-  		order: 1,
-  		category: 3
-  	},
-  	{
-  		id: "kobold_king",
-  		type: "enemy",
-  		attack: 42,
-  		defense: 48,
-  		order: 1,
-  		cap: 1,
-  		category: 2
-  	},
-  	{
-  		id: "naga",
-  		type: "enemy",
-  		attack: 12,
-  		defense: 12,
+  		attack: 2,
+  		defense: 1,
   		order: 1,
   		category: 4
   	},
@@ -28217,6 +37960,97 @@ const taVersion = "3.9.1";
   		category: 4
   	},
   	{
+  		id: "snake",
+  		type: "enemy",
+  		attack: 4,
+  		defense: 4,
+  		order: 1,
+  		category: 4
+  	},
+  	{
+  		id: "spider",
+  		type: "enemy",
+  		attack: 3,
+  		defense: 2,
+  		order: 1,
+  		category: 4
+  	},
+  	{
+  		id: "sluagh",
+  		type: "enemy",
+  		attack: 26,
+  		defense: 6,
+  		order: 1,
+  		category: 4
+  	},
+  	{
+  		id: "skeleton",
+  		type: "enemy",
+  		attack: 2,
+  		defense: 2,
+  		order: 1,
+  		category: 3
+  	},
+  	{
+  		id: "skeletal_knight",
+  		type: "enemy",
+  		attack: 18,
+  		defense: 22,
+  		order: 1,
+  		category: 2
+  	},
+  	{
+  		id: "skullface",
+  		type: "enemy",
+  		attack: 76,
+  		defense: 60,
+  		order: 3,
+  		cap: 1,
+  		category: 1
+  	},
+  	{
+  		id: "son_atamar",
+  		type: "enemy",
+  		attack: 22,
+  		defense: 20,
+  		order: 1,
+  		category: 2
+  	},
+  	{
+  		id: "spectra_memory",
+  		type: "enemy",
+  		attack: 5,
+  		defense: 8,
+  		order: 1,
+  		category: 3
+  	},
+  	{
+  		id: "succubus",
+  		type: "enemy",
+  		attack: 37,
+  		defense: 23,
+  		order: 1,
+  		category: 2
+  	},
+  	{
+  		id: "succubus_queen",
+  		type: "enemy",
+  		attack: 1500,
+  		defense: 1750,
+  		order: 2,
+  		cap: 1,
+  		category: 1
+  	},
+  	{
+  		id: "swamp_horror",
+  		type: "enemy",
+  		attack: 900,
+  		defense: 1400,
+  		order: 1,
+  		cap: 1,
+  		category: 3
+  	},
+  	{
   		id: "titan",
   		type: "enemy",
   		attack: 1,
@@ -28224,6 +38058,14 @@ const taVersion = "3.9.1";
   		order: 1,
   		cap: 1,
   		category: 2
+  	},
+  	{
+  		id: "trap",
+  		type: "enemy",
+  		attack: 8,
+  		defense: 41,
+  		order: 1,
+  		category: 3
   	},
   	{
   		id: "troll_cave",
@@ -28284,6 +38126,14 @@ const taVersion = "3.9.1";
   		category: 4
   	},
   	{
+  		id: "warg",
+  		type: "enemy",
+  		attack: 22,
+  		defense: 18,
+  		order: 1,
+  		category: 4
+  	},
+  	{
   		id: "werewolf",
   		type: "enemy",
   		attack: 1150,
@@ -28309,14 +38159,6 @@ const taVersion = "3.9.1";
   		category: 1
   	},
   	{
-  		id: "warg",
-  		type: "enemy",
-  		attack: 22,
-  		defense: 18,
-  		order: 1,
-  		category: 4
-  	},
-  	{
   		id: "wolf",
   		type: "enemy",
   		attack: 4,
@@ -28331,6 +38173,14 @@ const taVersion = "3.9.1";
   		defense: 28,
   		order: 2,
   		category: 4
+  	},
+  	{
+  		id: "zombie",
+  		type: "enemy",
+  		attack: 3,
+  		defense: 3,
+  		order: 1,
+  		category: 3
   	}
   ];
 
@@ -28430,6 +38280,64 @@ const taVersion = "3.9.1";
     remove
   };
 
+  let reactVarCache;
+  function getReactData(el, level = 0) {
+    let data;
+    if (reactVarCache && el[reactVarCache]) {
+      data = el[reactVarCache];
+    } else {
+      const key = Object.keys(el).find(k => k.startsWith('__reactFiber$'));
+      if (key) {
+        reactVarCache = key;
+        data = el[reactVarCache];
+      }
+    }
+    for (let i = 0; i < level && data; i++) {
+      data = data.return;
+    }
+    return data;
+  }
+  function getNearestKey(el, limit = -1) {
+    let key = undefined;
+    let data = getReactData(el);
+    let level = 0;
+    while (!key && data && (limit < 0 || level <= limit)) {
+      key = data.key;
+      data = data.return;
+      level++;
+    }
+    return key;
+  }
+  function getBtnIndex(el, level = 0) {
+    let data = getReactData(el, level);
+    if (data) {
+      return data.index;
+    } else {
+      return undefined;
+    }
+  }
+  let gameDataCache;
+  function getGameData() {
+    if (gameDataCache) {
+      return gameDataCache;
+    }
+    const root = document.querySelector('#root');
+    const key = Object.keys(root).find(k => k.startsWith('__reactContainer$'));
+    if (key) {
+      const container = root[key];
+      gameDataCache = container.stateNode.current.child.memoizedProps.MainStore;
+      return gameDataCache;
+    } else {
+      return undefined;
+    }
+  }
+  var reactUtil = {
+    getReactData,
+    getNearestKey,
+    getBtnIndex,
+    getGameData
+  };
+
   const getPagesSelector = () => {
     return [...document.querySelectorAll('#main-tabs > div > button')];
   };
@@ -28453,18 +38361,22 @@ const taVersion = "3.9.1";
   };
   const hasPage = page => {
     const navButtons = getPagesSelector();
-    return !!navButtons.find(button => button.innerText.includes(page));
+    const pageIndex = CONSTANTS.PAGES_INDEX[page];
+    return !!navButtons.find(button => reactUtil.getBtnIndex(button, 1) === pageIndex);
   };
   const checkPage = (page, subPage) => {
     const currentPage = getCurrentPageSelector();
     const currentSubPage = getCurrentSubPageSelector();
-    const isCorrectPage = !page || page && currentPage && currentPage.innerText.includes(page);
-    const isCorrectSubPage = !subPage || subPage && currentSubPage && currentSubPage.innerText.includes(subPage);
+    const pageIndex = CONSTANTS.PAGES_INDEX[page];
+    const subPageIndex = CONSTANTS.SUBPAGES_INDEX[subPage];
+    const isCorrectPage = !page || page && currentPage && reactUtil.getBtnIndex(currentPage, 1) === pageIndex;
+    const isCorrectSubPage = !subPage || subPage && currentSubPage && reactUtil.getBtnIndex(currentSubPage, 1) === subPageIndex;
     return isCorrectPage && isCorrectSubPage;
   };
   const hasSubPage = subPage => {
     const subTabs = getSubPagesSelector();
-    return !!subTabs.find(button => button.innerText.includes(subPage));
+    const subPageIndex = CONSTANTS.SUBPAGES_INDEX[subPage];
+    return !!subTabs.find(button => reactUtil.getBtnIndex(button, 1) === subPageIndex);
   };
   const switchPage = async page => {
     let foundPage = hasPage(page);
@@ -28474,7 +38386,8 @@ const taVersion = "3.9.1";
     }
     let switchedPage = false;
     const navButtons = getPagesSelector();
-    const pageButton = navButtons.find(button => button.innerText.includes(page) && button.getAttribute('aria-selected') !== 'true');
+    const pageIndex = CONSTANTS.PAGES_INDEX[page];
+    const pageButton = navButtons.find(button => reactUtil.getBtnIndex(button, 1) === pageIndex && button.getAttribute('aria-selected') !== 'true');
     if (pageButton) {
       pageButton.click();
       switchedPage = true;
@@ -28495,7 +38408,8 @@ const taVersion = "3.9.1";
     if (foundSubPage) {
       let switchedSubPage = false;
       const navButtons = getSubPagesSelector();
-      const subPageButton = navButtons.find(button => button.innerText.includes(subPage) && button.getAttribute('aria-selected') !== 'true');
+      const subPageIndex = CONSTANTS.SUBPAGES_INDEX[subPage];
+      const subPageButton = navButtons.find(button => reactUtil.getBtnIndex(button, 1) === subPageIndex && button.getAttribute('aria-selected') !== 'true');
       if (subPageButton) {
         subPageButton.click();
         switchedSubPage = true;
@@ -28521,7 +38435,7 @@ const taVersion = "3.9.1";
     return document.querySelector('#maintabs-container > div > div[role=tabpanel]');
   };
   const getAllButtons$5 = (activeOnly = true, extraSelectors = '') => {
-    const activeOnlySelector = activeOnly ? ':not(.btn-off)' : '';
+    const activeOnlySelector = activeOnly ? ':not(.btn-off):not(.btn-off-cap)' : '';
     return [...getActivePageContent().querySelectorAll(`button.btn${activeOnlySelector}${extraSelectors}`)];
   };
   var selectors = {
@@ -28529,7 +38443,37 @@ const taVersion = "3.9.1";
     getAllButtons: getAllButtons$5
   };
 
-  const get = (resourceName = 'Gold') => {
+  let keyGen = {
+    manual: _gen('manual_'),
+    armyArmy: _gen('army_create_'),
+    armyAttack: _gen('army_combat_'),
+    market: _gen('stock_'),
+    resource: _gen('resource_'),
+    research: _gen('tec_'),
+    building: _gen('bui_'),
+    population: _gen('population_'),
+    magic: _gen('fai_'),
+    enemy: _gen('enemy-'),
+    diplomacy: _gen('dip_card_'),
+    tooltipReq: _gen('tooltip_req_'),
+    legacy: _gen('leg_'),
+    ancestor: _gen('ancestor_')
+  };
+  function _gen(prefix) {
+    return {
+      key(id) {
+        return prefix + id;
+      },
+      id(key) {
+        return key.replace(new RegExp('^' + prefix), '');
+      },
+      check(key) {
+        return key && !!key.match(new RegExp('^' + prefix + '.+'));
+      }
+    };
+  }
+
+  const get = (resourceName = 'gold') => {
     let resourceFound = false;
     let resourceToFind = {
       name: resourceName,
@@ -28541,7 +38485,8 @@ const taVersion = "3.9.1";
     };
     const resources = [...document.querySelectorAll('#root div > div > div > table > tbody > tr > td:nth-child(1) > span')];
     resources.map(resource => {
-      if (resource.textContent.includes(resourceName)) {
+      const key = reactUtil.getNearestKey(resource, 6);
+      if (key === keyGen.resource.key(resourceName)) {
         resourceFound = true;
         const values = resource.parentNode.parentNode.childNodes[1].textContent.split('/').map(x => numberParser.parse(x.replace(/[^0-9KM\-,\.]/g, '').trim()));
         resourceToFind.current = values[0];
@@ -28566,7 +38511,16 @@ const taVersion = "3.9.1";
       },
       prestige: {
         enabled: false,
+        selected: '',
+        options: {}
+      },
+      difficulty: {
+        enabled: false,
         selected: ''
+      },
+      ngplus: {
+        enabled: false,
+        value: 0
       },
       cosmetics: {
         hideFullPageOverlay: {
@@ -28576,7 +38530,8 @@ const taVersion = "3.9.1";
           enabled: false
         }
       },
-      lastMigration: 2
+      lastMigration: 3,
+      version: taVersion
     };
     Object.keys(CONSTANTS.PAGES).every(key => {
       options.pages[CONSTANTS.PAGES[key]] = {
@@ -28601,6 +38556,7 @@ const taVersion = "3.9.1";
   const state = {
     scriptPaused: true,
     haveManualResourceButtons: true,
+    stopAutoClicking: false,
     lastVisited: {},
     buildings: [],
     options: getDefaultOptions()
@@ -28708,10 +38664,7 @@ const taVersion = "3.9.1";
     const unitCopy = {
       ...unit
     };
-    let run = window.localStorage.getItem('run');
-    if (run) {
-      run = JSON.parse(run);
-    }
+    let run = reactUtil.getGameData().run;
     if (unitCopy && run && run.modifiers) {
       let bonusAttack = 0;
       let bonusDefense = 0;
@@ -28736,175 +38689,173 @@ const taVersion = "3.9.1";
     }
     return unitCopy;
   };
+  const getRandomNumber = (min, max) => {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1) + min);
+  };
   const getEnemyArmy = enemyId => {
-    const difficultyMode = window.localStorage.getItem('difficultyMode');
-    const difficultyModeMultiplier = difficultyMode === '0' ? 1 : difficultyMode === '1' ? 1.5 : 2;
-    const randomBonus = 1.3;
+    const difficultyMode = parseInt(reactUtil.getGameData().SettingsStore.difficultyMode, 10) || 0;
+    const difficultyModeMultiplier = difficultyMode === 1 ? 1.5 : difficultyMode === 2 ? 2 : difficultyMode === 3 ? 4.5 : 1;
+    const randomBonus = difficultyMode === 1 ? 1.1 : difficultyMode === 2 ? 1.2 : difficultyMode === 3 ? 1.3 : 1;
     const army = fights$2.find(fight => fight.key === enemyId || fight.id === enemyId).army.map(unit => {
       const unitDetails = units.find(enemy => enemy.id === unit.id);
+      const value = unitDetails.cap ? Math.min(Math.round(unit.value * difficultyModeMultiplier * randomBonus), unitDetails.cap) : Math.round(unit.value * difficultyModeMultiplier * randomBonus);
       return {
         ...unit,
         ...unitDetails,
-        value: Math.round(unit.value * difficultyModeMultiplier * randomBonus)
+        value
       };
     });
     return army;
   };
-  const getGarrison = (getAll = false) => {
-    const garrison = [];
-    let run = window.localStorage.getItem('run');
-    if (run) {
-      run = JSON.parse(run);
-    }
+  const getUserArmy = (isDefending = false, onlyAvailable = false) => {
+    const userArmy = [];
+    let run = reactUtil.getGameData().run;
     if (run && run.army) {
       for (let i = 0; i < run.army.length; i++) {
         const unit = run.army[i];
-        if (unit.value - unit.away > 0 || getAll) {
+        const unitsValue = onlyAvailable ? unit.value - unit.away : unit.value;
+        if (unitsValue) {
           const unitDetails = units.find(unitDetails => unitDetails.id === unit.id);
           if (unitDetails) {
-            garrison.push({
+            if (unitDetails.category === 0) {
+              if (!isDefending || unit.id !== 'settlement_defenses') {
+                continue;
+              }
+            }
+            userArmy.push({
               ...applyUnitMods(unitDetails),
               key: unitDetails.id,
-              value: unit.value - unit.away
+              value: unitsValue
             });
           }
         }
       }
     }
-    return garrison;
+    return userArmy;
   };
-  const canWinBattle = (enemyStats, userArmy, onlyAvailable = true, calculateAll = false) => {
-    let canWin = false;
-    let run = window.localStorage.getItem('run');
-    if (run) {
-      run = JSON.parse(run);
-    }
-    if (run && run.army) {
-      const sortMethod = (type = 'defense') => {
-        return (a, b) => {
-          const aHasAdvantage = a.category !== 4 ? enemyStats.defense[a.category + 1] : enemyStats.defense[1];
-          const bHasAdvantage = b.category !== 4 ? enemyStats.defense[b.category + 1] : enemyStats.defense[1];
-          const aGivesAdvantage = a.category !== 1 ? enemyStats.attack[a.category - 1] : enemyStats.attack[4];
-          const bGivesAdvantage = b.category !== 1 ? enemyStats.attack[b.category - 1] : enemyStats.attack[4];
-          if (aGivesAdvantage === bGivesAdvantage) {
-            if (aHasAdvantage === bHasAdvantage) {
-              if (type === 'defense') {
-                return b.defense - a.defense;
-              } else {
-                return b.attack - a.attack;
-              }
-            } else {
-              return bHasAdvantage - aHasAdvantage;
-            }
-          } else {
-            return aGivesAdvantage - bGivesAdvantage;
-          }
-        };
-      };
-      const userStats = {
-        attack: [0, 0, 0, 0, 0],
-        defense: [0, 0, 0, 0, 0]
-      };
-      const defUnits = [...userArmy].sort(sortMethod('defense'));
-      const attUnits = [...userArmy].sort(sortMethod('attack'));
-      const usedUnits = [];
-      let gotDef = false;
-      let gotAtt = false;
-      for (let i = 0; i < defUnits.length && (!canWin || calculateAll); i++) {
-        if (gotDef && !calculateAll) break;
-        const unit = defUnits[i];
-        if (usedUnits.includes(unit.id)) {
-          continue;
-        }
-        if (!gotDef || calculateAll) {
-          const runUnit = run.army.find(runUnit => runUnit.id === unit.key);
-          if (runUnit && runUnit.value > 0) {
-            const unitCount = onlyAvailable ? runUnit.value - runUnit.away : runUnit.value;
-            userStats.attack[unit.category] += unitCount * unit.attack;
-            userStats.defense[unit.category] += unitCount * unit.defense;
-            const damages = calculateDamages(enemyStats, userStats);
-            if (damages.enemy.enemyDefense < damages.user.userAttack) gotAtt = true;
-            if (damages.enemy.enemyAttack < damages.user.userDefense) gotDef = true;
-            usedUnits.push(unit.id);
-            canWin = gotAtt && gotDef;
-          }
-        }
+  const generateArmy = (army = [], attacker = false, isDefending = false) => {
+    army = army.filter(unit => isDefending ? true : unit.category);
+    const units = [];
+    army.forEach(squad => {
+      for (let i = 0; i < squad.value; i++) {
+        units.push({
+          ...squad,
+          sortOrder: Number(attacker ? squad.category.toString() + (1000 + getRandomNumber(0, 900)).toString() : squad.order.toString() + (1e3 + getRandomNumber(0, 900)).toString())
+        });
       }
-      if (!gotDef || !gotAtt || calculateAll) {
-        for (let i = 0; i < attUnits.length && (!canWin || calculateAll); i++) {
-          if (gotAtt && !calculateAll) break;
-          const unit = attUnits[i];
-          if (usedUnits.includes(unit.id)) {
-            continue;
-          }
-          if (!gotAtt || calculateAll) {
-            const runUnit = run.army.find(runUnit => runUnit.id === unit.key);
-            if (runUnit && runUnit.value > 0) {
-              const unitCount = onlyAvailable ? runUnit.value - runUnit.away : runUnit.value;
-              userStats.attack[unit.category] += unitCount * unit.attack;
-              userStats.defense[unit.category] += unitCount * unit.defense;
-              const damages = calculateDamages(enemyStats, userStats);
-              if (damages.enemy.enemyDefense < damages.user.userAttack) gotAtt = true;
-              if (damages.enemy.enemyAttack < damages.user.userDefense) gotDef = true;
-              usedUnits.push(unit.id);
-              canWin = gotAtt && gotDef;
-            }
-          }
-        }
-      }
-      canWin = gotAtt && gotDef;
-    }
-    return canWin;
+    });
+    return units.sort((a, b) => a.sortOrder - b.sortOrder);
   };
-  const calculateEnemyStats = army => {
-    const enemyStats = {
-      attack: [0, 0, 0, 0, 0],
-      defense: [0, 0, 0, 0, 0]
-    };
-    for (let i = 0; i < army.length; i++) {
-      enemyStats.attack[army[i].category] += army[i].attack * army[i].value;
-      enemyStats.defense[army[i].category] += army[i].defense * army[i].value;
-    }
-    return enemyStats;
-  };
-  const calculateDamages = (enemyStats, userStats) => {
-    let enemyAttack = 0;
-    let enemyDefense = 0;
-    let userAttack = 0;
-    let userDefense = 0;
-    // ['Recon', 'Ranged', 'Shock', 'Tank', 'Rider']
-    for (let i = 0; i < enemyStats.attack.length; i++) {
-      let j = i + 1;
-      if (i === 0) j = -1;
-      if (i === 4) j = 1;
-      enemyAttack += userStats.attack[j] ? 2 * enemyStats.attack[i] : enemyStats.attack[i];
-      enemyDefense += enemyStats.defense[i];
-    }
-    for (let i = 0; i < userStats.attack.length; i++) {
-      let j = i + 1;
-      if (i === 0) j = -1;
-      if (i === 4) j = 1;
-      userAttack += enemyStats.attack[j] ? 2 * userStats.attack[i] : userStats.attack[i];
-      userDefense += userStats.defense[i];
-    }
-    return {
-      enemy: {
-        enemyAttack,
-        enemyDefense
+  const canWinBattle = (enemyId, isDefending = false, onlyAvailable = false) => {
+    const forces = {
+      player: {
+        attack: generateArmy(getUserArmy(isDefending, onlyAvailable), true, isDefending),
+        defense: generateArmy(getUserArmy(isDefending, onlyAvailable), false, isDefending)
       },
-      user: {
-        userAttack,
-        userDefense
+      enemy: {
+        attack: generateArmy(getEnemyArmy(enemyId), true),
+        defense: generateArmy(getEnemyArmy(enemyId), false)
       }
     };
+    let result = 0;
+    while (!result) {
+      const deadUnits = {
+        player: [],
+        enemy: []
+      };
+      let enemyUnitIdx = 0;
+      let playerUnitIdx = 0;
+      forces.player.attack.forEach(attUnit => {
+        if (typeof forces.enemy.defense[enemyUnitIdx] !== 'undefined') {
+          let unitAttack = attUnit.attack;
+          let eff = 1;
+          let effectiveType = attUnit.cat === 0 ? 0 : attUnit.cat === 4 ? 1 : attUnit.cat + 1;
+          if (effectiveType === forces.enemy.defense[enemyUnitIdx].cat) {
+            eff *= 2;
+          }
+          if (unitAttack * eff >= forces.enemy.defense[enemyUnitIdx].defense) {
+            deadUnits.enemy.push(forces.enemy.defense[enemyUnitIdx].id);
+            enemyUnitIdx += 1;
+          } else {
+            forces.enemy.defense[enemyUnitIdx].defense -= unitAttack;
+          }
+        }
+      });
+      forces.enemy.attack.forEach(attUnit => {
+        if (typeof forces.player.defense[playerUnitIdx] !== 'undefined') {
+          let unitAttack = attUnit.attack;
+          let eff = 1;
+          let effectiveType = attUnit.cat === 0 ? 0 : attUnit.cat === 4 ? 1 : attUnit.cat + 1;
+          if (effectiveType === forces.player.defense[playerUnitIdx].cat) {
+            eff *= 2;
+          }
+          if (unitAttack * eff >= forces.player.defense[playerUnitIdx].defense) {
+            deadUnits.player.push(forces.player.defense[playerUnitIdx].id);
+            playerUnitIdx += 1;
+          } else {
+            forces.player.defense[playerUnitIdx].defense -= unitAttack;
+          }
+        }
+      });
+      if (deadUnits.enemy.length) {
+        deadUnits.enemy.forEach(deadUnitId => {
+          const attackIndex = forces.enemy.attack.findIndex(unit => unit.id === deadUnitId);
+          const defenseIndex = forces.enemy.defense.findIndex(unit => unit.id === deadUnitId);
+          if (attackIndex > -1) {
+            forces.enemy.attack.splice(attackIndex, 1);
+          }
+          if (defenseIndex > -1) {
+            forces.enemy.defense.splice(defenseIndex, 1);
+          }
+        });
+      }
+      if (deadUnits.player.length) {
+        deadUnits.player.forEach(deadUnitId => {
+          const attackIndex = forces.player.attack.findIndex(unit => unit.id === deadUnitId);
+          const defenseIndex = forces.player.defense.findIndex(unit => unit.id === deadUnitId);
+          if (attackIndex > -1) {
+            forces.player.attack.splice(attackIndex, 1);
+          }
+          if (defenseIndex > -1) {
+            forces.player.defense.splice(defenseIndex, 1);
+          }
+        });
+      }
+      if (!forces.enemy.attack.length || !forces.player.attack.length) {
+        result = forces.player.attack.length ? 1 : 2;
+      }
+    }
+    return result === 1 ? true : false;
   };
   var armyCalculator = {
-    applyUnitMods,
-    getGarrison,
-    getEnemyArmy,
-    calculateEnemyStats,
-    calculateDamages,
     canWinBattle
+  };
+
+  const ids = {
+    resources: ['research', 'food', 'wood', 'stone', 'gold', 'tools', 'copper', 'iron', 'cow', 'horse', 'luck', 'mana', 'building_material', 'faith', 'supplies', 'crystal', 'steel', 'saltpetre', 'natronite'],
+    prestige: ['legacy'],
+    special: ['relic', 'coin', 'tome_wisdom', 'gem', 'titan_gift']
+  };
+  const setMaxResources = (type, amount = 1000000000) => {
+    const resources = reactUtil.getGameData().run.resources;
+    for (let i = 0; i < resources.length; i++) {
+      if (ids[type].includes(resources[i].id)) {
+        resources[i].value = amount + (resources[i].value ?? 0);
+      }
+    }
+  };
+  const cheats = {
+    maxResources: () => {
+      setMaxResources('resources');
+    },
+    maxLegacyPoints: (amount = 1) => {
+      setMaxResources('prestige', amount);
+    },
+    maxPrestigeCurrencies: (amount = 1) => {
+      setMaxResources('special', amount);
+    }
   };
 
   const getUnitsList = () => {
@@ -28929,7 +38880,7 @@ const taVersion = "3.9.1";
     return (state.options.pages[CONSTANTS.PAGES.ARMY].enabled || false) && (state.options.pages[CONSTANTS.PAGES.ARMY].subpages[CONSTANTS.SUBPAGES.ARMY].enabled || false);
   };
   const getArmyNumbers = () => {
-    return document.querySelectorAll('div[role="tablist"]')[1].querySelector('[aria-selected="true"]').innerText.replace('Army', '').split('/').map(text => +text.trim());
+    return [reactUtil.getGameData().ArmyStore.ownedCount, reactUtil.getGameData().ArmyStore.cap];
   };
   const getControls = () => {
     const armyNumbers = getArmyNumbers();
@@ -28940,22 +38891,26 @@ const taVersion = "3.9.1";
       counts: {}
     };
     allButtons.forEach(button => {
-      const buttonText = button.innerText.trim();
-      if (buttonText === '+1') {
-        controls.counts['1'] = button;
-      } else if (buttonText === '+10') {
-        controls.counts['10'] = button;
-      } else if (buttonText === '+50') {
-        controls.counts['50'] = button;
-      } else if (buttonText) {
-        const unitDetails = buttonText.split('\n');
-        const unit = units.find(unit => translate(unit.id, 'uni_') === unitDetails[0].trim());
-        if (unit) {
-          if (unitDetails[1]) {
-            unit.count = +unitDetails[1];
-          } else {
-            unit.count = 0;
+      const btnKey = reactUtil.getNearestKey(button, 7);
+      if (!btnKey) {
+        const buttonText = button.innerText.trim();
+        if (buttonText === '+1') {
+          controls.counts['1'] = button;
+        } else if (buttonText === '+10') {
+          controls.counts['10'] = button;
+        } else if (buttonText === '+50') {
+          controls.counts['50'] = button;
+        }
+      } else if (btnKey) {
+        const btnData = reactUtil.getReactData(button, 3);
+        const unit = units.find(unit => keyGen.armyArmy.key(unit.id) === btnKey);
+        if (unit && btnData.memoizedProps.content instanceof Object) {
+          const armyData = reactUtil.getGameData().run.army[reactUtil.getGameData().idxs.army[unit.id]];
+          let count = 0;
+          if (armyData) {
+            count = armyData.value;
           }
+          unit.count = count;
           unit.button = button;
           unit.key = unit.id;
           const unitOptions = unitsOptionsList.find(unitOption => unitOption.key === unit.key);
@@ -29017,7 +38972,7 @@ const taVersion = "3.9.1";
             const usedResources = Object.keys(totalCost);
             for (let i = 0; i < usedResources.length && maxBulkHire > 1; i++) {
               const resId = usedResources[i];
-              const resource = resources.get(translate(resId, 'res_'));
+              const resource = resources.get(resId);
               if (resource && totalCost[resId] < 0) {
                 if (resource.speed + 10 * totalCost[resId] < 0) {
                   maxBulkHire = Math.min(1, maxBulkHire);
@@ -29031,7 +38986,7 @@ const taVersion = "3.9.1";
           await sleep(25);
           let shouldHire = true;
           const unit = highestPrioUnits.shift();
-          shouldHire = !unit.gen.filter(gen => gen.type === 'resource').find(gen => !resources.get(translate(gen.id, 'res_')) || resources.get(translate(gen.id, 'res_')).speed + maxBulkHire * gen.value <= 0);
+          shouldHire = !unit.gen.filter(gen => gen.type === 'resource').find(gen => !resources.get(gen.id) || resources.get(gen.id).speed + maxBulkHire * gen.value <= 0);
           if (shouldHire) {
             unit.button.click();
             logger({
@@ -29063,19 +39018,27 @@ const taVersion = "3.9.1";
   const userEnabled$9 = () => {
     return (state.options.pages[CONSTANTS.PAGES.ARMY].enabled || false) && (state.options.pages[CONSTANTS.PAGES.ARMY].subpages[CONSTANTS.SUBPAGES.EXPLORE].enabled || false);
   };
-  const userSelectedUnits = () => {
-    return state.options.pages[CONSTANTS.PAGES.ARMY].subpages[CONSTANTS.SUBPAGES.EXPLORE].options.scoutsMax || state.options.pages[CONSTANTS.PAGES.ARMY].subpages[CONSTANTS.SUBPAGES.EXPLORE].options.explorersMax;
-  };
-  const getSendToExplore = container => {
-    return container.querySelector('button.btn-blue:not(.btn-off)');
+  const getSendToExplore = (container, activeOnly = true) => {
+    const activeOnlySelector = activeOnly ? ':not(.btn-off):not(.btn-off-cap)' : '';
+    return container.querySelector(`button.btn-blue${activeOnlySelector}`);
   };
   const executeAction$9 = async () => {
     if (!navigation.checkPage(CONSTANTS.PAGES.ARMY, CONSTANTS.SUBPAGES.EXPLORE)) return;
     if (state.scriptPaused) return;
-    const maxScouts = state.options.pages[CONSTANTS.PAGES.ARMY].subpages[CONSTANTS.SUBPAGES.EXPLORE].options.scoutsMax;
-    const minScouts = state.options.pages[CONSTANTS.PAGES.ARMY].subpages[CONSTANTS.SUBPAGES.EXPLORE].options.scoutsMin;
-    const maxExplorers = state.options.pages[CONSTANTS.PAGES.ARMY].subpages[CONSTANTS.SUBPAGES.EXPLORE].options.explorersMax;
-    const minExplorers = state.options.pages[CONSTANTS.PAGES.ARMY].subpages[CONSTANTS.SUBPAGES.EXPLORE].options.explorersMin;
+    const limits = {
+      scout: {
+        min: state.options.pages[CONSTANTS.PAGES.ARMY].subpages[CONSTANTS.SUBPAGES.EXPLORE].options.scoutsMin ?? 0,
+        max: state.options.pages[CONSTANTS.PAGES.ARMY].subpages[CONSTANTS.SUBPAGES.EXPLORE].options.scoutsMax ?? 0
+      },
+      explorer: {
+        min: state.options.pages[CONSTANTS.PAGES.ARMY].subpages[CONSTANTS.SUBPAGES.EXPLORE].options.explorersMin ?? 0,
+        max: state.options.pages[CONSTANTS.PAGES.ARMY].subpages[CONSTANTS.SUBPAGES.EXPLORE].options.explorersMax ?? 0
+      },
+      familiar: {
+        min: state.options.pages[CONSTANTS.PAGES.ARMY].subpages[CONSTANTS.SUBPAGES.EXPLORE].options.familiarsMin ?? 0,
+        max: state.options.pages[CONSTANTS.PAGES.ARMY].subpages[CONSTANTS.SUBPAGES.EXPLORE].options.familiarsMax ?? 0
+      }
+    };
     const container = document.querySelector('div.tab-container.sub-container');
     if (container) {
       let canExplore = false;
@@ -29084,21 +39047,25 @@ const taVersion = "3.9.1";
       let unitsSent = [];
       for (let i = 0; i < boxes.length; i++) {
         const box = boxes[i];
-        const name = box.querySelector('h5.font-bold').innerText.trim();
+        const unitKey = reactUtil.getNearestKey(box, 2);
         const removeUnitButton = box.querySelector('div.inline-flex button.btn-red.rounded-none');
         const addUnitButton = box.querySelector('div.inline-flex button.btn-green.rounded-none');
+        const unit = units.find(unit => keyGen.armyAttack.key(unit.id) === unitKey);
         let count = box.querySelector('input[type="text"]').value.split(' / ').map(x => +x);
-        const limitMax = name === 'Scout' ? maxScouts : maxExplorers;
-        const limitMin = name === 'Scout' ? minScouts : minExplorers;
+        if (!limits[unit.id]) {
+          continue;
+        }
+        const limitMin = limits[unit.id].min;
+        const limitMax = limits[unit.id].max;
         if (count[1] < limitMin) {
-          break;
+          continue;
         }
         for (let i = 0; i < count[0] - limitMax && removeUnitButton && !removeUnitButton.disabled; i++) {
           removeUnitButton.click();
           await sleep(25);
         }
         count = box.querySelector('input[type="text"]').value.split(' / ').map(x => +x);
-        for (let i = 0; i < limitMax - count[0] && addUnitButton && !addUnitButton.disabled && !!getSendToExplore(container); i++) {
+        for (let i = 0; i < limitMax - count[0] && addUnitButton && !addUnitButton.disabled && !!getSendToExplore(container, false); i++) {
           addUnitButton.click();
           await sleep(25);
         }
@@ -29112,11 +39079,7 @@ const taVersion = "3.9.1";
         count = box.querySelector('input[type="text"]').value.split(' / ').map(x => +x);
         if (count[0] >= limitMin) {
           canExplore = true;
-          if (name === 'Scout') {
-            unitsSent.push(`${count[0]} Scout(s)`);
-          } else {
-            unitsSent.push(`${count[0]} Explorer(s)`);
-          }
+          unitsSent.push(`${count[0]} ${translate(unit.id, 'uni_')}(s)`);
         } else {
           const removeUnitButton = box.querySelector('div.inline-flex button.btn-red.rounded-none');
           while (removeUnitButton && !removeUnitButton.disabled) {
@@ -29136,10 +39099,21 @@ const taVersion = "3.9.1";
       }
     }
   };
+  const getMinWaitTime$1 = () => {
+    let waitTime = 60000;
+    if (reactUtil.getGameData().StatsStore && reactUtil.getGameData().StatsStore.ngResetNumber) {
+      const ngResets = reactUtil.getGameData().StatsStore.ngResetNumber;
+      for (let i = 0; i < ngResets; i++) {
+        waitTime = waitTime / 2;
+      }
+    }
+    waitTime = Math.ceil(Math.max(waitTime, 3000) / 2) + 1000;
+    return waitTime;
+  };
   var ArmyExplore = {
     page: CONSTANTS.PAGES.ARMY,
     subpage: CONSTANTS.SUBPAGES.EXPLORE,
-    enabled: () => userEnabled$9() && navigation.hasPage(CONSTANTS.PAGES.ARMY) && userSelectedUnits() && new Date().getTime() - (state.lastVisited[`${CONSTANTS.PAGES.ARMY}${CONSTANTS.SUBPAGES.EXPLORE}`] || 0) > 35 * 1000,
+    enabled: () => userEnabled$9() && navigation.hasPage(CONSTANTS.PAGES.ARMY) && new Date().getTime() - (state.lastVisited[`${CONSTANTS.PAGES.ARMY}${CONSTANTS.SUBPAGES.EXPLORE}`] || 0) > getMinWaitTime$1(),
     action: async () => {
       await navigation.switchSubPage(CONSTANTS.SUBPAGES.EXPLORE, CONSTANTS.PAGES.ARMY);
       if (navigation.checkPage(CONSTANTS.PAGES.ARMY, CONSTANTS.SUBPAGES.EXPLORE)) await executeAction$9();
@@ -29156,11 +39130,23 @@ const taVersion = "3.9.1";
   }).filter(fight => typeof fight.level !== 'undefined');
   const factionFights = factions.map(faction => faction.id);
   const unassignAll = controlBox => {
-    const allButtons = [...controlBox.querySelectorAll('button')];
+    const allButtons = [...controlBox.querySelectorAll('button:not(.btn)')];
     for (let i = 0; i < allButtons.length; i++) {
       const button = allButtons[i];
       const parentClasses = button.parentElement.classList.toString();
       const classesToFind = ['absolute', 'top-0', 'right-7'];
+      if (classesToFind.every(className => parentClasses.includes(className))) {
+        button.click();
+        break;
+      }
+    }
+  };
+  const assignAll = controlBox => {
+    const allButtons = [...controlBox.querySelectorAll('button:not(.btn)')];
+    for (let i = 0; i < allButtons.length; i++) {
+      const button = allButtons[i];
+      const parentClasses = button.parentElement.classList.toString();
+      const classesToFind = ['absolute', 'top-0', 'right-0'];
       if (classesToFind.every(className => parentClasses.includes(className))) {
         button.click();
         break;
@@ -29179,216 +39165,85 @@ const taVersion = "3.9.1";
       const controlBox = boxes.shift();
       let enemyList = [];
       let targetSelected = false;
-      let army = [];
-      let userUnits = [];
       let target;
-      let attackLog = {
-        attackUnits: []
-      };
       const enemySelectorButton = controlBox.querySelector('button.btn');
-      const sendToAttackButton = [...controlBox.querySelectorAll('button.btn')].find(button => button.innerText.includes('Send to attack'));
-      unassignAll(controlBox);
-      for (let i = 0; i < boxes.length; i++) {
-        const box = boxes[i];
-        const name = box.querySelector('h5.font-bold').innerText.trim();
-        const removeUnitButton = box.querySelector('div.inline-flex button.btn-red.rounded-none');
-        const addUnitButton = box.querySelector('div.inline-flex button.btn-green.rounded-none');
-        const unitDetails = armyCalculator.applyUnitMods(units.find(unit => translate(unit.id, 'uni_') === name));
-        userUnits.push({
-          ...unitDetails,
-          key: unitDetails.id,
-          id: name,
-          box,
-          removeUnitButton,
-          addUnitButton
-        });
-      }
-      if (enemySelectorButton && !enemySelectorButton.disabled && !state.stopAttacks && !state.scriptPaused) {
-        enemySelectorButton.click();
-        await sleep(250);
-        const modal = [...document.querySelectorAll('h3.modal-title')].find(h3 => h3.innerText.includes('enemies'));
-        if (modal) {
-          enemyList = [...modal.parentElement.querySelectorAll('h5')].map(h5 => {
-            const enemyDetails = fights$1.find(fight => fight.id === h5.innerText.trim());
-            return {
-              button: h5,
-              ...enemyDetails
-            };
-          }).filter(fight => state.options.pages[CONSTANTS.PAGES.ARMY].subpages[CONSTANTS.SUBPAGES.ATTACK].options[fight.key]).filter(fight => {
-            const army = armyCalculator.getEnemyArmy(fight.key);
-            const enemyStats = armyCalculator.calculateEnemyStats(army);
-            const canWin = armyCalculator.canWinBattle(enemyStats, userUnits, false);
-            return canWin;
-          });
-          enemyList.sort((a, b) => {
-            let aLevel = a.level || 0;
-            let bLevel = b.level || 0;
-            if (factionFights.includes(a.key)) {
-              aLevel -= 100;
-            }
-            if (factionFights.includes(b.key)) {
-              bLevel -= 100;
-            }
-            return aLevel - bLevel;
-          });
-          if (enemyList.length && !state.scriptPaused) {
-            target = enemyList.shift();
-            targetSelected = true;
-            target.button.click();
-            attackLog.target = target;
-            await sleep(1000);
-          } else {
-            targetSelected = false;
-            const closeButton = modal.parentElement.parentElement.parentElement.querySelector('div.absolute > button');
-            if (closeButton) {
-              closeButton.click();
-              await sleep(20);
+      const sendToAttackButton = [...controlBox.querySelectorAll('button.btn')].find(button => reactUtil.getBtnIndex(button, 0) === 2);
+      if (sendToAttackButton) {
+        if (enemySelectorButton && !enemySelectorButton.disabled && !state.stopAttacks && !state.scriptPaused) {
+          enemySelectorButton.click();
+          await sleep(250);
+          const modals = [...document.querySelectorAll('h3.modal-title')];
+          if (modals.length) {
+            enemyList = [...modals.map(modal => [...modal.parentElement.querySelectorAll('h5')]).flat()].map(h5 => {
+              const key = reactUtil.getNearestKey(h5, 2);
+              if (!keyGen.enemy.check(key)) {
+                return undefined;
+              }
+              const enemyDetails = fights$1.find(fight => keyGen.enemy.key(fight.key) === key);
+              return {
+                button: h5,
+                ...enemyDetails
+              };
+            }).filter(fight => fight).filter(fight => state.options.pages[CONSTANTS.PAGES.ARMY].subpages[CONSTANTS.SUBPAGES.ATTACK].options[fight.key]).filter(fight => armyCalculator.canWinBattle(fight.key, false, false));
+            enemyList.sort((a, b) => {
+              let aLevel = a.level || 0;
+              let bLevel = b.level || 0;
+              if (factionFights.includes(a.key)) {
+                aLevel -= 100;
+              }
+              if (factionFights.includes(b.key)) {
+                bLevel -= 100;
+              }
+              return aLevel - bLevel;
+            });
+            if (enemyList.length && !state.scriptPaused) {
+              target = enemyList.shift();
+              targetSelected = true;
+              target.button.click();
+              await sleep(1000);
+            } else {
+              targetSelected = false;
+              const closeButton = modals[0].parentElement.parentElement.parentElement.querySelector('div.absolute > button');
+              if (closeButton) {
+                closeButton.click();
+                await sleep(20);
+              }
             }
           }
-        }
-      }
-      if (targetSelected && target && !state.stopAttacks) {
-        army = armyCalculator.getEnemyArmy(target.key);
-        if (army.length && userUnits.length && sendToAttackButton) {
-          attackLog.army = army;
-          attackLog.userUnits = userUnits;
-          const enemyStats = armyCalculator.calculateEnemyStats(army);
-          const canWin = armyCalculator.canWinBattle(enemyStats, userUnits, false);
-          if (canWin) {
-            const userStats = {
-              attack: [0, 0, 0, 0, 0],
-              defense: [0, 0, 0, 0, 0]
-            };
-            const sortMethod = (type = 'defense') => {
-              return (a, b) => {
-                const aHasAdvantage = a.category !== 4 ? enemyStats.defense[a.category + 1] : enemyStats.defense[1];
-                const bHasAdvantage = b.category !== 4 ? enemyStats.defense[b.category + 1] : enemyStats.defense[1];
-                const aGivesAdvantage = a.category !== 1 ? enemyStats.attack[a.category - 1] : enemyStats.attack[4];
-                const bGivesAdvantage = b.category !== 1 ? enemyStats.attack[b.category - 1] : enemyStats.attack[4];
-                if (aGivesAdvantage === bGivesAdvantage) {
-                  if (aHasAdvantage === bHasAdvantage) {
-                    if (type === 'defense') {
-                      return b.defense - a.defense;
-                    } else {
-                      return b.attack - a.attack;
-                    }
-                  } else {
-                    return bHasAdvantage - aHasAdvantage;
-                  }
-                } else {
-                  return aGivesAdvantage - bGivesAdvantage;
-                }
-              };
-            };
-            const defUnits = [...userUnits].sort(sortMethod('defense'));
-            const attUnits = [...userUnits].sort(sortMethod('attack'));
-            let gotDef = false;
-            let gotAtt = false;
-            for (let i = 0; i < defUnits.length && !state.scriptPaused; i++) {
-              if (gotDef) break;
-              const unit = defUnits[i];
-              while (!gotDef && !state.scriptPaused) {
-                const damages = armyCalculator.calculateDamages(enemyStats, userStats);
-                attackLog.damages = damages;
-                if (damages.enemy.enemyDefense < damages.user.userAttack) gotAtt = true;
-                if (damages.enemy.enemyAttack < damages.user.userDefense) gotDef = true;
-                if (gotDef) break;
-                unit.addUnitButton = unit.box.querySelector('div.inline-flex button.btn-green.rounded-none');
-                if (unit.addUnitButton) {
-                  attackLog.attackUnits.push(unit);
-                  unit.addUnitButton.click();
-                  await sleep(20);
-                  if (sendToAttackButton.classList.toString().includes('btn-off')) {
-                    attackLog.attackUnits.pop();
-                    unit.removeUnitButton = unit.box.querySelector('div.inline-flex button.btn-red.rounded-none');
-                    unit.removeUnitButton.click();
-                    await sleep(20);
-                    break;
-                  }
-                  userStats.attack[unit.category] += unit.attack;
-                  userStats.defense[unit.category] += unit.defense;
-                } else {
-                  break;
-                }
-              }
-            }
-            if (!gotAtt) {
-              for (let i = 0; i < attUnits.length && !state.scriptPaused; i++) {
-                if (gotAtt) break;
-                const unit = attUnits[i];
-                while (!gotAtt && !state.scriptPaused) {
-                  const damages = armyCalculator.calculateDamages(enemyStats, userStats);
-                  attackLog.damages = damages;
-                  if (damages.enemy.enemyDefense < damages.user.userAttack) gotAtt = true;
-                  if (damages.enemy.enemyAttack < damages.user.userDefense) gotDef = true;
-                  if (gotAtt) break;
-                  unit.addUnitButton = unit.box.querySelector('div.inline-flex button.btn-green.rounded-none');
-                  if (unit.addUnitButton) {
-                    attackLog.attackUnits.push(unit);
-                    unit.addUnitButton.click();
-                    await sleep(20);
-                    if (sendToAttackButton.classList.toString().includes('btn-off')) {
-                      attackLog.attackUnits.pop();
-                      unit.removeUnitButton = unit.box.querySelector('div.inline-flex button.btn-red.rounded-none');
-                      unit.removeUnitButton.click();
-                      await sleep(20);
-                      break;
-                    }
-                    userStats.attack[unit.category] += unit.attack;
-                    userStats.defense[unit.category] += unit.defense;
-                  } else {
-                    break;
-                  }
-                }
-              }
-            }
-            attackLog.gotAtt = gotAtt;
-            attackLog.gotDef = gotDef;
-            logger({
-              msgLevel: 'debug',
-              msg: attackLog
-            });
-            if (gotAtt && gotDef && targetSelected && !state.scriptPaused) {
-              const attackLogUnits = {};
-              for (let i = 0; i < attackLog.attackUnits.length; i++) {
-                const unit = attackLog.attackUnits[i];
-                if (!attackLogUnits[unit.id]) {
-                  attackLogUnits[unit.id] = {
-                    id: unit.id,
-                    count: 1,
-                    attack: unit.attack,
-                    defense: unit.defense
-                  };
-                } else {
-                  attackLogUnits[unit.id].count += 1;
-                }
-              }
+          if (targetSelected && target && !state.stopAttacks) {
+            assignAll(controlBox);
+            if (!sendToAttackButton.disabled && !state.scriptPaused) {
               logger({
                 msgLevel: 'log',
-                msg: `Launching attack against ${target.id}.
-Using army: ${Object.keys(attackLogUnits).map(key => `${key} (${attackLogUnits[key].attack}/${attackLogUnits[key].defense}): ${attackLogUnits[key].count}`).join(', ')}.
-Estimated damage:
-  enemy: attack: ${attackLog.damages.enemy.enemyAttack}, defense: ${attackLog.damages.enemy.enemyDefense}
-  user:  attack: ${attackLog.damages.user.userAttack}, defense: ${attackLog.damages.user.userDefense}`
+                msg: `Launching attack against ${target.id}`
               });
               sendToAttackButton.click();
-              await sleep(20);
             } else {
               unassignAll(controlBox);
-              await sleep(20);
             }
-          } else {
-            unassignAll(controlBox);
-            await sleep(20);
           }
+          await sleep(20);
+        } else {
+          unassignAll(controlBox);
         }
       }
     }
   };
+  const getMinWaitTime = () => {
+    let waitTime = 60000;
+    if (reactUtil.getGameData().StatsStore && reactUtil.getGameData().StatsStore.ngResetNumber) {
+      const ngResets = reactUtil.getGameData().StatsStore.ngResetNumber;
+      for (let i = 0; i < ngResets; i++) {
+        waitTime = waitTime / 2;
+      }
+    }
+    waitTime = Math.ceil(Math.max(waitTime, 3000) / 2) + 1000;
+    return waitTime;
+  };
   var ArmyAttack = {
     page: CONSTANTS.PAGES.ARMY,
     subpage: CONSTANTS.SUBPAGES.ATTACK,
-    enabled: () => userEnabled$8() && navigation.hasPage(CONSTANTS.PAGES.ARMY) && new Date().getTime() - (state.lastVisited[`${CONSTANTS.PAGES.ARMY}${CONSTANTS.SUBPAGES.ATTACK}`] || 0) > 35 * 1000,
+    enabled: () => userEnabled$8() && navigation.hasPage(CONSTANTS.PAGES.ARMY) && new Date().getTime() - (state.lastVisited[`${CONSTANTS.PAGES.ARMY}${CONSTANTS.SUBPAGES.ATTACK}`] || 0) > getMinWaitTime(),
     action: async () => {
       await navigation.switchSubPage(CONSTANTS.SUBPAGES.ATTACK, CONSTANTS.PAGES.ARMY);
       if (navigation.checkPage(CONSTANTS.PAGES.ARMY, CONSTANTS.SUBPAGES.ATTACK)) await executeAction$8();
@@ -29414,7 +39269,7 @@ Estimated damage:
             if (negativeGen.length) {
               const requires = negativeGen.map(gen => {
                 return {
-                  resource: translate(gen.id, 'res_'),
+                  resource: gen.id,
                   parameter: 'speed',
                   minValue: Math.abs(gen.value)
                 };
@@ -29440,13 +39295,13 @@ Estimated damage:
   const getAllButtons$4 = () => {
     const buildingsList = getBuildingsList$1();
     const buttons = selectors.getAllButtons(true).map(button => {
-      const id = button.innerText.split('\n').shift();
+      const id = reactUtil.getNearestKey(button, 6);
       const count = button.querySelector('span.right-0') ? numberParser.parse(button.querySelector('span.right-0').innerText) : 0;
       return {
         id: id,
         element: button,
         count: count,
-        building: buildingsList.find(building => building.id === id)
+        building: buildingsList.find(building => keyGen.building.key(building.key) === id)
       };
     }).filter(button => button.building && button.count < button.building.max).sort((a, b) => {
       if (a.building.prio !== b.building.prio) {
@@ -29469,6 +39324,9 @@ Estimated damage:
           const button = highestPrioBuildings.shift();
           if (!button.building.isSafe && button.building.requires.length) {
             shouldBuild = !button.building.requires.find(req => !resources.get(req.resource) || resources.get(req.resource)[req.parameter] <= req.minValue);
+            if (button.building.key === 'common_house' && !button.count) {
+              shouldBuild = true;
+            }
           }
           if (shouldBuild) {
             button.element.click();
@@ -29489,9 +39347,9 @@ Estimated damage:
     }
     const buildingsList = getBuildingsList$1();
     state.buildings = selectors.getAllButtons(false).map(button => {
-      const id = button.innerText.split('\n').shift();
-      let count = button.querySelector('span.right-0') ? numberParser.parse(button.querySelector('span.right-0').innerText) : 0;
-      const building = buildingsList.find(building => building.id === id);
+      const id = reactUtil.getNearestKey(button, 6);
+      let count = reactUtil.getGameData().idxs.buildings[id] ? reactUtil.getGameData().idxs.buildings[id] : 0;
+      const building = buildingsList.find(building => keyGen.building.key(building.key) === id);
       if (!building) {
         return {};
       }
@@ -29501,7 +39359,7 @@ Estimated damage:
       return {
         id: id,
         count: count,
-        canBuild: !button.className.includes('btn-off'),
+        canBuild: !button.classList.toString().includes('btn-off'),
         ...building
       };
     }).filter(building => building.id);
@@ -29535,7 +39393,7 @@ Estimated damage:
             if (negativeGen.length) {
               const requires = negativeGen.map(gen => {
                 return {
-                  resource: translate(gen.id, 'res_'),
+                  resource: gen.id,
                   parameter: 'speed',
                   minValue: Math.abs(gen.value)
                 };
@@ -29561,13 +39419,13 @@ Estimated damage:
   const getAllButtons$3 = () => {
     const buildingsList = getBuildingsList();
     const buttons = selectors.getAllButtons(true).map(button => {
-      const id = button.innerText.split('\n').shift();
+      const id = reactUtil.getNearestKey(button, 6);
       const count = button.querySelector('span') ? numberParser.parse(button.querySelector('span').innerText) : 0;
       return {
         id: id,
         element: button,
         count: count,
-        building: buildingsList.find(building => building.id === id)
+        building: buildingsList.find(building => keyGen.building.key(building.key) === id)
       };
     }).filter(button => button.building && button.count < button.building.max).sort((a, b) => {
       if (a.building.prio !== b.building.prio) {
@@ -29610,9 +39468,9 @@ Estimated damage:
     }
     const buildingsList = getBuildingsList();
     state.buildings = selectors.getAllButtons(false).map(button => {
-      const id = button.innerText.split('\n').shift();
+      const id = reactUtil.getNearestKey(button, 6);
       let count = button.querySelector('span') ? numberParser.parse(button.querySelector('span').innerText) : 0;
-      const building = buildingsList.find(building => building.id === id);
+      const building = buildingsList.find(building => keyGen.building.key(building.key) === id);
       if (!building) {
         return {};
       }
@@ -29622,7 +39480,7 @@ Estimated damage:
       return {
         id: id,
         count: count,
-        canBuild: !button.className.includes('btn-off'),
+        canBuild: !button.classList.toString().includes('btn-off'),
         ...building
       };
     }).filter(building => building.id);
@@ -29637,7 +39495,7 @@ Estimated damage:
     }
   };
 
-  const resourcesToTrade = ['Cow', 'Horse', 'Food', 'Copper', 'Wood', 'Stone', 'Iron', 'Tools'];
+  const resourcesToTrade = ['cow', 'horse', 'food', 'copper', 'wood', 'stone', 'iron', 'tools'];
   const timeToFillResource = 90;
   const timeToWaitUntilFullGold = 60;
   const secondsBetweenSells = 90;
@@ -29651,7 +39509,7 @@ Estimated damage:
     return state.options.pages[CONSTANTS.PAGES.MARKETPLACE].options.secondsBetweenSells || secondsBetweenSells;
   };
   const getResourcesToTrade = () => {
-    const userResourcesToTrade = Object.keys(state.options.pages[CONSTANTS.PAGES.MARKETPLACE].options).filter(key => key.includes('resource_') && state.options.pages[CONSTANTS.PAGES.MARKETPLACE].options[key]).map(key => translate(key.replace('resource_', '')));
+    const userResourcesToTrade = Object.keys(state.options.pages[CONSTANTS.PAGES.MARKETPLACE].options).filter(key => key.includes('resource_') && state.options.pages[CONSTANTS.PAGES.MARKETPLACE].options[key]).map(key => key.replace('resource_', ''));
     return userResourcesToTrade.length ? userResourcesToTrade : resourcesToTrade;
   };
   const lastSell = localStorage.get('lastSell') || {};
@@ -29663,20 +39521,20 @@ Estimated damage:
     });
   };
   const hasNotEnoughGold = () => {
-    const gold = resources.get('Gold');
+    const gold = resources.get('gold');
     return gold.current + gold.speed * getTimeToWaitUntilFullGold() < gold.max;
   };
   const userEnabled$5 = () => {
     return state.options.pages[CONSTANTS.PAGES.MARKETPLACE].enabled || false;
   };
   const executeAction$5 = async () => {
-    let gold = resources.get('Gold');
+    let gold = resources.get('gold');
     if (gold && gold.current < gold.max && shouldSell()) {
       const resourceHolders = [];
       [...document.querySelectorAll('div > div.tab-container > div > div > div')].forEach(resourceHolder => {
-        const resNameElem = resourceHolder.querySelector('h5');
-        if (resNameElem) {
-          const resName = resNameElem.innerText;
+        const resKey = reactUtil.getNearestKey(resourceHolder, 2);
+        if (resKey) {
+          const resName = keyGen.market.id(resKey);
           const res = resources.get(resName);
           if (getResourcesToTrade().includes(resName) && res && (res.current === res.max || res.current + res.speed * getTimeToFillResource() >= res.max)) {
             resourceHolders.push(resourceHolder);
@@ -29686,9 +39544,10 @@ Estimated damage:
       let goldEarned = 0;
       let soldTotals = {};
       for (let i = 0; i < resourceHolders.length && !state.scriptPaused; i++) {
-        gold = resources.get('Gold');
+        gold = resources.get('gold');
         const resourceHolder = resourceHolders[i];
-        const resName = resourceHolder.querySelector('h5').innerText;
+        const resKey = reactUtil.getNearestKey(resourceHolder, 2);
+        const resName = keyGen.market.id(resKey);
         let res = resources.get(resName);
         const initialPrice = numberParser.parse(resourceHolder.querySelector('div:nth-child(2) > div > table > tbody > tr > td:nth-child(2)').innerText);
         let price = initialPrice;
@@ -29718,7 +39577,7 @@ Estimated damage:
           await sleep(10);
           if (!navigation.checkPage(CONSTANTS.PAGES.MARKETPLACE)) return;
           sellButtons = resourceHolder.querySelectorAll('div:nth-child(2) > div.grid.gap-3 button:not(.btn-dark)');
-          gold = resources.get('Gold');
+          gold = resources.get('gold');
           res = resources.get(resName);
           price = numberParser.parse(resourceHolder.querySelector('div:nth-child(2) > div > table > tbody > tr > td:nth-child(2)').innerText);
           await sleep(25);
@@ -29749,12 +39608,16 @@ Estimated damage:
   const hasUnassignedPopulation = () => {
     let unassignedPopulation = false;
     const navButtons = navigation.getPagesSelector();
+    const pageIndex = CONSTANTS.PAGES_INDEX[CONSTANTS.PAGES.POPULATION];
     navButtons.forEach(button => {
-      if (button.innerText.includes(CONSTANTS.PAGES.POPULATION)) {
+      if (reactUtil.getBtnIndex(button, 1) === pageIndex) {
         unassignedPopulation = !!button.querySelector('span');
       }
     });
     return unassignedPopulation;
+  };
+  const shouldRebalance = () => {
+    return state.options.pages[CONSTANTS.PAGES.POPULATION].options.populationRebalanceTime > 0 && (!state.lastVisited.populationRebalance || state.lastVisited.populationRebalance + state.options.pages[CONSTANTS.PAGES.POPULATION].options.populationRebalanceTime * 60 * 1000 < new Date().getTime());
   };
   const allJobs = jobs.filter(job => job.gen && job.gen.length).map(job => {
     return {
@@ -29763,7 +39626,7 @@ Estimated damage:
       key: job.id,
       gen: job.gen.filter(gen => gen.type === 'resource').map(gen => {
         return {
-          id: translate(gen.id, 'res_'),
+          id: gen.id,
           value: gen.value
         };
       })
@@ -29809,9 +39672,9 @@ Estimated damage:
   const getAllAvailableJobs = () => {
     const container = selectors.getActivePageContent();
     const availableJobs = [...container.querySelectorAll('h5')].map(job => {
-      const jobTitle = job.textContent.trim();
+      const jobTitle = reactUtil.getNearestKey(job, 7);
       return {
-        ...allowedJobs.find(allowedJob => allowedJob.id === jobTitle),
+        ...allowedJobs.find(allowedJob => keyGen.population.key(allowedJob.key) === jobTitle),
         container: job.parentElement.parentElement,
         current: +job.parentElement.parentElement.querySelector('input').value.split('/').shift().trim(),
         maxAvailable: +job.parentElement.parentElement.querySelector('input').value.split('/').pop().trim()
@@ -29826,8 +39689,7 @@ Estimated damage:
   };
   const executeAction$4 = async () => {
     allowedJobs = getAllJobs();
-    const shouldRebalance = state.options.pages[CONSTANTS.PAGES.POPULATION].options.populationRebalanceTime > 0 && (!state.lastVisited.populationRebalance || state.lastVisited.populationRebalance + state.options.pages[CONSTANTS.PAGES.POPULATION].options.populationRebalanceTime * 60 * 1000 < new Date().getTime());
-    if (allowedJobs.length && shouldRebalance) {
+    if (allowedJobs.length && shouldRebalance()) {
       const unassignAllButton = document.querySelector('div.flex.justify-center.mx-auto.pt-3.font-bold.text-lg > button');
       if (unassignAllButton) {
         unassignAllButton.click();
@@ -29846,11 +39708,12 @@ Estimated damage:
     let availableJobs = getAllAvailableJobs();
     if (availablePop[0] > 0 && availableJobs.length) {
       const minimumFood = state.options.pages[CONSTANTS.PAGES.POPULATION].options.minimumFood || 0;
+      const unsafeJobRatio = state.options.pages[CONSTANTS.PAGES.POPULATION].options.unsafeJobRatio ?? 2;
       while (!state.scriptPaused && canAssignJobs) {
         canAssignJobs = false;
         if (availableJobs.length) {
-          const foodJob = availableJobs.find(job => job.resourcesGenerated.find(res => res.id === 'Food'));
-          if (foodJob && resources.get('Food').speed <= minimumFood && foodJob.current < foodJob.maxAvailable) {
+          const foodJob = availableJobs.find(job => job.resourcesGenerated.find(res => res.id === 'food'));
+          if (foodJob && resources.get('food').speed <= minimumFood && foodJob.current < foodJob.maxAvailable) {
             const addJobButton = foodJob.container.querySelector('button.btn-green');
             if (addJobButton) {
               logger({
@@ -29866,7 +39729,7 @@ Estimated damage:
           } else {
             let unassigned = container.querySelector('div > span.ml-2').textContent.split('/').map(pop => numberParser.parse(pop.trim())).shift();
             if (unassigned > 0) {
-              const resourcesToProduce = ['Natronite', 'Saltpetre', 'Tools', 'Wood', 'Stone', 'Iron', 'Copper', 'Mana', 'Faith', 'Research', 'Materials', 'Steel', 'Supplies', 'Gold', 'Crystal', 'Horse', 'Cow', 'Food'].filter(res => resources.get(res)).filter(res => availableJobs.find(job => job.resourcesGenerated.find(resGen => resGen.id === res)));
+              const resourcesToProduce = ['natronite', 'saltpetre', 'tools', 'wood', 'stone', 'iron', 'copper', 'mana', 'faith', 'research', 'materials', 'steel', 'supplies', 'gold', 'crystal', 'horse', 'cow', 'food'].filter(res => resources.get(res)).filter(res => availableJobs.find(job => job.resourcesGenerated.find(resGen => resGen.id === res)));
               const resourcesWithNegativeGen = resourcesToProduce.filter(res => resources.get(res) && resources.get(res).speed < 0);
               const resourcesWithNoGen = resourcesToProduce.filter(res => !resourcesWithNegativeGen.includes(res) && resources.get(res) && !resources.get(res).speed);
               const resourcesSorted = resourcesWithNegativeGen.concat(resourcesWithNoGen);
@@ -29880,18 +39743,18 @@ Estimated damage:
                       if (unassigned === 0) break;
                       const job = jobsForResource[i];
                       let isSafeToAdd = job.current < Math.min(job.max, job.maxAvailable);
-                      const isFoodJob = !!job.resourcesGenerated.find(res => res.id === 'Food');
+                      const isFoodJob = !!job.resourcesGenerated.find(res => res.id === 'food');
                       if (isFoodJob) {
-                        isSafeToAdd = isSafeToAdd || resources.get('Food').speed <= minimumFood && foodJob.current < foodJob.maxAvailable;
+                        isSafeToAdd = isSafeToAdd || resources.get('food').speed <= minimumFood && foodJob.current < foodJob.maxAvailable;
                       }
                       if (!job.isSafe) {
                         job.resourcesUsed.every(resUsed => {
                           const res = resources.get(resUsed.id);
-                          if (!res || res.speed < Math.abs(resUsed.value * 2)) {
+                          if (!res || res.speed <= Math.abs(resUsed.value * unsafeJobRatio)) {
                             isSafeToAdd = false;
                           }
-                          if (res && resUsed.id === 'Food' && res.speed - resUsed.value < minimumFood) {
-                            const foodJob = getAllAvailableJobs().find(job => job.resourcesGenerated.find(res => res.id === 'Food'));
+                          if (res && resUsed.id === 'food' && res.speed - resUsed.value < minimumFood) {
+                            const foodJob = getAllAvailableJobs().find(job => job.resourcesGenerated.find(res => res.id === 'food'));
                             if (foodJob) {
                               i -= 1;
                               job = foodJob;
@@ -29929,18 +39792,18 @@ Estimated damage:
                 if (state.scriptPaused) break;
                 const job = availableJobs[i];
                 let isSafeToAdd = job.current < Math.min(job.max, job.maxAvailable);
-                const isFoodJob = !!job.resourcesGenerated.find(res => res.id === 'Food');
+                const isFoodJob = !!job.resourcesGenerated.find(res => res.id === 'food');
                 if (isFoodJob) {
-                  isSafeToAdd = isSafeToAdd || resources.get('Food').speed <= minimumFood && foodJob.current < foodJob.maxAvailable;
+                  isSafeToAdd = isSafeToAdd || resources.get('food').speed <= minimumFood && foodJob.current < foodJob.maxAvailable;
                 }
                 if (!job.isSafe) {
                   job.resourcesUsed.every(resUsed => {
                     const res = resources.get(resUsed.id);
-                    if (!res || res.speed < Math.abs(resUsed.value * 2)) {
+                    if (!res || res.speed <= Math.abs(resUsed.value * unsafeJobRatio)) {
                       isSafeToAdd = false;
                     }
-                    if (res && resUsed.id === 'Food' && res.speed - resUsed.value < minimumFood) {
-                      const foodJob = availableJobs.find(job => job.resourcesGenerated.find(res => res.id === 'Food'));
+                    if (res && resUsed.id === 'food' && res.speed - resUsed.value < minimumFood) {
+                      const foodJob = availableJobs.find(job => job.resourcesGenerated.find(res => res.id === 'food'));
                       if (foodJob) {
                         job = foodJob;
                         isSafeToAdd = true;
@@ -29984,7 +39847,7 @@ Estimated damage:
   };
   var Population = {
     page: CONSTANTS.PAGES.POPULATION,
-    enabled: () => userEnabled$4() && navigation.hasPage(CONSTANTS.PAGES.POPULATION) && hasUnassignedPopulation() && getAllJobs().length,
+    enabled: () => userEnabled$4() && navigation.hasPage(CONSTANTS.PAGES.POPULATION) && (hasUnassignedPopulation() || shouldRebalance()) && getAllJobs().length,
     action: async () => {
       await navigation.switchPage(CONSTANTS.PAGES.POPULATION);
       if (navigation.checkPage(CONSTANTS.PAGES.POPULATION)) await executeAction$4();
@@ -30025,10 +39888,7 @@ Estimated damage:
   const getAllButtons$2 = () => {
     const buttonsList = selectors.getAllButtons(true);
     const allowedResearch = getAllowedResearch().map(tech => {
-      let button = buttonsList.find(button => button.innerText.split('\n').shift().trim() === tech.id);
-      if (!button && tech.id === 'A moonlit night') {
-        button = buttonsList.find(button => button.innerText.split('\n').shift().trim() === 'A moonlight night');
-      }
+      let button = buttonsList.find(button => reactUtil.getNearestKey(button, 7) === keyGen.research.key(tech.key));
       return {
         ...tech,
         button
@@ -30046,64 +39906,30 @@ Estimated damage:
         for (let i = 0; i < buttonsList.length; i++) {
           const research = buttonsList[i];
           if (state.options.pages[CONSTANTS.PAGES.RESEARCH].subpages[CONSTANTS.SUBPAGES.RESEARCH].options.dangerousFights && dangerousFightsMapping[research.key]) {
-            const army = armyCalculator.getEnemyArmy(dangerousFightsMapping[research.key]);
-            const enemyStats = armyCalculator.calculateEnemyStats(army);
-            const garrison = armyCalculator.getGarrison(true);
-            const canWinNow = armyCalculator.canWinBattle(enemyStats, garrison, true, true);
-            if (canWinNow) {
-              state.stopAttacks = false;
-              logger({
-                msgLevel: 'debug',
-                msg: 'Will try starting a dangerous research (canWinNow). Values:'
-              });
-              logger({
-                msgLevel: 'debug',
-                msg: `Research: ${research.id} (${research.key}). Fight: ${dangerousFightsMapping[research.key]}`
-              });
-              logger({
-                msgLevel: 'debug',
-                msg: `Army: ${JSON.stringify(army)}`
-              });
-              logger({
-                msgLevel: 'debug',
-                msg: `Enemy stats: ${JSON.stringify(enemyStats)}`
-              });
-              logger({
-                msgLevel: 'debug',
-                msg: `Garrison: ${JSON.stringify(garrison)}`
-              });
+            const canWinBattle = armyCalculator.canWinBattle(dangerousFightsMapping[research.key], true, false);
+            if (canWinBattle) {
+              const canWinNow = armyCalculator.canWinBattle(dangerousFightsMapping[research.key], true, true);
+              if (canWinNow) {
+                state.stopAttacks = false;
+                logger({
+                  msgLevel: 'debug',
+                  msg: `Will try starting a dangerous research. Research: ${research.id} (${research.key}). Fight: ${dangerousFightsMapping[research.key]}`
+                });
+              } else {
+                ignoredTech.push(research.id);
+                logger({
+                  msgLevel: 'debug',
+                  msg: `Can win ${research.id}, but we need to unassign all units first.`
+                });
+                state.stopAttacks = true;
+                continue;
+              }
             } else {
               ignoredTech.push(research.id);
               logger({
                 msgLevel: 'debug',
                 msg: `Can't win ${research.id}, ignoring it for this round.`
               });
-              const canWinEmpty = armyCalculator.canWinBattle(enemyStats, garrison, false, true);
-              if (canWinEmpty) {
-                logger({
-                  msgLevel: 'debug',
-                  msg: 'Will try starting a dangerous research later (canWinEmpty). Values:'
-                });
-                logger({
-                  msgLevel: 'debug',
-                  msg: `Research: ${research.id} (${research.key}). Fight: ${dangerousFightsMapping[research.key]}`
-                });
-                logger({
-                  msgLevel: 'debug',
-                  msg: `Army: ${JSON.stringify(army)}`
-                });
-                logger({
-                  msgLevel: 'debug',
-                  msg: `Enemy stats: ${JSON.stringify(enemyStats)}`
-                });
-                logger({
-                  msgLevel: 'debug',
-                  msg: `Garrison: ${JSON.stringify(garrison)}`
-                });
-                state.stopAttacks = true;
-              } else {
-                state.stopAttacks = false;
-              }
               continue;
             }
           }
@@ -30116,7 +39942,7 @@ Estimated damage:
           if (research.confirm) {
             if (!navigation.checkPage(CONSTANTS.PAGES.RESEARCH, CONSTANTS.SUBPAGES.RESEARCH)) return;
             await sleep(1000);
-            const redConfirmButton = [...document.querySelectorAll('.btn.btn-red')].find(button => button.innerText.includes('Confirm'));
+            const redConfirmButton = [...document.querySelectorAll('#headlessui-portal-root .btn.btn-red')].find(button => reactUtil.getBtnIndex(button, 0) === 1);
             if (redConfirmButton) {
               redConfirmButton.click();
               await sleep(4000);
@@ -30131,7 +39957,8 @@ Estimated damage:
     }
   };
   const hasResearches = () => {
-    const resNavButton = navigation.getPagesSelector().find(page => page.innerText.includes(CONSTANTS.PAGES.RESEARCH));
+    const pageIndex = CONSTANTS.PAGES_INDEX[CONSTANTS.PAGES.RESEARCH];
+    const resNavButton = navigation.getPagesSelector().find(page => reactUtil.getBtnIndex(page, 1) === pageIndex);
     if (resNavButton) {
       const researchesAvailable = resNavButton.querySelector('span.inline-block');
       if (researchesAvailable) {
@@ -30175,7 +40002,7 @@ Estimated damage:
   const getAllButtons$1 = () => {
     const buttonsList = selectors.getAllButtons(true, ':not(.btn-progress)');
     const allowedPrayers = getAllowedPrayers().map(prayer => {
-      const button = buttonsList.find(button => button.innerText.split('\n').shift().trim() === prayer.id);
+      const button = buttonsList.find(button => reactUtil.getNearestKey(button, 6) === keyGen.magic.key(prayer.key));
       return {
         ...prayer,
         button
@@ -30207,7 +40034,7 @@ Estimated damage:
   var MagicPrayers = {
     page: CONSTANTS.PAGES.MAGIC,
     subpage: CONSTANTS.SUBPAGES.PRAYERS,
-    enabled: () => userEnabled$2() && navigation.hasPage(CONSTANTS.PAGES.MAGIC) && getAllowedPrayers().length && resources.get('Faith') && resources.get('Faith').max,
+    enabled: () => userEnabled$2() && navigation.hasPage(CONSTANTS.PAGES.MAGIC) && getAllowedPrayers().length && resources.get('faith') && resources.get('faith').max,
     action: async () => {
       await navigation.switchSubPage(CONSTANTS.SUBPAGES.PRAYERS, CONSTANTS.PAGES.MAGIC);
       if (navigation.checkPage(CONSTANTS.PAGES.MAGIC, CONSTANTS.SUBPAGES.PRAYERS)) await executeAction$2();
@@ -30239,11 +40066,7 @@ Estimated damage:
   const getAllButtons = () => {
     const allowedSpells = getAllowedSpells();
     const buttonsList = selectors.getAllButtons(true).map(button => {
-      const h5 = button.parentElement.parentElement.querySelector('h5');
-      if (!h5) {
-        return {};
-      }
-      const spell = allowedSpells.find(spell => h5.innerText.trim() === spell.id);
+      const spell = allowedSpells.find(spell => reactUtil.getNearestKey(button, 4) === keyGen.magic.key(spell.key));
       return {
         ...spell,
         button
@@ -30257,7 +40080,7 @@ Estimated damage:
     const disabledSpells = buttonsList.filter(button => !button.enabled);
     for (let i = 0; i < disabledSpells.length && !state.scriptPaused; i++) {
       const spell = disabledSpells[i];
-      if (spell.button.innerText.includes('Cancel this spell')) {
+      if (spell.button.classList.contains('btn-dark')) {
         logger({
           msgLevel: 'log',
           msg: `Cancelling spell ${spell.id}`
@@ -30269,8 +40092,8 @@ Estimated damage:
     }
     for (let i = 0; i < enabledSpells.length && !state.scriptPaused; i++) {
       const spell = enabledSpells[i];
-      const hasEnoughMana = resources.get('Mana').speed + spell.gen.find(gen => gen.id === 'mana').value > (state.options.pages[CONSTANTS.PAGES.MAGIC].subpages[CONSTANTS.SUBPAGES.SPELLS].options.minimumMana || 0);
-      if (spell.button.innerText.includes('Cast this spell') && hasEnoughMana) {
+      const hasEnoughMana = resources.get('mana').speed + spell.gen.find(gen => gen.id === 'mana').value > (state.options.pages[CONSTANTS.PAGES.MAGIC].subpages[CONSTANTS.SUBPAGES.SPELLS].options.minimumMana || 0);
+      if (!spell.button.classList.contains('btn-dark') && hasEnoughMana) {
         logger({
           msgLevel: 'log',
           msg: `Casting spell ${spell.id}`
@@ -30284,7 +40107,7 @@ Estimated damage:
   var MagicSpells = {
     page: CONSTANTS.PAGES.MAGIC,
     subpage: CONSTANTS.SUBPAGES.SPELLS,
-    enabled: () => userEnabled$1() && navigation.hasPage(CONSTANTS.PAGES.MAGIC) && getAllowedSpells().length && resources.get('Mana') && resources.get('Mana').max,
+    enabled: () => userEnabled$1() && navigation.hasPage(CONSTANTS.PAGES.MAGIC) && getAllowedSpells().length && resources.get('mana') && resources.get('mana').max,
     action: async () => {
       await navigation.switchSubPage(CONSTANTS.SUBPAGES.SPELLS, CONSTANTS.PAGES.MAGIC);
       if (navigation.checkPage(CONSTANTS.PAGES.MAGIC, CONSTANTS.SUBPAGES.SPELLS)) await executeAction$1();
@@ -30298,24 +40121,25 @@ Estimated damage:
     return state.options.pages[CONSTANTS.PAGES.DIPLOMACY].enabled || false;
   };
   const mapToFaction = button => {
+    let factionName = reactUtil.getNearestKey(button, 12);
     let level = 0;
     let parent = button.parentElement;
-    let factionName;
-    while (!factionName && level < 5) {
-      factionName = parent.querySelector('div.font-bold > button.font-bold');
-      if (factionName) {
-        factionName = factionName.innerText.split('\n').shift().trim();
-      } else {
-        factionName = null;
+    let factionNameEl;
+    while (!factionNameEl && level < 5) {
+      factionNameEl = parent.querySelector('div.font-bold > button.font-bold');
+      if (factionNameEl) ; else {
+        factionNameEl = null;
         parent = parent.parentElement;
         level += 1;
       }
     }
-    if (factionName) {
-      const factionData = factions.find(faction => translate(faction.id, 'dip_') === factionName);
+    if (factionName && factionNameEl) {
+      const factionData = factions.find(faction => keyGen.diplomacy.key(faction.id) === factionName);
       return {
         ...factionData,
         button,
+        level: level,
+        buttonCount: parent.querySelectorAll(`button.btn`).length,
         key: factionData.id,
         id: translate(factionData.id, 'dip_'),
         option: state.options.pages[CONSTANTS.PAGES.DIPLOMACY].options[factionData.id]
@@ -30329,10 +40153,30 @@ Estimated damage:
       const button = allButtons[i];
       listOfFactions[button.key] = listOfFactions[button.key] ? listOfFactions[button.key] : button;
       listOfFactions[button.key].buttons = listOfFactions[button.key].buttons ? listOfFactions[button.key].buttons : {};
-      const buttonText = button.button.innerText.trim();
-      const buttonType = Object.keys(CONSTANTS.DIPLOMACY_BUTTONS).find(key => buttonText.includes(CONSTANTS.DIPLOMACY_BUTTONS[key]));
+      let buttonType = undefined;
+      if (button.level === 2) {
+        buttonType = CONSTANTS.DIPLOMACY_BUTTONS.DELEGATION;
+      } else if (button.level === 3) {
+        if (button.button.classList.contains('btn-dark')) {
+          buttonType = CONSTANTS.DIPLOMACY_BUTTONS.CANCEL_TRADE;
+        } else {
+          buttonType = CONSTANTS.DIPLOMACY_BUTTONS.ACCEPT_TRADE;
+        }
+      } else if (button.level === 4) {
+        if (button.button.classList.contains('btn-blue')) {
+          buttonType = CONSTANTS.DIPLOMACY_BUTTONS.ALLY;
+        } else if (button.button.classList.contains('btn-green')) {
+          buttonType = CONSTANTS.DIPLOMACY_BUTTONS.IMPROVE_RELATIONSHIPS;
+        } else {
+          if (button.button.parentElement.parentElement.parentElement.className.includes('border-red')) {
+            buttonType = CONSTANTS.DIPLOMACY_BUTTONS.WAR;
+          } else {
+            buttonType = CONSTANTS.DIPLOMACY_BUTTONS.INSULT;
+          }
+        }
+      }
       if (buttonType) {
-        listOfFactions[button.key].buttons[CONSTANTS.DIPLOMACY_BUTTONS[buttonType]] = button.button;
+        listOfFactions[button.key].buttons[buttonType] = button.button;
       }
       delete listOfFactions[button.key].button;
     }
@@ -30369,7 +40213,7 @@ Estimated damage:
               } else {
                 canTrade = faction.commercial.filter(res => res.type === 'resource').every(res => {
                   if (res.value < 0) {
-                    const currentRes = resources.get(translate(res.id, 'res_'));
+                    const currentRes = resources.get(res.id);
                     return currentRes.speed > Math.abs(res.value);
                   } else {
                     return true;
@@ -30405,10 +40249,7 @@ Estimated damage:
               faction.buttons[CONSTANTS.DIPLOMACY_BUTTONS.INSULT].click();
             }
             if (faction.buttons[CONSTANTS.DIPLOMACY_BUTTONS.WAR]) {
-              const army = armyCalculator.getEnemyArmy(faction.key);
-              const enemyStats = armyCalculator.calculateEnemyStats(army);
-              const garrison = armyCalculator.getGarrison().filter(unit => unit.category !== 0);
-              const canWinBattle = armyCalculator.canWinBattle(enemyStats, garrison, true);
+              const canWinBattle = armyCalculator.canWinBattle(faction.key, false, false);
               if (canWinBattle) {
                 logger({
                   msgLevel: 'log',
@@ -30417,7 +40258,7 @@ Estimated damage:
                 tookAction = true;
                 faction.buttons[CONSTANTS.DIPLOMACY_BUTTONS.WAR].click();
                 await sleep(200);
-                const redConfirmButton = [...document.querySelectorAll('.btn.btn-red')].find(button => button.innerText.includes('Confirm'));
+                const redConfirmButton = [...document.querySelectorAll('#headlessui-portal-root .btn.btn-red')].find(button => reactUtil.getBtnIndex(button, 0) === 1);
                 if (redConfirmButton) {
                   redConfirmButton.click();
                   await sleep(200);
@@ -30503,8 +40344,56 @@ Estimated damage:
       const rows = potentialResourcesToFillTable.querySelectorAll('tr');
       rows.forEach(row => {
         const cells = row.querySelectorAll('td');
-        const resourceName = cells[0].textContent.trim();
-        const resource = resources.get(resourceName);
+        let reqKey = reactUtil.getNearestKey(cells[0], 1);
+        if (!keyGen.tooltipReq.check(reqKey)) {
+          return;
+        }
+        reqKey = keyGen.tooltipReq.id(reqKey);
+        let dataList;
+        let dataId;
+        let reqField = 'req';
+        if (reqKey.startsWith(CONSTANTS.TOOLTIP_PREFIX.BUILDING)) {
+          dataList = buildings;
+          dataId = reqKey.replace(CONSTANTS.TOOLTIP_PREFIX.BUILDING, '');
+        } else if (reqKey.startsWith(CONSTANTS.TOOLTIP_PREFIX.TECH)) {
+          dataList = tech;
+          dataId = reqKey.replace(CONSTANTS.TOOLTIP_PREFIX.TECH, '');
+        } else if (reqKey.startsWith(CONSTANTS.TOOLTIP_PREFIX.PRAYER)) {
+          dataList = spells;
+          dataId = reqKey.replace(CONSTANTS.TOOLTIP_PREFIX.PRAYER, '');
+        } else if (reqKey.startsWith(CONSTANTS.TOOLTIP_PREFIX.UNIT)) {
+          dataList = units;
+          dataId = reqKey.replace(CONSTANTS.TOOLTIP_PREFIX.UNIT, '');
+        } else if (reqKey.startsWith(CONSTANTS.TOOLTIP_PREFIX.FACTION_IMPROVE)) {
+          dataList = factions;
+          dataId = reqKey.replace(CONSTANTS.TOOLTIP_PREFIX.FACTION_IMPROVE, '');
+          reqField = 'reqImproveRelationship';
+        } else if (reqKey.startsWith(CONSTANTS.TOOLTIP_PREFIX.FACTION_DELEGATION)) {
+          dataList = factions;
+          dataId = reqKey.replace(CONSTANTS.TOOLTIP_PREFIX.FACTION_DELEGATION, '');
+          reqField = 'reqDelegation';
+        }
+        if (!dataId || !dataList) {
+          return;
+        }
+        let match = dataId.match(/^([a-zA-Z_]+)(\d+)$/);
+        if (!match) {
+          return;
+        }
+        dataId = match[1];
+        let reqIdx = match[2];
+        let data = dataList.find(d => dataId === d.id);
+        if (!data) {
+          return;
+        }
+        let req = data[reqField];
+        if (req) {
+          req = req[reqIdx];
+        }
+        if (!req) {
+          return;
+        }
+        const resource = resources.get(req.id);
         if (resource) {
           let ttf = '✅';
           const target = numberParser.parse(cells[1].textContent.split(' ').shift().replace(/[^0-9KM\-,\.]/g, '').trim());
@@ -30530,7 +40419,7 @@ Estimated damage:
     const resourceTrNodes = document.querySelectorAll('#root > div > div:not(#maintabs-container) > div > div > div > table:not(.hidden) > tbody > tr');
     resourceTrNodes.forEach(row => {
       const cells = row.querySelectorAll('td');
-      const resourceName = cells[0].textContent.trim();
+      const resourceName = keyGen.resource.id(reactUtil.getNearestKey(cells[0], 5));
       const resource = resources.get(resourceName);
       let ttf = '';
       if (resource && resource.current < resource.max && resource.speed) {
@@ -30605,31 +40494,38 @@ Estimated damage:
   const autoClicker = async () => {
     if (!state.haveManualResourceButtons) return;
     if (state.scriptPaused) return;
-    const manualResources = ['Food', 'Wood', 'Stone'];
+    const manualResources = [keyGen.manual.key('food'), keyGen.manual.key('wood'), keyGen.manual.key('stone')];
     while (!state.scriptPaused && state.haveManualResourceButtons) {
+      if (state.stopAutoClicking) {
+        await sleep(1000);
+        continue;
+      }
       const buttons = [...document.querySelectorAll('#root > div.flex.flex-wrap.w-full.mx-auto.p-2 > div.w-full.lg\\:pl-2 > div > div.order-2.flex.flex-wrap.gap-3 > button')];
       if (!buttons.length) {
         state.haveManualResourceButtons = false;
         return;
       }
-      const buttonsToClick = buttons.filter(button => manualResources.includes(button.innerText.trim()));
-      while (buttonsToClick.length) {
-        const buttonToClick = buttonsToClick.shift();
-        buttonToClick.click();
-        await sleep(100);
+      const buttonsToClick = buttons.filter(button => manualResources.includes(reactUtil.getNearestKey(button, 2)));
+      if (buttonsToClick.length && !reactUtil.getGameData().SettingsStore.showSettings) {
+        while (buttonsToClick.length && !reactUtil.getGameData().SettingsStore.showSettings) {
+          const buttonToClick = buttonsToClick.shift();
+          buttonToClick.click();
+          await sleep(100);
+        }
+      } else {
+        await sleep(1000);
       }
     }
   };
 
-  const defaultAncestor = translate('ancestor_gatherer');
   const autoAncestor = async () => {
     if (!state.options.ancestor.enabled || !state.options.ancestor.selected) return;
-    const ancestorToSelect = translate(state.options.ancestor.selected);
+    const ancestorToSelect = state.options.ancestor.selected;
     const ancestorPage = document.querySelector('#root > div.mt-6.lg\\:mt-12.xl\\:mt-24.\\32 xl\\:mt-12.\\34 xl\\:mt-24 > div > div.text-center > p.mt-6.lg\\:mt-8.text-lg.lg\\:text-xl.text-gray-500.dark\\:text-gray-400');
     if (ancestorPage) {
-      let ancestor = [...document.querySelectorAll('button.btn')].find(button => button.parentElement.innerText.includes(ancestorToSelect));
+      let ancestor = [...document.querySelectorAll('button.btn')].find(button => reactUtil.getNearestKey(button, 3) === keyGen.ancestor.key(ancestorToSelect));
       if (!ancestor) {
-        ancestor = [...document.querySelectorAll('button.btn')].find(button => button.parentElement.innerText.includes(defaultAncestor));
+        ancestor = [...document.querySelectorAll('button.btn')].find(button => reactUtil.getNearestKey(button.parentElement, 3) === keyGen.ancestor.key(ancestorToSelect));
       }
       if (ancestor) {
         ancestor.click();
@@ -30640,20 +40536,105 @@ Estimated damage:
     }
   };
 
+  const getEnabledLegacies = () => {
+    const enabledLegaciesOptions = state.options.prestige.options ?? {};
+    if (Object.keys(enabledLegaciesOptions).length) {
+      let enabledLegacies = Object.keys(enabledLegaciesOptions).filter(key => !!enabledLegaciesOptions[key]).map(key => {
+        const legacy = {
+          key: key,
+          id: translate(key, 'leg_'),
+          prio: enabledLegaciesOptions[key]
+        };
+        legacy.cost = legacies.find(leg => leg.id === key).req.find(req => req.id === 'legacy').value;
+        return legacy;
+      });
+      return enabledLegacies;
+    }
+    return [];
+  };
   const autoPrestige = async () => {
     if (!state.options.prestige.enabled) return;
-    let prestigeButton = [...document.querySelectorAll('.btn.btn-red')].find(button => button.innerText.includes('Prestige'));
+    let buttons = [...document.querySelectorAll('h3.modal-title')].map(h3 => [...h3.parentElement.querySelectorAll('button.btn')]).flat();
+    if (!buttons.find(button => keyGen.legacy.check(reactUtil.getNearestKey(button, 6)))) {
+      return;
+    }
+    const enabledLegacies = getEnabledLegacies();
+    const activeLegacies = buttons.filter(button => !button.classList.contains('btn-red') && !button.classList.toString().includes('btn-off')).map(button => {
+      const id = reactUtil.getNearestKey(button, 6);
+      const legacyData = enabledLegacies.find(leg => `leg_${leg.key}` === id);
+      if (legacyData) {
+        return {
+          button,
+          prio: legacyData.prio,
+          cost: legacyData.cost
+        };
+      }
+    }).filter(legacy => legacy).sort((a, b) => {
+      if (a.prio === b.prio) return a.cost - b.cost;
+      return b.prio - a.prio;
+    });
+    for (let i = 0; i < activeLegacies.length; i++) {
+      activeLegacies[i].button.click();
+      await sleep(1);
+    }
+    let prestigeButton = buttons.find(button => button.classList.contains('btn-red'));
     if (prestigeButton) {
       localStorage.set('lastVisited', {});
+      state.stopAutoClicking = true;
       state.stopAttacks = false;
       state.haveManualResourceButtons = true;
+      await sleep(300);
       prestigeButton.click();
       await sleep(5000);
-      let redConfirmButton = [...document.querySelectorAll('.btn.btn-red')].find(button => button.innerText.includes('Confirm'));
+      let redConfirmButton = [...document.querySelectorAll('#headlessui-portal-root .btn.btn-red')].find(button => reactUtil.getBtnIndex(button, 0) === 1);
       while (redConfirmButton) {
         redConfirmButton.click();
         await sleep(2000);
-        redConfirmButton = [...document.querySelectorAll('.btn.btn-red')].find(button => button.innerText.includes('Confirm'));
+        redConfirmButton = [...document.querySelectorAll('#headlessui-portal-root .btn.btn-red')].find(button => reactUtil.getBtnIndex(button, 0) === 1);
+      }
+      state.stopAutoClicking = false;
+    }
+  };
+
+  const autoNGPlus = async () => {
+    if (!state.options.ngplus.enabled) return;
+    if (!reactUtil.getGameData() || !reactUtil.getGameData().LegacyStore || !reactUtil.getGameData().LegacyStore.ownedLegacies) return;
+    if (!reactUtil.getGameData().LegacyStore.ownedLegacies.length) return;
+    if (state.options.ngplus.value > reactUtil.getGameData().LegacyStore.ownedLegacies.length) return;
+    const div = [...document.querySelectorAll('#root > div.flex > div')].find(div => reactUtil.getBtnIndex(div, 0) === 2);
+    if (!div) return;
+    const ngButton = [...div.querySelectorAll('button')].find(button => reactUtil.getBtnIndex(button, 0) === 5);
+    if (!ngButton) return;
+    localStorage.set('lastVisited', {});
+    state.stopAutoClicking = true;
+    state.stopAttacks = false;
+    state.haveManualResourceButtons = true;
+    await sleep(300);
+    ngButton.click();
+    await sleep(5000);
+    let redConfirmButton = [...document.querySelectorAll('#headlessui-portal-root .btn.btn-red')].find(button => reactUtil.getBtnIndex(button, 0) === 0);
+    while (redConfirmButton) {
+      redConfirmButton.click();
+      await sleep(2000);
+      redConfirmButton = [...document.querySelectorAll('#headlessui-portal-root .btn.btn-red')].find(button => reactUtil.getBtnIndex(button, 0) === 1);
+    }
+    state.stopAutoClicking = false;
+  };
+
+  const autoDifficulty = async () => {
+    if (!state.options.difficulty.enabled) return;
+    const diffucultyModalTitle = [...document.querySelectorAll('h3.modal-title')].find(h3 => h3.innerText.trim() === translate('difficulty'));
+    if (diffucultyModalTitle) {
+      const diffucultyOptions = [...diffucultyModalTitle.parentElement.querySelectorAll('div.p-4 h5')];
+      if (!state.options.difficulty.selected) {
+        diffucultyOptions[0].click();
+      } else {
+        const diffucultyOptionToSelect = diffucultyOptions.find(diffucultyOption => diffucultyOption.innerText.trim() === translate(state.options.difficulty.selected));
+        if (diffucultyOptionToSelect) {
+          diffucultyOptionToSelect.click();
+        } else {
+          diffucultyOptions[0].click();
+        }
       }
     }
   };
@@ -30858,7 +40839,7 @@ Estimated damage:
   const id$1 = 'theresmore-automation-options-panel';
   let start$1;
   const buildingCats = ['living_quarters', 'resource', 'science', 'commercial_area', 'defense', 'faith', 'warehouse', 'wonders'];
-  const unsafeResearch = ['kobold_nation', 'barbarian_tribes', 'orcish_threat'];
+  const unsafeResearch = ['kobold_nation', 'barbarian_tribes', 'orcish_threat', 'huge_cave_t'];
   const userUnits = units.filter(unit => unit.type !== 'enemy' && unit.type !== 'settlement' && unit.type !== 'spy');
   const userUnitsCategory = ['Recon', 'Ranged', 'Shock', 'Tank', 'Rider'];
   const fights = factions.concat(locations).filter(fight => !fight.id.includes('orc_war_party_')).map(fight => {
@@ -30907,6 +40888,7 @@ Estimated damage:
       options.push(`<option value="${option.value}">${option.key}</option>`);
     });
     return `<select class="option dark:bg-mydark-200"
+  ${data.setting ? `data-setting="${data.setting}"` : ''}
   ${data.page ? `data-page="${data.page}"` : ''}
   ${data.subpage ? `data-subpage="${data.subpage}"` : ''}
   ${data.key ? `data-key="${data.key}"` : ''}
@@ -31138,6 +41120,12 @@ Estimated damage:
             <input type="number" class="option w-min text-center lg:text-sm text-gray-700 bg-gray-100 dark:text-mydark-50 dark:bg-mydark-200 border-y border-gray-400 dark:border-mydark-200"
             data-page="${CONSTANTS.PAGES.POPULATION}" data-key="options" data-subkey="minimumFood" value="1" min="0" max="999999" step="1" /></label></div>
 
+          <div class="mb-2"><label>Ratio for unsafe jobs (speed of resource production to usage):
+            <input type="number" class="option w-min text-center lg:text-sm text-gray-700 bg-gray-100 dark:text-mydark-50 dark:bg-mydark-200 border-y border-gray-400 dark:border-mydark-200"
+            data-page="${CONSTANTS.PAGES.POPULATION}" data-key="options" data-subkey="unsafeJobRatio"
+            value="2" min="0" max="999999" step="0.01" /></label></div>
+
+
           <div class="mb-2"><label>Rebalance population every:
             <input type="number" class="option w-min text-center lg:text-sm text-gray-700 bg-gray-100 dark:text-mydark-50 dark:bg-mydark-200 border-y border-gray-400 dark:border-mydark-200"
               data-page="${CONSTANTS.PAGES.POPULATION}" data-key="options" data-subkey="populationRebalanceTime" value="0" min="0" max="999999" step="1" />
@@ -31216,6 +41204,15 @@ Estimated damage:
               Max: <input type="number" class="option w-min text-center lg:text-sm text-gray-700 bg-gray-100 dark:text-mydark-50 dark:bg-mydark-200 border-y border-gray-400 dark:border-mydark-200"
               data-page="${CONSTANTS.PAGES.ARMY}" data-subpage="${CONSTANTS.SUBPAGES.EXPLORE}"
               data-key="options" data-subkey="explorersMax" value="0" min="0" max="999999" step="1" /></label></div>
+
+
+              <div class="mb-2"><label>Familiars to send:<br />
+              Min: <input type="number" class="option w-min text-center lg:text-sm text-gray-700 bg-gray-100 dark:text-mydark-50 dark:bg-mydark-200 border-y border-gray-400 dark:border-mydark-200"
+              data-page="${CONSTANTS.PAGES.ARMY}" data-subpage="${CONSTANTS.SUBPAGES.EXPLORE}"
+              data-key="options" data-subkey="familiarsMin" value="0" min="0" max="999999" step="1" /><br />
+              Max: <input type="number" class="option w-min text-center lg:text-sm text-gray-700 bg-gray-100 dark:text-mydark-50 dark:bg-mydark-200 border-y border-gray-400 dark:border-mydark-200"
+              data-page="${CONSTANTS.PAGES.ARMY}" data-subpage="${CONSTANTS.SUBPAGES.EXPLORE}"
+              data-key="options" data-subkey="familiarsMax" value="0" min="0" max="999999" step="1" /></label></div>
             </div>
           </div>
 
@@ -31412,10 +41409,58 @@ Estimated damage:
           </div>
 
           <div class="mb-6">
+            <h3 class="text-lg">Auto-NG+:</h3>
+            <div class="mb-2"><label>Enabled:
+              <input type="checkbox" data-setting="ngplus" data-key="enabled" class="option" />
+            </label></div>
+
+            <div class="mb-2"><label>Minimum Legacies to NG+:
+              <input type="number" class="option w-min text-center lg:text-sm text-gray-700 bg-gray-100 dark:text-mydark-50 dark:bg-mydark-200 border-y border-gray-400 dark:border-mydark-200"
+              data-setting="ngplus" data-key="value" value="0" min="0" max="999" step="1" /></label>
+            </div>
+          </div>
+
+          <div class="mb-6">
+            <h3 class="text-lg">Auto-difficulty:</h3>
+            <div class="mb-2"><label>Enabled:
+              <input type="checkbox" data-setting="difficulty" data-key="enabled" class="option" />
+            </label></div>
+
+            <div class="mb-2">
+              Difficulty to pick:
+
+              <select class="option dark:bg-mydark-200"
+              data-setting="difficulty" data-key="selected"
+              >
+                ${['difficulty_99', 'difficulty_0', 'difficulty_1', 'difficulty_2', 'difficulty_3'].map(difficulty => `<option value="${difficulty}">${translate(difficulty)}</option>`).join('')}
+              </select>
+            </div>
+          </div>
+
+          <div class="mb-6">
             <h3 class="text-lg">Auto-prestige:</h3>
             <div class="mb-2"><label>Enabled:
               <input type="checkbox" data-setting="prestige" data-key="enabled" class="option" />
             </label></div>
+          </div>
+
+          <div class="mb-2">
+            <button type="button" class="btn btn-blue w-min px-4 mr-2 minus1Medium">Set all to Medium</button>
+            <button type="button" class="btn btn-blue w-min px-4 mr-2 zeroDisabled">Set all to Disabled</button>
+          </div>
+
+          <div class="flex flex-wrap min-w-full mt-3 p-3 shadow rounded-lg ring-1 ring-gray-300 dark:ring-mydark-200 bg-gray-100 dark:bg-mydark-600">
+            <div class="grid gap-3 grid-cols-fill-240 min-w-full px-12 xl:px-0 mb-2">
+              ${legacies.map(legacy => {
+    return `<div class="flex flex-col mb-2"><label>
+                  <span class="font-bold">${translate(legacy.id, 'leg_')} (${legacy.req.find(req => req.id === 'legacy').value})</span><br />
+                  Prio: ${generatePrioritySelect({
+      setting: 'prestige',
+      key: 'options',
+      subkey: legacy.id
+    })}</label></div>`;
+  }).join('')}
+            </div>
           </div>
 
         </div>
@@ -31435,6 +41480,35 @@ Estimated damage:
           </div>
         </div>
       </div>
+
+      <div class="taTab">
+        <input type="radio" name="topLevelOptions" id="topLevelOptions-Cheats" class="taTab-switch">
+        <label for="topLevelOptions-Cheats" class="taTab-label">Cheats</label>
+        <div class="taTab-content">
+          <div class="mb-2">
+            The cheats will be applied immediately upon pressing the button. Please save your game state before if you're unsure about your decisions.
+          </div>
+
+          <div class="mb-2">
+            <button type="button" class="btn btn-blue w-min px-4 mr-2 maxResources">Max resources</button>
+          </div>
+
+          <div class="mb-2">
+            Legacy Points:
+              <button type="button" class="btn btn-blue w-min px-4 mr-2 maxLegacyPoints10">+10</button>
+              <button type="button" class="btn btn-blue w-min px-4 mr-2 maxLegacyPoints100">+100</button>
+              <button type="button" class="btn btn-blue w-min px-4 mr-2 maxLegacyPoints1000">+1000</button>
+          </div>
+
+          <div class="mb-2">
+            Presitge Currencies:
+              <button type="button" class="btn btn-blue w-min px-4 mr-2 maxPrestigeCurrencies1">+1</button>
+              <button type="button" class="btn btn-blue w-min px-4 mr-2 maxPrestigeCurrencies10">+10</button>
+              <button type="button" class="btn btn-blue w-min px-4 mr-2 maxPrestigeCurrencies100">+100</button>
+          </div>
+
+        </div>
+      </div>
     </div>
 
     <div class="absolute top-0 right-0 z-20 pt-4 pr-4">
@@ -31447,6 +41521,34 @@ Estimated damage:
     document.querySelector('#saveOptions').addEventListener('click', saveOptions);
     document.querySelector('#exportOptions').addEventListener('click', exportOptions);
     document.querySelector('#importOptions').addEventListener('click', importOptions);
+
+    // Cheats
+    document.querySelector('button.maxResources').addEventListener('click', cheats.maxResources);
+    document.addEventListener('keydown', e => {
+      // shortcut for maxResources
+      if (e.ctrlKey && e.key === 'm') {
+        e.preventDefault();
+        cheats.maxResources();
+      }
+    });
+    document.querySelector('button.maxLegacyPoints10').addEventListener('click', () => {
+      cheats.maxLegacyPoints(10);
+    });
+    document.querySelector('button.maxLegacyPoints100').addEventListener('click', () => {
+      cheats.maxLegacyPoints(100);
+    });
+    document.querySelector('button.maxLegacyPoints1000').addEventListener('click', () => {
+      cheats.maxLegacyPoints(1000);
+    });
+    document.querySelector('button.maxPrestigeCurrencies1').addEventListener('click', () => {
+      cheats.maxPrestigeCurrencies(1);
+    });
+    document.querySelector('button.maxPrestigeCurrencies10').addEventListener('click', () => {
+      cheats.maxPrestigeCurrencies(10);
+    });
+    document.querySelector('button.maxPrestigeCurrencies100').addEventListener('click', () => {
+      cheats.maxPrestigeCurrencies(100);
+    });
     const setAllValues = (allContainers, options) => {
       allContainers.forEach(container => {
         container.querySelectorAll('input.option[type=number]').forEach(input => input.value = options.number);
@@ -31582,7 +41684,7 @@ Estimated damage:
       if (option.type === 'checkbox') {
         value = !!option.checked;
       } else if (option.type === 'number') {
-        value = Math.round(Number(option.value));
+        value = Number(option.value);
       } else if (option.type === 'select-one') {
         value = option.value;
       }
@@ -31648,6 +41750,9 @@ Estimated damage:
       <button type="button" class="btn btn-blue mb-2 taScriptState">${scriptState}</button>
       <button type="button" class="btn btn-blue mb-2 taManageOptions">Manage Options</button>
     </div>
+    <div class="mb-2">
+      Legacies: <span class="legacyCount">0</span>; LP: <span class="lpCount">0</span>
+    </div>
   </p>
   `;
     document.querySelector('div#root').insertAdjacentElement('afterend', controlPanelElement);
@@ -31679,7 +41784,7 @@ Estimated damage:
     position: fixed;
     bottom: 10px;
     left: 10px;
-    zIndex: 99999999;
+    z-index: 99999999;
     border: 1px black solid;
     padding: 10px;
   }
@@ -31791,20 +41896,21 @@ Estimated damage:
     appendStyles
   };
 
+  const modalsToKill = Object.keys(i18n.en).filter(key => key.includes('img_') && !key.includes('_description')).map(key => i18n.en[key]);
   const hideFullPageOverlay = () => {
-    const modalsToIgnore = ['enemies'];
     if (!state.scriptPaused && state.options.cosmetics.hideFullPageOverlay.enabled) {
-      const modalContainer = document.querySelector('div.modal-container');
-      if (modalContainer) {
-        const modalTitle = modalContainer.querySelector('h3.modal-title');
-        if (modalTitle && modalsToIgnore.includes(modalTitle.innerText.trim())) {
-          return;
+      const modalTitles = [...document.querySelectorAll('#headlessui-portal-root div.modal-container h3.modal-title')];
+      modalTitles.forEach(modalTitle => {
+        if (modalTitle) {
+          if (!modalsToKill.includes(modalTitle.innerText.trim())) {
+            return;
+          }
+          const fullPageOverlay = document.querySelector('#headlessui-portal-root div.absolute.top-0.right-0.z-20.pt-4.pr-4 > button');
+          if (fullPageOverlay && fullPageOverlay.innerText.includes('Close')) {
+            fullPageOverlay.click();
+          }
         }
-        const fullPageOverlay = modalContainer.querySelector('div.absolute.top-0.right-0.z-20.pt-4.pr-4 > button');
-        if (fullPageOverlay && fullPageOverlay.innerText.includes('Close')) {
-          fullPageOverlay.click();
-        }
-      }
+      });
     }
   };
   const removeToasts = () => {
@@ -31823,6 +41929,16 @@ Estimated damage:
     removeToasts
   };
 
+  const updateStats = () => {
+    const controlPanel = document.querySelector('div#theresmore-automation');
+    if (controlPanel && reactUtil.getGameData()) {
+      controlPanel.querySelector('.legacyCount').innerText = reactUtil.getGameData().LegacyStore.ownedLegacies.length ?? 0;
+      controlPanel.querySelector('.lpCount').innerText = (reactUtil.getGameData().run.resources.find(res => res.id === 'legacy') || {
+        value: 0
+      }).value ?? 0;
+    }
+  };
+
   var tasks = {
     calculateTippyTTF,
     calculateTTF,
@@ -31830,10 +41946,13 @@ Estimated damage:
     autoClicker,
     autoAncestor,
     autoPrestige,
+    autoNGPlus,
+    autoDifficulty,
     managePanel,
     manageOptions,
     manageStyles,
-    cosmetics
+    cosmetics,
+    updateStats
   };
 
   let mainLoopRunning = false;
@@ -31860,7 +41979,9 @@ Estimated damage:
     while (!state.scriptPaused) {
       tasks.cosmetics.removeToasts();
       await tasks.autoPrestige();
+      await tasks.autoNGPlus();
       await tasks.autoAncestor();
+      await tasks.autoDifficulty();
       const pagesToCheck = [];
       Object.keys(state.options.pages).forEach(page => {
         if (state.options.pages[page].enabled || page === CONSTANTS.PAGES.RESEARCH) {
@@ -31909,6 +42030,7 @@ Estimated damage:
     setInterval(tasks.calculateTTF, 100);
     setInterval(tasks.calculateTippyTTF, 100);
     setInterval(tasks.addArmyButtons, 100);
+    setInterval(tasks.updateStats, 100);
     start();
   };
   const start = async () => {
@@ -31922,11 +42044,11 @@ Estimated damage:
       });
       if (!hideFullPageOverlayInterval) {
         clearInterval(hideFullPageOverlayInterval);
-        hideFullPageOverlayInterval = setInterval(tasks.cosmetics.hideFullPageOverlay, 1000);
+        hideFullPageOverlayInterval = setInterval(tasks.cosmetics.hideFullPageOverlay, 500);
       }
       await sleep(2000);
       mainLoop();
-      await sleep(5000);
+      await sleep(1000);
       tasks.autoClicker();
     } else {
       if (!hideFullPageOverlayInterval) {

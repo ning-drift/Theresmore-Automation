@@ -1,23 +1,26 @@
+import { i18n } from '../data'
 import { state } from '../utils'
 
+const modalsToKill = Object.keys(i18n.en)
+  .filter((key) => key.includes('img_') && !key.includes('_description'))
+  .map((key) => i18n.en[key])
+
 const hideFullPageOverlay = () => {
-  const modalsToIgnore = ['enemies']
-
   if (!state.scriptPaused && state.options.cosmetics.hideFullPageOverlay.enabled) {
-    const modalContainer = document.querySelector('div.modal-container')
+    const modalTitles = [...document.querySelectorAll('#headlessui-portal-root div.modal-container h3.modal-title')]
 
-    if (modalContainer) {
-      const modalTitle = modalContainer.querySelector('h3.modal-title')
+    modalTitles.forEach((modalTitle) => {
+      if (modalTitle) {
+        if (!modalsToKill.includes(modalTitle.innerText.trim())) {
+          return
+        }
 
-      if (modalTitle && modalsToIgnore.includes(modalTitle.innerText.trim())) {
-        return
+        const fullPageOverlay = document.querySelector('#headlessui-portal-root div.absolute.top-0.right-0.z-20.pt-4.pr-4 > button')
+        if (fullPageOverlay && fullPageOverlay.innerText.includes('Close')) {
+          fullPageOverlay.click()
+        }
       }
-
-      const fullPageOverlay = modalContainer.querySelector('div.absolute.top-0.right-0.z-20.pt-4.pr-4 > button')
-      if (fullPageOverlay && fullPageOverlay.innerText.includes('Close')) {
-        fullPageOverlay.click()
-      }
-    }
+    })
   }
 }
 

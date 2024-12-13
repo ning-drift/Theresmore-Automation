@@ -1,5 +1,5 @@
 import { buildings } from '../data'
-import { CONSTANTS, navigation, selectors, logger, resources, sleep, state, numberParser, translate } from '../utils'
+import { CONSTANTS, navigation, selectors, logger, resources, sleep, state, numberParser, translate, reactUtil, keyGen } from '../utils'
 
 const getBuildingsList = () => {
   const buildingsObject = state.options.pages[CONSTANTS.PAGES.BUILD].subpages[CONSTANTS.SUBPAGES.CITY].options
@@ -26,7 +26,7 @@ const getBuildingsList = () => {
 
             if (negativeGen.length) {
               const requires = negativeGen.map((gen) => {
-                return { resource: translate(gen.id, 'res_'), parameter: 'speed', minValue: Math.abs(gen.value) }
+                return { resource: gen.id, parameter: 'speed', minValue: Math.abs(gen.value) }
               })
 
               building.requires = requires
@@ -59,9 +59,9 @@ const getAllButtons = () => {
   const buttons = selectors
     .getAllButtons(true)
     .map((button) => {
-      const id = button.innerText.split('\n').shift()
+      const id = reactUtil.getNearestKey(button, 6)
       const count = button.querySelector('span.right-0') ? numberParser.parse(button.querySelector('span.right-0').innerText) : 0
-      return { id: id, element: button, count: count, building: buildingsList.find((building) => building.id === id) }
+      return { id: id, element: button, count: count, building: buildingsList.find((building) => keyGen.building.key(building.key) === id) }
     })
     .filter((button) => button.building && button.count < button.building.max)
     .sort((a, b) => {
@@ -91,6 +91,10 @@ const executeAction = async () => {
 
         if (!button.building.isSafe && button.building.requires.length) {
           shouldBuild = !button.building.requires.find((req) => !resources.get(req.resource) || resources.get(req.resource)[req.parameter] <= req.minValue)
+
+          if (button.building.key === 'common_house' && !button.count) {
+            shouldBuild = true
+          }
         }
 
         if (shouldBuild) {
@@ -113,9 +117,9 @@ const executeAction = async () => {
   state.buildings = selectors
     .getAllButtons(false)
     .map((button) => {
-      const id = button.innerText.split('\n').shift()
-      let count = button.querySelector('span.right-0') ? numberParser.parse(button.querySelector('span.right-0').innerText) : 0
-      const building = buildingsList.find((building) => building.id === id)
+      const id = reactUtil.getNearestKey(button, 6)
+      let count = reactUtil.getGameData().idxs.buildings[id] ? reactUtil.getGameData().idxs.buildings[id] : 0
+      const building = buildingsList.find((building) => keyGen.building.key(building.key) === id)
 
       if (!building) {
         return {}
@@ -125,7 +129,7 @@ const executeAction = async () => {
         count = building.cap
       }
 
-      return { id: id, count: count, canBuild: !button.className.includes('btn-off'), ...building }
+      return { id: id, count: count, canBuild: !button.classList.toString().includes('btn-off'), ...building }
     })
     .filter((building) => building.id)
 }

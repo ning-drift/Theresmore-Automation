@@ -11,6 +11,15 @@ export const getDefaultOptions = () => {
     prestige: {
       enabled: false,
       selected: '',
+      options: {},
+    },
+    difficulty: {
+      enabled: false,
+      selected: '',
+    },
+    ngplus: {
+      enabled: false,
+      value: 0,
     },
     cosmetics: {
       hideFullPageOverlay: {
@@ -20,7 +29,8 @@ export const getDefaultOptions = () => {
         enabled: false,
       },
     },
-    lastMigration: 2,
+    lastMigration: 3,
+    version: taVersion,
   }
 
   Object.keys(CONSTANTS.PAGES).every((key) => {
@@ -52,6 +62,7 @@ export const getDefaultOptions = () => {
 const state = {
   scriptPaused: true,
   haveManualResourceButtons: true,
+  stopAutoClicking: false,
   lastVisited: {},
   buildings: [],
   options: getDefaultOptions(),

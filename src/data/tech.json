@@ -1,5 +1,523 @@
 [
   {
+    "id": "trading_woods",
+    "req": [
+      {
+        "type": "building",
+        "id": "lucky_grove_b",
+        "value": 5
+      }
+    ],
+    "gen": [
+      {
+        "type": "resource",
+        "id": "gold",
+        "value": 2,
+        "perc": true
+      },
+      {
+        "type": "resource",
+        "id": "wood",
+        "value": 6,
+        "perc": true
+      }
+    ]
+  },
+  {
+    "id": "fine_lucky_wood",
+    "req": [
+      {
+        "type": "building",
+        "id": "lucky_grove_b",
+        "value": 10
+      }
+    ],
+    "gen": [
+      {
+        "type": "resource",
+        "id": "wood",
+        "value": 10,
+        "perc": true
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "archer",
+        "type_gen": "stat",
+        "gen": "attack",
+        "value": 2,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "crossbowman",
+        "type_gen": "stat",
+        "gen": "attack",
+        "value": 4,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "elf_warrior",
+        "type_gen": "stat",
+        "gen": "attack",
+        "value": 6,
+        "perc": false
+      }
+    ]
+  },
+  {
+    "id": "trained_longbowman",
+    "req": [
+      {
+        "type": "building",
+        "id": "lucky_grove_b",
+        "value": 15
+      }
+    ]
+  },
+  {
+    "id": "throwing_coin",
+    "req": [
+      {
+        "type": "building",
+        "id": "lucky_well_b",
+        "value": 5
+      }
+    ],
+    "gen": [
+      {
+        "type": "resource",
+        "id": "gold",
+        "value": 5,
+        "perc": true
+      }
+    ]
+  },
+  {
+    "id": "dirty_money",
+    "req": [
+      {
+        "type": "building",
+        "id": "lucky_well_b",
+        "value": 10
+      }
+    ],
+    "gen": [
+      {
+        "type": "resource",
+        "id": "gold",
+        "value": 10,
+        "perc": true
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "white_company",
+        "type_gen": "stat",
+        "gen": "attack",
+        "value": 8,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "white_company",
+        "type_gen": "stat",
+        "gen": "defense",
+        "value": 8,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "mercenary_veteran",
+        "type_gen": "stat",
+        "gen": "attack",
+        "value": 8,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "mercenary_veteran",
+        "type_gen": "stat",
+        "gen": "defense",
+        "value": 8,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "canava_guard",
+        "type_gen": "stat",
+        "gen": "attack",
+        "value": 8,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "canava_guard",
+        "type_gen": "stat",
+        "gen": "defense",
+        "value": 8,
+        "perc": false
+      }
+    ]
+  },
+  {
+    "id": "fountain_gold",
+    "req": [
+      {
+        "type": "building",
+        "id": "lucky_well_b",
+        "value": 15
+      }
+    ],
+    "gen": [
+      {
+        "type": "resource",
+        "id": "gold",
+        "value": 10
+      },
+      {
+        "type": "resource",
+        "id": "gold",
+        "value": 20,
+        "perc": true
+      }
+    ]
+  },
+  {
+    "id": "lucky_idea",
+    "req": [
+      {
+        "type": "building",
+        "id": "eureka_halls_b",
+        "value": 5
+      }
+    ],
+    "gen": [
+      {
+        "type": "resource",
+        "id": "research",
+        "value": 2
+      },
+      {
+        "type": "resource",
+        "id": "research",
+        "value": 5,
+        "perc": true
+      }
+    ]
+  },
+  {
+    "id": "eureka",
+    "req": [
+      {
+        "type": "building",
+        "id": "eureka_halls_b",
+        "value": 10
+      }
+    ],
+    "gen": [
+      {
+        "type": "resource",
+        "id": "research",
+        "value": 7
+      },
+      {
+        "type": "resource",
+        "id": "luck",
+        "value": 7,
+        "fix": true
+      }
+    ]
+  },
+  {
+    "id": "master_history",
+    "req": [
+      {
+        "type": "building",
+        "id": "eureka_halls_b",
+        "value": 15
+      }
+    ],
+    "gen": [
+      {
+        "type": "resource",
+        "id": "research",
+        "value": 5
+      },
+      {
+        "type": "resource",
+        "id": "research",
+        "value": 10,
+        "perc": true
+      }
+    ]
+  },
+  {
+    "id": "lucky_investments",
+    "req": [
+      {
+        "type": "building",
+        "id": "amusement_quarter_b",
+        "value": 5
+      }
+    ],
+    "gen": [
+      {
+        "type": "resource",
+        "id": "gold",
+        "value": 4
+      },
+      {
+        "type": "population",
+        "id": "unemployed",
+        "value": 2
+      }
+    ]
+  },
+  {
+    "id": "lucky_little_city",
+    "req": [
+      {
+        "type": "building",
+        "id": "amusement_quarter_b",
+        "value": 10
+      }
+    ],
+    "gen": [
+      {
+        "type": "resource",
+        "id": "research",
+        "value": 3
+      },
+      {
+        "type": "resource",
+        "id": "gold",
+        "value": 3
+      },
+      {
+        "type": "resource",
+        "id": "luck",
+        "value": 3,
+        "fix": true
+      },
+      {
+        "type": "population",
+        "id": "unemployed",
+        "value": 3
+      }
+    ]
+  },
+  {
+    "id": "illgotten_gains",
+    "req": [
+      {
+        "type": "building",
+        "id": "amusement_quarter_b",
+        "value": 15
+      }
+    ]
+  },
+  {
+    "id": "prepare_tunnel",
+    "req": [
+      {
+        "type": "building",
+        "id": "underground_tunnel_b",
+        "value": 5
+      }
+    ],
+    "gen": [
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "settlement_defenses",
+        "type_gen": "stat",
+        "gen": "defense",
+        "value": 400,
+        "perc": false
+      },
+      {
+        "type": "cap",
+        "id": "army",
+        "value": 10
+      }
+    ]
+  },
+  {
+    "id": "tunnel_hq",
+    "req": [
+      {
+        "type": "building",
+        "id": "underground_tunnel_b",
+        "value": 10
+      }
+    ],
+    "gen": [
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "commander",
+        "type_gen": "stat",
+        "gen": "attack",
+        "value": 40,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "commander",
+        "type_gen": "stat",
+        "gen": "defense",
+        "value": 40,
+        "perc": false
+      },
+      {
+        "type": "cap",
+        "id": "army",
+        "value": 15
+      }
+    ]
+  },
+  {
+    "id": "stocked_tunnel",
+    "req": [
+      {
+        "type": "building",
+        "id": "underground_tunnel_b",
+        "value": 15
+      }
+    ],
+    "gen": [
+      {
+        "type": "resource",
+        "id": "food",
+        "value": 7
+      },
+      {
+        "type": "resource",
+        "id": "stone",
+        "value": 7
+      },
+      {
+        "type": "resource",
+        "id": "supplies",
+        "value": 3
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "settlement_defenses",
+        "type_gen": "stat",
+        "gen": "defense",
+        "value": 700,
+        "perc": false
+      },
+      {
+        "type": "cap",
+        "id": "army",
+        "value": 35
+      }
+    ]
+  },
+  {
+    "id": "martial_arts",
+    "req": [
+      {
+        "type": "building",
+        "id": "fate_shrine_b",
+        "value": 5
+      }
+    ],
+    "gen": [
+      {
+        "type": "resource",
+        "id": "faith",
+        "value": 5
+      },
+      {
+        "type": "resource",
+        "id": "mana",
+        "value": 5
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "warrior_monk",
+        "type_gen": "stat",
+        "gen": "attack",
+        "value": 7,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "warrior_monk",
+        "type_gen": "stat",
+        "gen": "defense",
+        "value": 7,
+        "perc": false
+      }
+    ]
+  },
+  {
+    "id": "fate_blessing",
+    "req": [
+      {
+        "type": "building",
+        "id": "fate_shrine_b",
+        "value": 10
+      }
+    ],
+    "gen": [
+      {
+        "type": "resource",
+        "id": "faith",
+        "value": 10
+      },
+      {
+        "type": "resource",
+        "id": "mana",
+        "value": 10
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "cleric",
+        "type_gen": "stat",
+        "gen": "attack",
+        "value": 7,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "cleric",
+        "type_gen": "stat",
+        "gen": "defense",
+        "value": 7,
+        "perc": false
+      }
+    ]
+  },
+  {
+    "id": "avatar_fate",
+    "req": [
+      {
+        "type": "building",
+        "id": "fate_shrine_b",
+        "value": 15
+      }
+    ]
+  },
+  {
     "id": "housing"
   },
   {
@@ -609,6 +1127,26 @@
     ]
   },
   {
+    "id": "house_of_workers",
+    "req": [
+      {
+        "type": "resource",
+        "id": "research",
+        "value": 250
+      },
+      {
+        "type": "tech",
+        "id": "mining",
+        "value": 1
+      },
+      {
+        "type": "stat",
+        "id": "ng_reset",
+        "value": 1
+      }
+    ]
+  },
+  {
     "id": "architecture_titan_t",
     "req": [
       {
@@ -764,6 +1302,178 @@
     ]
   },
   {
+    "id": "bronze_projectiles",
+    "req": [
+      {
+        "type": "resource",
+        "id": "copper",
+        "value": 500
+      },
+      {
+        "type": "tech",
+        "id": "bronze_working",
+        "value": 1
+      }
+    ],
+    "gen": [
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "archer",
+        "type_gen": "stat",
+        "gen": "attack",
+        "value": 1,
+        "perc": false
+      }
+    ]
+  },
+  {
+    "id": "bronze_shield",
+    "req": [
+      {
+        "type": "resource",
+        "id": "wood",
+        "value": 500
+      },
+      {
+        "type": "resource",
+        "id": "copper",
+        "value": 500
+      },
+      {
+        "type": "tech",
+        "id": "bronze_working",
+        "value": 1
+      }
+    ],
+    "gen": [
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "spearman",
+        "type_gen": "stat",
+        "gen": "defense",
+        "value": 1,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "phalanx",
+        "type_gen": "stat",
+        "gen": "defense",
+        "value": 1,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "shieldbearer",
+        "type_gen": "stat",
+        "gen": "defense",
+        "value": 1,
+        "perc": false
+      }
+    ]
+  },
+  {
+    "id": "bronze_sword",
+    "req": [
+      {
+        "type": "resource",
+        "id": "copper",
+        "value": 750
+      },
+      {
+        "type": "tech",
+        "id": "bronze_working",
+        "value": 1
+      }
+    ],
+    "gen": [
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "warrior",
+        "type_gen": "stat",
+        "gen": "attack",
+        "value": 1,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "warrior",
+        "type_gen": "stat",
+        "gen": "defense",
+        "value": 1,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "heavy_warrior",
+        "type_gen": "stat",
+        "gen": "attack",
+        "value": 1,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "heavy_warrior",
+        "type_gen": "stat",
+        "gen": "defense",
+        "value": 1,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "mercenary_veteran",
+        "type_gen": "stat",
+        "gen": "attack",
+        "value": 1,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "mercenary_veteran",
+        "type_gen": "stat",
+        "gen": "defense",
+        "value": 1,
+        "perc": false
+      }
+    ]
+  },
+  {
+    "id": "bronze_lance",
+    "req": [
+      {
+        "type": "resource",
+        "id": "copper",
+        "value": 600
+      },
+      {
+        "type": "tech",
+        "id": "bronze_working",
+        "value": 1
+      }
+    ],
+    "gen": [
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "light_cavarly",
+        "type_gen": "stat",
+        "gen": "attack",
+        "value": 2,
+        "perc": false
+      }
+    ]
+  },
+  {
     "id": "ancient_balor_t",
     "req": [
       {
@@ -814,6 +1524,21 @@
     ]
   },
   {
+    "id": "oracle_t",
+    "req": [
+      {
+        "type": "resource",
+        "id": "faith",
+        "value": 500
+      },
+      {
+        "type": "tech",
+        "id": "religion",
+        "value": 1
+      }
+    ]
+  },
+  {
     "id": "magic",
     "req": [
       {
@@ -824,6 +1549,51 @@
       {
         "type": "tech",
         "id": "religion",
+        "value": 1
+      }
+    ]
+  },
+  {
+    "id": "ancient_spell",
+    "req": [
+      {
+        "type": "resource",
+        "id": "faith",
+        "value": 1250
+      },
+      {
+        "type": "tech",
+        "id": "magic",
+        "value": 1
+      },
+      {
+        "type": "stat",
+        "id": "ng_reset",
+        "value": 1
+      }
+    ]
+  },
+  {
+    "id": "zenix_familiar_t",
+    "req": [
+      {
+        "type": "resource",
+        "id": "research",
+        "value": 720
+      },
+      {
+        "type": "resource",
+        "id": "food",
+        "value": 500
+      },
+      {
+        "type": "tech",
+        "id": "magic",
+        "value": 1
+      },
+      {
+        "type": "legacy",
+        "id": "zenix_familiar_l",
         "value": 1
       }
     ]
@@ -1130,6 +1900,46 @@
         "id": "fame",
         "value": 25,
         "fix": true
+      }
+    ]
+  },
+  {
+    "id": "phalanx_combat",
+    "req": [
+      {
+        "type": "resource",
+        "id": "research",
+        "value": 2500
+      },
+      {
+        "type": "tech",
+        "id": "warfare",
+        "value": 1
+      },
+      {
+        "type": "stat",
+        "id": "ng_reset",
+        "value": 2
+      }
+    ]
+  },
+  {
+    "id": "boot_camp_t",
+    "req": [
+      {
+        "type": "resource",
+        "id": "research",
+        "value": 3000
+      },
+      {
+        "type": "tech",
+        "id": "phalanx_combat",
+        "value": 1
+      },
+      {
+        "type": "stat",
+        "id": "ng_reset",
+        "value": 2
       }
     ]
   },
@@ -1457,6 +2267,268 @@
         "type": "cap",
         "id": "army",
         "value": 3
+      }
+    ]
+  },
+  {
+    "id": "iron_projectiles",
+    "req": [
+      {
+        "type": "resource",
+        "id": "iron",
+        "value": 2500
+      },
+      {
+        "type": "tech",
+        "id": "iron_working",
+        "value": 1
+      }
+    ],
+    "gen": [
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "archer",
+        "type_gen": "stat",
+        "gen": "attack",
+        "value": 2,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "crossbowman",
+        "type_gen": "stat",
+        "gen": "attack",
+        "value": 2,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "white_company",
+        "type_gen": "stat",
+        "gen": "attack",
+        "value": 2,
+        "perc": false
+      }
+    ]
+  },
+  {
+    "id": "iron_shield",
+    "req": [
+      {
+        "type": "resource",
+        "id": "wood",
+        "value": 5000
+      },
+      {
+        "type": "resource",
+        "id": "iron",
+        "value": 4000
+      },
+      {
+        "type": "tech",
+        "id": "iron_working",
+        "value": 1
+      }
+    ],
+    "gen": [
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "spearman",
+        "type_gen": "stat",
+        "gen": "defense",
+        "value": 2,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "phalanx",
+        "type_gen": "stat",
+        "gen": "defense",
+        "value": 2,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "shieldbearer",
+        "type_gen": "stat",
+        "gen": "defense",
+        "value": 2,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "cleric",
+        "type_gen": "stat",
+        "gen": "defense",
+        "value": 2,
+        "perc": false
+      }
+    ]
+  },
+  {
+    "id": "iron_sword",
+    "req": [
+      {
+        "type": "resource",
+        "id": "iron",
+        "value": 7500
+      },
+      {
+        "type": "tech",
+        "id": "iron_working",
+        "value": 1
+      }
+    ],
+    "gen": [
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "warrior",
+        "type_gen": "stat",
+        "gen": "attack",
+        "value": 2,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "warrior",
+        "type_gen": "stat",
+        "gen": "defense",
+        "value": 1,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "heavy_warrior",
+        "type_gen": "stat",
+        "gen": "attack",
+        "value": 2,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "heavy_warrior",
+        "type_gen": "stat",
+        "gen": "defense",
+        "value": 1,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "mercenary_veteran",
+        "type_gen": "stat",
+        "gen": "attack",
+        "value": 2,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "mercenary_veteran",
+        "type_gen": "stat",
+        "gen": "defense",
+        "value": 1,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "canava_guard",
+        "type_gen": "stat",
+        "gen": "attack",
+        "value": 2,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "canava_guard",
+        "type_gen": "stat",
+        "gen": "defense",
+        "value": 1,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "man_at_arms",
+        "type_gen": "stat",
+        "gen": "attack",
+        "value": 2,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "man_at_arms",
+        "type_gen": "stat",
+        "gen": "defense",
+        "value": 1,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "commander",
+        "type_gen": "stat",
+        "gen": "attack",
+        "value": 2,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "commander",
+        "type_gen": "stat",
+        "gen": "defense",
+        "value": 1,
+        "perc": false
+      }
+    ]
+  },
+  {
+    "id": "iron_lance",
+    "req": [
+      {
+        "type": "resource",
+        "id": "iron",
+        "value": 6500
+      },
+      {
+        "type": "tech",
+        "id": "iron_working",
+        "value": 1
+      }
+    ],
+    "gen": [
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "light_cavarly",
+        "type_gen": "stat",
+        "gen": "attack",
+        "value": 3,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "knight",
+        "type_gen": "stat",
+        "gen": "attack",
+        "value": 3,
+        "perc": false
       }
     ]
   },
@@ -2023,6 +3095,36 @@
     ]
   },
   {
+    "id": "embassy_nation",
+    "req": [
+      {
+        "type": "resource",
+        "id": "gold",
+        "value": 25000
+      },
+      {
+        "type": "diplomacy_alliance",
+        "id": "theresmore_wanders",
+        "value": 1
+      },
+      {
+        "type": "diplomacy_alliance",
+        "id": "nightdale_protectorate",
+        "value": 1
+      },
+      {
+        "type": "diplomacy_alliance",
+        "id": "zultan_emirate",
+        "value": 1
+      },
+      {
+        "type": "diplomacy_alliance",
+        "id": "western_kingdom",
+        "value": 1
+      }
+    ]
+  },
+  {
     "id": "liturgical_rites",
     "req": [
       {
@@ -2269,6 +3371,287 @@
         "type": "tech",
         "id": "metal_casting",
         "value": 1
+      }
+    ]
+  },
+  {
+    "id": "steel_projectiles",
+    "req": [
+      {
+        "type": "resource",
+        "id": "steel",
+        "value": 2500
+      },
+      {
+        "type": "tech",
+        "id": "steeling",
+        "value": 1
+      }
+    ],
+    "gen": [
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "archer",
+        "type_gen": "stat",
+        "gen": "attack",
+        "value": 3,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "crossbowman",
+        "type_gen": "stat",
+        "gen": "attack",
+        "value": 3,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "white_company",
+        "type_gen": "stat",
+        "gen": "attack",
+        "value": 3,
+        "perc": false
+      }
+    ]
+  },
+  {
+    "id": "steel_shield",
+    "req": [
+      {
+        "type": "resource",
+        "id": "wood",
+        "value": 15000
+      },
+      {
+        "type": "resource",
+        "id": "steel",
+        "value": 4000
+      },
+      {
+        "type": "tech",
+        "id": "steeling",
+        "value": 1
+      }
+    ],
+    "gen": [
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "spearman",
+        "type_gen": "stat",
+        "gen": "defense",
+        "value": 3,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "phalanx",
+        "type_gen": "stat",
+        "gen": "defense",
+        "value": 3,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "shieldbearer",
+        "type_gen": "stat",
+        "gen": "defense",
+        "value": 3,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "cleric",
+        "type_gen": "stat",
+        "gen": "defense",
+        "value": 3,
+        "perc": false
+      }
+    ]
+  },
+  {
+    "id": "steel_sword",
+    "req": [
+      {
+        "type": "resource",
+        "id": "iron",
+        "value": 12500
+      },
+      {
+        "type": "resource",
+        "id": "steel",
+        "value": 7500
+      },
+      {
+        "type": "tech",
+        "id": "steeling",
+        "value": 1
+      }
+    ],
+    "gen": [
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "warrior",
+        "type_gen": "stat",
+        "gen": "attack",
+        "value": 3,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "warrior",
+        "type_gen": "stat",
+        "gen": "defense",
+        "value": 1,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "heavy_warrior",
+        "type_gen": "stat",
+        "gen": "attack",
+        "value": 3,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "heavy_warrior",
+        "type_gen": "stat",
+        "gen": "defense",
+        "value": 1,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "mercenary_veteran",
+        "type_gen": "stat",
+        "gen": "attack",
+        "value": 3,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "mercenary_veteran",
+        "type_gen": "stat",
+        "gen": "defense",
+        "value": 1,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "canava_guard",
+        "type_gen": "stat",
+        "gen": "attack",
+        "value": 3,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "canava_guard",
+        "type_gen": "stat",
+        "gen": "defense",
+        "value": 1,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "man_at_arms",
+        "type_gen": "stat",
+        "gen": "attack",
+        "value": 3,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "man_at_arms",
+        "type_gen": "stat",
+        "gen": "defense",
+        "value": 1,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "commander",
+        "type_gen": "stat",
+        "gen": "attack",
+        "value": 3,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "commander",
+        "type_gen": "stat",
+        "gen": "defense",
+        "value": 1,
+        "perc": false
+      }
+    ]
+  },
+  {
+    "id": "steel_lance",
+    "req": [
+      {
+        "type": "resource",
+        "id": "iron",
+        "value": 16500
+      },
+      {
+        "type": "resource",
+        "id": "steel",
+        "value": 6500
+      },
+      {
+        "type": "tech",
+        "id": "steeling",
+        "value": 1
+      }
+    ],
+    "gen": [
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "light_cavarly",
+        "type_gen": "stat",
+        "gen": "attack",
+        "value": 4,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "knight",
+        "type_gen": "stat",
+        "gen": "attack",
+        "value": 4,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "cataphract",
+        "type_gen": "stat",
+        "gen": "attack",
+        "value": 4,
+        "perc": false
       }
     ]
   },
@@ -2694,6 +4077,46 @@
       {
         "type": "tech",
         "id": "moonlight_night",
+        "value": 1
+      }
+    ]
+  },
+  {
+    "id": "favor_gods",
+    "req": [
+      {
+        "type": "resource",
+        "id": "research",
+        "value": 18000
+      },
+      {
+        "type": "resource",
+        "id": "faith",
+        "value": 5000
+      },
+      {
+        "type": "tech",
+        "id": "end_feudal_era",
+        "value": 1
+      }
+    ]
+  },
+  {
+    "id": "underground_library",
+    "req": [
+      {
+        "type": "resource",
+        "id": "research",
+        "value": 25000
+      },
+      {
+        "type": "resource",
+        "id": "faith",
+        "value": 7000
+      },
+      {
+        "type": "building",
+        "id": "library_souls",
         "value": 1
       }
     ]
@@ -3857,6 +5280,335 @@
     ]
   },
   {
+    "id": "adamantium_projectiles",
+    "req": [
+      {
+        "type": "resource",
+        "id": "steel",
+        "value": 10000
+      },
+      {
+        "type": "resource",
+        "id": "crystal",
+        "value": 5000
+      },
+      {
+        "type": "resource",
+        "id": "saltpetre",
+        "value": 5000
+      },
+      {
+        "type": "tech",
+        "id": "research_district",
+        "value": 1
+      }
+    ],
+    "gen": [
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "archer",
+        "type_gen": "stat",
+        "gen": "attack",
+        "value": 4,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "crossbowman",
+        "type_gen": "stat",
+        "gen": "attack",
+        "value": 4,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "white_company",
+        "type_gen": "stat",
+        "gen": "attack",
+        "value": 4,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "arquebusier",
+        "type_gen": "stat",
+        "gen": "attack",
+        "value": 4,
+        "perc": false
+      }
+    ]
+  },
+  {
+    "id": "adamantium_shield",
+    "req": [
+      {
+        "type": "resource",
+        "id": "wood",
+        "value": 25000
+      },
+      {
+        "type": "resource",
+        "id": "steel",
+        "value": 10000
+      },
+      {
+        "type": "resource",
+        "id": "crystal",
+        "value": 5000
+      },
+      {
+        "type": "resource",
+        "id": "saltpetre",
+        "value": 5000
+      },
+      {
+        "type": "tech",
+        "id": "research_district",
+        "value": 1
+      }
+    ],
+    "gen": [
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "spearman",
+        "type_gen": "stat",
+        "gen": "defense",
+        "value": 4,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "phalanx",
+        "type_gen": "stat",
+        "gen": "defense",
+        "value": 4,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "shieldbearer",
+        "type_gen": "stat",
+        "gen": "defense",
+        "value": 4,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "cleric",
+        "type_gen": "stat",
+        "gen": "defense",
+        "value": 4,
+        "perc": false
+      }
+    ]
+  },
+  {
+    "id": "adamantium_sword",
+    "req": [
+      {
+        "type": "resource",
+        "id": "steel",
+        "value": 15000
+      },
+      {
+        "type": "resource",
+        "id": "crystal",
+        "value": 7500
+      },
+      {
+        "type": "resource",
+        "id": "saltpetre",
+        "value": 7500
+      },
+      {
+        "type": "tech",
+        "id": "research_district",
+        "value": 1
+      }
+    ],
+    "gen": [
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "warrior",
+        "type_gen": "stat",
+        "gen": "attack",
+        "value": 3,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "warrior",
+        "type_gen": "stat",
+        "gen": "defense",
+        "value": 2,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "heavy_warrior",
+        "type_gen": "stat",
+        "gen": "attack",
+        "value": 3,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "heavy_warrior",
+        "type_gen": "stat",
+        "gen": "defense",
+        "value": 2,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "mercenary_veteran",
+        "type_gen": "stat",
+        "gen": "attack",
+        "value": 3,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "mercenary_veteran",
+        "type_gen": "stat",
+        "gen": "defense",
+        "value": 2,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "canava_guard",
+        "type_gen": "stat",
+        "gen": "attack",
+        "value": 3,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "canava_guard",
+        "type_gen": "stat",
+        "gen": "defense",
+        "value": 2,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "man_at_arms",
+        "type_gen": "stat",
+        "gen": "attack",
+        "value": 3,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "man_at_arms",
+        "type_gen": "stat",
+        "gen": "defense",
+        "value": 2,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "commander",
+        "type_gen": "stat",
+        "gen": "attack",
+        "value": 3,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "commander",
+        "type_gen": "stat",
+        "gen": "defense",
+        "value": 2,
+        "perc": false
+      }
+    ]
+  },
+  {
+    "id": "adamantium_lance",
+    "req": [
+      {
+        "type": "resource",
+        "id": "steel",
+        "value": 12000
+      },
+      {
+        "type": "resource",
+        "id": "crystal",
+        "value": 5500
+      },
+      {
+        "type": "resource",
+        "id": "saltpetre",
+        "value": 5500
+      },
+      {
+        "type": "tech",
+        "id": "research_district",
+        "value": 1
+      }
+    ],
+    "gen": [
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "light_cavarly",
+        "type_gen": "stat",
+        "gen": "attack",
+        "value": 5,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "knight",
+        "type_gen": "stat",
+        "gen": "attack",
+        "value": 5,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "cataphract",
+        "type_gen": "stat",
+        "gen": "attack",
+        "value": 5,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "cuirassier",
+        "type_gen": "stat",
+        "gen": "attack",
+        "value": 5,
+        "perc": false
+      }
+    ]
+  },
+  {
     "id": "harbor_project",
     "req": [
       {
@@ -4438,6 +6190,21 @@
     ]
   },
   {
+    "id": "huge_cave_t",
+    "req": [
+      {
+        "type": "resource",
+        "id": "research",
+        "value": 125000
+      },
+      {
+        "type": "enemy",
+        "id": "huge_cave",
+        "value": 1
+      }
+    ]
+  },
+  {
     "id": "colonial_trade",
     "req": [
       {
@@ -4828,6 +6595,26 @@
     ]
   },
   {
+    "id": "alchemist_complex_t",
+    "req": [
+      {
+        "type": "resource",
+        "id": "research",
+        "value": 128000
+      },
+      {
+        "type": "building",
+        "id": "colony_hall",
+        "value": 5
+      },
+      {
+        "type": "tech",
+        "id": "artisan_complex",
+        "value": 1
+      }
+    ]
+  },
+  {
     "id": "large_shed_t",
     "req": [
       {
@@ -4884,6 +6671,400 @@
         "type": "tech",
         "id": "seafaring",
         "value": 1
+      }
+    ]
+  },
+  {
+    "id": "mithril_projectiles",
+    "req": [
+      {
+        "type": "resource",
+        "id": "steel",
+        "value": 25000
+      },
+      {
+        "type": "resource",
+        "id": "natronite",
+        "value": 5000
+      },
+      {
+        "type": "tech",
+        "id": "new_world_exploration",
+        "value": 1
+      }
+    ],
+    "gen": [
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "archer",
+        "type_gen": "stat",
+        "gen": "attack",
+        "value": 5,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "crossbowman",
+        "type_gen": "stat",
+        "gen": "attack",
+        "value": 5,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "white_company",
+        "type_gen": "stat",
+        "gen": "attack",
+        "value": 5,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "arquebusier",
+        "type_gen": "stat",
+        "gen": "attack",
+        "value": 5,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "ranger",
+        "type_gen": "stat",
+        "gen": "attack",
+        "value": 5,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "elf_warrior",
+        "type_gen": "stat",
+        "gen": "attack",
+        "value": 5,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "marksman",
+        "type_gen": "stat",
+        "gen": "attack",
+        "value": 5,
+        "perc": false
+      }
+    ]
+  },
+  {
+    "id": "mithril_shield",
+    "req": [
+      {
+        "type": "resource",
+        "id": "steel",
+        "value": 20000
+      },
+      {
+        "type": "resource",
+        "id": "natronite",
+        "value": 7000
+      },
+      {
+        "type": "tech",
+        "id": "new_world_exploration",
+        "value": 1
+      }
+    ],
+    "gen": [
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "spearman",
+        "type_gen": "stat",
+        "gen": "defense",
+        "value": 5,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "phalanx",
+        "type_gen": "stat",
+        "gen": "defense",
+        "value": 5,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "shieldbearer",
+        "type_gen": "stat",
+        "gen": "defense",
+        "value": 5,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "cleric",
+        "type_gen": "stat",
+        "gen": "defense",
+        "value": 5,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "paladin",
+        "type_gen": "stat",
+        "gen": "defense",
+        "value": 5,
+        "perc": false
+      }
+    ]
+  },
+  {
+    "id": "mithril_sword",
+    "req": [
+      {
+        "type": "resource",
+        "id": "steel",
+        "value": 30000
+      },
+      {
+        "type": "resource",
+        "id": "natronite",
+        "value": 12500
+      },
+      {
+        "type": "tech",
+        "id": "new_world_exploration",
+        "value": 1
+      }
+    ],
+    "gen": [
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "warrior",
+        "type_gen": "stat",
+        "gen": "attack",
+        "value": 3,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "warrior",
+        "type_gen": "stat",
+        "gen": "defense",
+        "value": 3,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "heavy_warrior",
+        "type_gen": "stat",
+        "gen": "attack",
+        "value": 3,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "heavy_warrior",
+        "type_gen": "stat",
+        "gen": "defense",
+        "value": 3,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "mercenary_veteran",
+        "type_gen": "stat",
+        "gen": "attack",
+        "value": 3,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "mercenary_veteran",
+        "type_gen": "stat",
+        "gen": "defense",
+        "value": 3,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "canava_guard",
+        "type_gen": "stat",
+        "gen": "attack",
+        "value": 3,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "canava_guard",
+        "type_gen": "stat",
+        "gen": "defense",
+        "value": 3,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "man_at_arms",
+        "type_gen": "stat",
+        "gen": "attack",
+        "value": 3,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "man_at_arms",
+        "type_gen": "stat",
+        "gen": "defense",
+        "value": 3,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "line_infantry",
+        "type_gen": "stat",
+        "gen": "attack",
+        "value": 3,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "line_infantry",
+        "type_gen": "stat",
+        "gen": "defense",
+        "value": 3,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "colonial_militia",
+        "type_gen": "stat",
+        "gen": "attack",
+        "value": 3,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "colonial_militia",
+        "type_gen": "stat",
+        "gen": "defense",
+        "value": 3,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "commander",
+        "type_gen": "stat",
+        "gen": "attack",
+        "value": 3,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "commander",
+        "type_gen": "stat",
+        "gen": "defense",
+        "value": 3,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "general",
+        "type_gen": "stat",
+        "gen": "attack",
+        "value": 3,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "general",
+        "type_gen": "stat",
+        "gen": "defense",
+        "value": 3,
+        "perc": false
+      }
+    ]
+  },
+  {
+    "id": "mithril_lance",
+    "req": [
+      {
+        "type": "resource",
+        "id": "steel",
+        "value": 17000
+      },
+      {
+        "type": "resource",
+        "id": "natronite",
+        "value": 10000
+      },
+      {
+        "type": "tech",
+        "id": "new_world_exploration",
+        "value": 1
+      }
+    ],
+    "gen": [
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "light_cavarly",
+        "type_gen": "stat",
+        "gen": "attack",
+        "value": 6,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "knight",
+        "type_gen": "stat",
+        "gen": "attack",
+        "value": 6,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "cataphract",
+        "type_gen": "stat",
+        "gen": "attack",
+        "value": 6,
+        "perc": false
+      },
+      {
+        "type": "modifier",
+        "type_id": "army",
+        "id": "cuirassier",
+        "type_gen": "stat",
+        "gen": "attack",
+        "value": 6,
+        "perc": false
       }
     ]
   },
@@ -5356,6 +7537,21 @@
         "id": "titan_gift",
         "value": 1,
         "fix": true
+      }
+    ]
+  },
+  {
+    "id": "dark_crystal",
+    "req": [
+      {
+        "type": "resource",
+        "id": "research",
+        "value": 200000
+      },
+      {
+        "type": "diplomacy_owned",
+        "id": "lich_fortress",
+        "value": 1
       }
     ]
   }

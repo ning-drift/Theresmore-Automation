@@ -119,6 +119,197 @@
     ]
   },
   {
+    "id": "ng_reset",
+    "ach": [
+      {
+        "id": "1_ng_reset",
+        "rarity": "legendary",
+        "req": [
+          {
+            "type": "stat",
+            "id": "ng_reset",
+            "value": 1
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "wood",
+            "value": 3,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "stone",
+            "value": 3,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "research",
+            "value": 3,
+            "perc": true
+          }
+        ]
+      },
+      {
+        "id": "5_ng_reset",
+        "rarity": "legendary",
+        "req": [
+          {
+            "type": "stat",
+            "id": "ng_reset",
+            "value": 5
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "gold",
+            "value": 5,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "food",
+            "value": 5,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "tools",
+            "value": 5,
+            "perc": true
+          }
+        ]
+      },
+      {
+        "id": "10_ng_reset",
+        "rarity": "legendary",
+        "req": [
+          {
+            "type": "stat",
+            "id": "ng_reset",
+            "value": 10
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "copper",
+            "value": 10,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "iron",
+            "value": 10,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "fame",
+            "value": 10,
+            "perc": true
+          }
+        ]
+      },
+      {
+        "id": "20_ng_reset",
+        "rarity": "legendary",
+        "req": [
+          {
+            "type": "stat",
+            "id": "ng_reset",
+            "value": 20
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "building_material",
+            "value": 10,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "supplies",
+            "value": 10,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "steel",
+            "value": 10,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "crystal",
+            "value": 10,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "saltpetre",
+            "value": 10,
+            "perc": true
+          }
+        ]
+      },
+      {
+        "id": "40_ng_reset",
+        "rarity": "legendary",
+        "req": [
+          {
+            "type": "stat",
+            "id": "ng_reset",
+            "value": 40
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "research",
+            "value": 15,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "gold",
+            "value": 15,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "natronite",
+            "value": 15,
+            "perc": true
+          }
+        ]
+      },
+      {
+        "id": "80_ng_reset",
+        "rarity": "legendary",
+        "req": [
+          {
+            "type": "stat",
+            "id": "ng_reset",
+            "value": 80
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "fame",
+            "value": 20,
+            "perc": true
+          }
+        ]
+      }
+    ]
+  },
+  {
     "id": "persuade_nobility",
     "ach": [
       {
@@ -142,6 +333,2467 @@
             "type": "cap",
             "id": "army",
             "value": 2
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "hell_hole_dif_1",
+    "ach": [
+      {
+        "id": "hell_hole_dif_1",
+        "rarity": "rare",
+        "req": [
+          {
+            "type": "enemy",
+            "id": "hell_hole",
+            "value": 1
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "faith",
+            "value": 1,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "mana",
+            "value": 1,
+            "perc": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "hell_hole_dif_2",
+    "ach": [
+      {
+        "id": "hell_hole_dif_2",
+        "rarity": "epic",
+        "req": [
+          {
+            "type": "enemy",
+            "id": "hell_hole",
+            "value": 1
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "faith",
+            "value": 2,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "mana",
+            "value": 2,
+            "perc": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "hell_hole_dif_3",
+    "ach": [
+      {
+        "id": "hell_hole_dif_3",
+        "rarity": "legendary",
+        "req": [
+          {
+            "type": "enemy",
+            "id": "hell_hole",
+            "value": 1
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "faith",
+            "value": 2,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "mana",
+            "value": 2,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "fame",
+            "value": 1,
+            "perc": true
+          },
+          {
+            "type": "modifier",
+            "type_id": "army",
+            "id": "warrior_monk",
+            "type_gen": "stat",
+            "gen": "defense",
+            "value": 2,
+            "perc": false
+          },
+          {
+            "type": "modifier",
+            "type_id": "army",
+            "id": "cleric",
+            "type_gen": "stat",
+            "gen": "defense",
+            "value": 2,
+            "perc": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "bugbear_war_party_dif_1",
+    "ach": [
+      {
+        "id": "bugbear_war_party_dif_1",
+        "rarity": "rare",
+        "req": [
+          {
+            "type": "enemy",
+            "id": "bugbear_war_party",
+            "value": 1
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "gold",
+            "value": 1,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "wood",
+            "value": 1,
+            "perc": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "bugbear_war_party_dif_2",
+    "ach": [
+      {
+        "id": "bugbear_war_party_dif_2",
+        "rarity": "epic",
+        "req": [
+          {
+            "type": "enemy",
+            "id": "bugbear_war_party",
+            "value": 1
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "gold",
+            "value": 2,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "wood",
+            "value": 2,
+            "perc": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "bugbear_war_party_dif_3",
+    "ach": [
+      {
+        "id": "bugbear_war_party_dif_3",
+        "rarity": "legendary",
+        "req": [
+          {
+            "type": "enemy",
+            "id": "bugbear_war_party",
+            "value": 1
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "gold",
+            "value": 2,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "wood",
+            "value": 2,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "fame",
+            "value": 1,
+            "perc": true
+          },
+          {
+            "type": "modifier",
+            "type_id": "army",
+            "id": "warrior",
+            "type_gen": "stat",
+            "gen": "attack",
+            "value": 2,
+            "perc": false
+          },
+          {
+            "type": "modifier",
+            "type_id": "army",
+            "id": "heavy_warrior",
+            "type_gen": "stat",
+            "gen": "attack",
+            "value": 2,
+            "perc": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "citadel_dead_dif_1",
+    "ach": [
+      {
+        "id": "citadel_dead_dif_1",
+        "rarity": "rare",
+        "req": [
+          {
+            "type": "enemy",
+            "id": "citadel_dead",
+            "value": 1
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "natronite",
+            "value": 1,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "saltpetre",
+            "value": 1,
+            "perc": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "citadel_dead_dif_2",
+    "ach": [
+      {
+        "id": "citadel_dead_dif_2",
+        "rarity": "epic",
+        "req": [
+          {
+            "type": "enemy",
+            "id": "citadel_dead",
+            "value": 1
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "natronite",
+            "value": 2,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "saltpetre",
+            "value": 2,
+            "perc": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "citadel_dead_dif_3",
+    "ach": [
+      {
+        "id": "citadel_dead_dif_3",
+        "rarity": "legendary",
+        "req": [
+          {
+            "type": "enemy",
+            "id": "citadel_dead",
+            "value": 1
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "natronite",
+            "value": 3,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "saltpetre",
+            "value": 3,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "fame",
+            "value": 1,
+            "perc": true
+          },
+          {
+            "type": "cap",
+            "id": "natronite",
+            "value": 1500
+          },
+          {
+            "type": "cap",
+            "id": "saltpetre",
+            "value": 1500
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "demoness_castle_dif_1",
+    "ach": [
+      {
+        "id": "demoness_castle_dif_1",
+        "rarity": "rare",
+        "req": [
+          {
+            "type": "enemy",
+            "id": "demoness_castle",
+            "value": 1
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "mana",
+            "value": 1,
+            "perc": true
+          },
+          {
+            "type": "cap",
+            "id": "mana",
+            "value": 500
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "demoness_castle_dif_2",
+    "ach": [
+      {
+        "id": "demoness_castle_dif_2",
+        "rarity": "epic",
+        "req": [
+          {
+            "type": "enemy",
+            "id": "demoness_castle",
+            "value": 1
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "mana",
+            "value": 2,
+            "perc": true
+          },
+          {
+            "type": "cap",
+            "id": "mana",
+            "value": 1000
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "demoness_castle_dif_3",
+    "ach": [
+      {
+        "id": "demoness_castle_dif_3",
+        "rarity": "legendary",
+        "req": [
+          {
+            "type": "enemy",
+            "id": "demoness_castle",
+            "value": 1
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "mana",
+            "value": 3,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "fame",
+            "value": 1,
+            "perc": true
+          },
+          {
+            "type": "cap",
+            "id": "mana",
+            "value": 1500
+          },
+          {
+            "type": "modifier",
+            "type_id": "army",
+            "id": "cleric",
+            "type_gen": "stat",
+            "gen": "defense",
+            "value": 2,
+            "perc": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "gloomy_werewolf_forest_dif_1",
+    "ach": [
+      {
+        "id": "gloomy_werewolf_forest_dif_1",
+        "rarity": "rare",
+        "req": [
+          {
+            "type": "enemy",
+            "id": "gloomy_werewolf_forest",
+            "value": 1
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "copper",
+            "value": 1,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "iron",
+            "value": 1,
+            "perc": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "gloomy_werewolf_forest_dif_2",
+    "ach": [
+      {
+        "id": "gloomy_werewolf_forest_dif_2",
+        "rarity": "epic",
+        "req": [
+          {
+            "type": "enemy",
+            "id": "gloomy_werewolf_forest",
+            "value": 1
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "copper",
+            "value": 2,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "iron",
+            "value": 2,
+            "perc": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "gloomy_werewolf_forest_dif_3",
+    "ach": [
+      {
+        "id": "gloomy_werewolf_forest_dif_3",
+        "rarity": "legendary",
+        "req": [
+          {
+            "type": "enemy",
+            "id": "gloomy_werewolf_forest",
+            "value": 1
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "copper",
+            "value": 3,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "iron",
+            "value": 3,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "fame",
+            "value": 1,
+            "perc": true
+          },
+          {
+            "type": "cap",
+            "id": "copper",
+            "value": 2500
+          },
+          {
+            "type": "cap",
+            "id": "iron",
+            "value": 2500
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "gold_mine_dif_1",
+    "ach": [
+      {
+        "id": "gold_mine_dif_1",
+        "rarity": "rare",
+        "req": [
+          {
+            "type": "enemy",
+            "id": "gold_mine",
+            "value": 1
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "gold",
+            "value": 1,
+            "perc": true
+          },
+          {
+            "type": "cap",
+            "id": "gold",
+            "value": 500
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "gold_mine_dif_2",
+    "ach": [
+      {
+        "id": "gold_mine_dif_2",
+        "rarity": "epic",
+        "req": [
+          {
+            "type": "enemy",
+            "id": "gold_mine",
+            "value": 1
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "gold",
+            "value": 2,
+            "perc": true
+          },
+          {
+            "type": "cap",
+            "id": "gold",
+            "value": 1000
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "gold_mine_dif_3",
+    "ach": [
+      {
+        "id": "gold_mine_dif_3",
+        "rarity": "legendary",
+        "req": [
+          {
+            "type": "enemy",
+            "id": "gold_mine",
+            "value": 1
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "gold",
+            "value": 3,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "fame",
+            "value": 1,
+            "perc": true
+          },
+          {
+            "type": "cap",
+            "id": "gold",
+            "value": 2500
+          },
+          {
+            "type": "modifier",
+            "type_id": "army",
+            "id": "mercenary_veteran",
+            "type_gen": "stat",
+            "gen": "attack",
+            "value": 3,
+            "perc": false
+          },
+          {
+            "type": "modifier",
+            "type_id": "army",
+            "id": "mercenary_veteran",
+            "type_gen": "stat",
+            "gen": "defense",
+            "value": 3,
+            "perc": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "gnoll_camp_dif_1",
+    "ach": [
+      {
+        "id": "gnoll_camp_dif_1",
+        "rarity": "rare",
+        "req": [
+          {
+            "type": "enemy",
+            "id": "gnoll_camp",
+            "value": 1
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "gold",
+            "value": 1,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "tools",
+            "value": 1,
+            "perc": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "gnoll_camp_dif_2",
+    "ach": [
+      {
+        "id": "gnoll_camp_dif_2",
+        "rarity": "epic",
+        "req": [
+          {
+            "type": "enemy",
+            "id": "gnoll_camp",
+            "value": 1
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "gold",
+            "value": 2,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "tools",
+            "value": 2,
+            "perc": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "gnoll_camp_dif_3",
+    "ach": [
+      {
+        "id": "gnoll_camp_dif_3",
+        "rarity": "legendary",
+        "req": [
+          {
+            "type": "enemy",
+            "id": "gnoll_camp",
+            "value": 1
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "gold",
+            "value": 3,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "tools",
+            "value": 3,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "fame",
+            "value": 1,
+            "perc": true
+          },
+          {
+            "type": "modifier",
+            "type_id": "army",
+            "id": "crossbowman",
+            "type_gen": "stat",
+            "gen": "attack",
+            "value": 2,
+            "perc": false
+          },
+          {
+            "type": "modifier",
+            "type_id": "army",
+            "id": "battering_ram",
+            "type_gen": "stat",
+            "gen": "attack",
+            "value": 2,
+            "perc": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "gulud_ugdun_dif_1",
+    "ach": [
+      {
+        "id": "gulud_ugdun_dif_1",
+        "rarity": "rare",
+        "req": [
+          {
+            "type": "enemy",
+            "id": "gulud_ugdun",
+            "value": 1
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "mana",
+            "value": 1,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "crystal",
+            "value": 1,
+            "perc": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "gulud_ugdun_dif_2",
+    "ach": [
+      {
+        "id": "gulud_ugdun_dif_2",
+        "rarity": "epic",
+        "req": [
+          {
+            "type": "enemy",
+            "id": "gulud_ugdun",
+            "value": 1
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "mana",
+            "value": 2,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "crystal",
+            "value": 2,
+            "perc": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "gulud_ugdun_dif_3",
+    "ach": [
+      {
+        "id": "gulud_ugdun_dif_3",
+        "rarity": "legendary",
+        "req": [
+          {
+            "type": "enemy",
+            "id": "gulud_ugdun",
+            "value": 1
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "mana",
+            "value": 3,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "crystal",
+            "value": 3,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "fame",
+            "value": 1,
+            "perc": true
+          },
+          {
+            "type": "cap",
+            "id": "mana",
+            "value": 2500
+          },
+          {
+            "type": "cap",
+            "id": "crystal",
+            "value": 1000
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "mountain_valley_dif_1",
+    "ach": [
+      {
+        "id": "mountain_valley_dif_1",
+        "rarity": "rare",
+        "req": [
+          {
+            "type": "enemy",
+            "id": "mountain_valley",
+            "value": 1
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "food",
+            "value": 1,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "wood",
+            "value": 1,
+            "perc": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "mountain_valley_dif_2",
+    "ach": [
+      {
+        "id": "mountain_valley_dif_2",
+        "rarity": "epic",
+        "req": [
+          {
+            "type": "enemy",
+            "id": "mountain_valley",
+            "value": 1
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "food",
+            "value": 2,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "wood",
+            "value": 2,
+            "perc": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "mountain_valley_dif_3",
+    "ach": [
+      {
+        "id": "mountain_valley_dif_3",
+        "rarity": "legendary",
+        "req": [
+          {
+            "type": "enemy",
+            "id": "mountain_valley",
+            "value": 1
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "food",
+            "value": 2,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "wood",
+            "value": 2,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "fame",
+            "value": 1,
+            "perc": true
+          },
+          {
+            "type": "cap",
+            "id": "food",
+            "value": 2000
+          },
+          {
+            "type": "cap",
+            "id": "wood",
+            "value": 2000
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "sleeping_titan_dif_1",
+    "ach": [
+      {
+        "id": "sleeping_titan_dif_1",
+        "rarity": "rare",
+        "req": [
+          {
+            "type": "enemy",
+            "id": "sleeping_titan",
+            "value": 1
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "fame",
+            "value": 15,
+            "fix": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "sleeping_titan_dif_2",
+    "ach": [
+      {
+        "id": "sleeping_titan_dif_2",
+        "rarity": "epic",
+        "req": [
+          {
+            "type": "enemy",
+            "id": "sleeping_titan",
+            "value": 1
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "fame",
+            "value": 30,
+            "fix": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "sleeping_titan_dif_3",
+    "ach": [
+      {
+        "id": "sleeping_titan_dif_3",
+        "rarity": "legendary",
+        "req": [
+          {
+            "type": "enemy",
+            "id": "sleeping_titan",
+            "value": 1
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "fame",
+            "value": 50,
+            "fix": true
+          },
+          {
+            "type": "resource",
+            "id": "fame",
+            "value": 1,
+            "perc": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "son_atamar_dif_1",
+    "ach": [
+      {
+        "id": "son_atamar_dif_1",
+        "rarity": "rare",
+        "req": [
+          {
+            "type": "enemy",
+            "id": "son_atamar",
+            "value": 1
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "gold",
+            "value": 1,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "supplies",
+            "value": 1,
+            "perc": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "son_atamar_dif_2",
+    "ach": [
+      {
+        "id": "son_atamar_dif_2",
+        "rarity": "epic",
+        "req": [
+          {
+            "type": "enemy",
+            "id": "son_atamar",
+            "value": 1
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "gold",
+            "value": 2,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "supplies",
+            "value": 2,
+            "perc": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "son_atamar_dif_3",
+    "ach": [
+      {
+        "id": "son_atamar_dif_3",
+        "rarity": "legendary",
+        "req": [
+          {
+            "type": "enemy",
+            "id": "son_atamar",
+            "value": 1
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "gold",
+            "value": 3,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "supplies",
+            "value": 3,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "fame",
+            "value": 1,
+            "perc": true
+          },
+          {
+            "type": "modifier",
+            "type_id": "army",
+            "id": "priest",
+            "type_gen": "stat",
+            "gen": "defense",
+            "value": 2,
+            "perc": false
+          },
+          {
+            "type": "modifier",
+            "type_id": "army",
+            "id": "heavy_warrior",
+            "type_gen": "stat",
+            "gen": "defense",
+            "value": 2,
+            "perc": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "succubus_library_dif_1",
+    "ach": [
+      {
+        "id": "succubus_library_dif_1",
+        "rarity": "rare",
+        "req": [
+          {
+            "type": "enemy",
+            "id": "succubus_library",
+            "value": 1
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "research",
+            "value": 1,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "crystal",
+            "value": 1,
+            "perc": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "succubus_library_dif_2",
+    "ach": [
+      {
+        "id": "succubus_library_dif_2",
+        "rarity": "epic",
+        "req": [
+          {
+            "type": "enemy",
+            "id": "succubus_library",
+            "value": 1
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "research",
+            "value": 2,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "crystal",
+            "value": 2,
+            "perc": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "succubus_library_dif_3",
+    "ach": [
+      {
+        "id": "succubus_library_dif_3",
+        "rarity": "legendary",
+        "req": [
+          {
+            "type": "enemy",
+            "id": "succubus_library",
+            "value": 1
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "research",
+            "value": 3,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "crystal",
+            "value": 3,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "fame",
+            "value": 1,
+            "perc": true
+          },
+          {
+            "type": "modifier",
+            "type_id": "army",
+            "id": "cleric",
+            "type_gen": "stat",
+            "gen": "defense",
+            "value": 2,
+            "perc": false
+          },
+          {
+            "type": "cap",
+            "id": "research",
+            "value": 3000
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "swarm_wasp_dif_1",
+    "ach": [
+      {
+        "id": "swarm_wasp_dif_1",
+        "rarity": "rare",
+        "req": [
+          {
+            "type": "enemy",
+            "id": "swarm_wasp",
+            "value": 1
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "food",
+            "value": 1,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "supplies",
+            "value": 1,
+            "perc": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "swarm_wasp_dif_2",
+    "ach": [
+      {
+        "id": "swarm_wasp_dif_2",
+        "rarity": "epic",
+        "req": [
+          {
+            "type": "enemy",
+            "id": "swarm_wasp",
+            "value": 1
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "food",
+            "value": 2,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "supplies",
+            "value": 2,
+            "perc": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "swarm_wasp_dif_3",
+    "ach": [
+      {
+        "id": "swarm_wasp_dif_3",
+        "rarity": "legendary",
+        "req": [
+          {
+            "type": "enemy",
+            "id": "swarm_wasp",
+            "value": 1
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "food",
+            "value": 3,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "supplies",
+            "value": 3,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "fame",
+            "value": 1,
+            "perc": true
+          },
+          {
+            "type": "modifier",
+            "type_id": "army",
+            "id": "colonial_militia",
+            "type_gen": "stat",
+            "gen": "defense",
+            "value": 3,
+            "perc": false
+          },
+          {
+            "type": "modifier",
+            "type_id": "army",
+            "id": "jager",
+            "type_gen": "stat",
+            "gen": "defense",
+            "value": 3,
+            "perc": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "huge_cave_dif_1",
+    "ach": [
+      {
+        "id": "huge_cave_dif_1",
+        "rarity": "rare",
+        "req": [
+          {
+            "type": "enemy",
+            "id": "huge_cave",
+            "value": 1
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "research",
+            "value": 1,
+            "perc": true
+          },
+          {
+            "type": "cap",
+            "id": "research",
+            "value": 500
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "huge_cave_dif_2",
+    "ach": [
+      {
+        "id": "huge_cave_dif_2",
+        "rarity": "epic",
+        "req": [
+          {
+            "type": "enemy",
+            "id": "huge_cave",
+            "value": 1
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "research",
+            "value": 2,
+            "perc": true
+          },
+          {
+            "type": "cap",
+            "id": "research",
+            "value": 1000
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "huge_cave_dif_3",
+    "ach": [
+      {
+        "id": "huge_cave_dif_3",
+        "rarity": "legendary",
+        "req": [
+          {
+            "type": "enemy",
+            "id": "huge_cave",
+            "value": 1
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "research",
+            "value": 3,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "fame",
+            "value": 1,
+            "perc": true
+          },
+          {
+            "type": "modifier",
+            "type_id": "army",
+            "id": "warrior_monk",
+            "type_gen": "stat",
+            "gen": "defense",
+            "value": 2,
+            "perc": false
+          },
+          {
+            "type": "modifier",
+            "type_id": "army",
+            "id": "cleric",
+            "type_gen": "stat",
+            "gen": "defense",
+            "value": 2,
+            "perc": false
+          },
+          {
+            "type": "cap",
+            "id": "research",
+            "value": 2000
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "vampire_lair_dif_1",
+    "ach": [
+      {
+        "id": "vampire_lair_dif_1",
+        "rarity": "rare",
+        "req": [
+          {
+            "type": "enemy",
+            "id": "vampire_lair",
+            "value": 1
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "gold",
+            "value": 1,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "supplies",
+            "value": 1,
+            "perc": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "vampire_lair_dif_2",
+    "ach": [
+      {
+        "id": "vampire_lair_dif_2",
+        "rarity": "epic",
+        "req": [
+          {
+            "type": "enemy",
+            "id": "vampire_lair",
+            "value": 1
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "gold",
+            "value": 2,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "supplies",
+            "value": 2,
+            "perc": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "vampire_lair_dif_3",
+    "ach": [
+      {
+        "id": "vampire_lair_dif_3",
+        "rarity": "legendary",
+        "req": [
+          {
+            "type": "enemy",
+            "id": "vampire_lair",
+            "value": 1
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "gold",
+            "value": 3,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "supplies",
+            "value": 3,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "fame",
+            "value": 1,
+            "perc": true
+          },
+          {
+            "type": "modifier",
+            "type_id": "army",
+            "id": "crossbowman",
+            "type_gen": "stat",
+            "gen": "attack",
+            "value": 2,
+            "perc": false
+          },
+          {
+            "type": "cap",
+            "id": "gold",
+            "value": 2500
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "forgotten_shelter_dif_1",
+    "ach": [
+      {
+        "id": "forgotten_shelter_dif_1",
+        "rarity": "rare",
+        "req": [
+          {
+            "type": "enemy",
+            "id": "forgotten_shelter",
+            "value": 1
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "research",
+            "value": 1,
+            "perc": true
+          },
+          {
+            "type": "cap",
+            "id": "research",
+            "value": 500
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "forgotten_shelter_dif_2",
+    "ach": [
+      {
+        "id": "forgotten_shelter_dif_2",
+        "rarity": "epic",
+        "req": [
+          {
+            "type": "enemy",
+            "id": "forgotten_shelter",
+            "value": 1
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "research",
+            "value": 2,
+            "perc": true
+          },
+          {
+            "type": "cap",
+            "id": "research",
+            "value": 1000
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "forgotten_shelter_dif_3",
+    "ach": [
+      {
+        "id": "forgotten_shelter_dif_3",
+        "rarity": "legendary",
+        "req": [
+          {
+            "type": "enemy",
+            "id": "forgotten_shelter",
+            "value": 1
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "research",
+            "value": 3,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "fame",
+            "value": 1,
+            "perc": true
+          },
+          {
+            "type": "modifier",
+            "type_id": "army",
+            "id": "mercenary_veteran",
+            "type_gen": "stat",
+            "gen": "attack",
+            "value": 3,
+            "perc": false
+          },
+          {
+            "type": "modifier",
+            "type_id": "army",
+            "id": "white_company",
+            "type_gen": "stat",
+            "gen": "attack",
+            "value": 3,
+            "perc": false
+          },
+          {
+            "type": "cap",
+            "id": "research",
+            "value": 2500
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ancient_giant_dif_1",
+    "ach": [
+      {
+        "id": "ancient_giant_dif_1",
+        "rarity": "rare",
+        "req": [
+          {
+            "type": "enemy",
+            "id": "ancient_giant",
+            "value": 1
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "saltpetre",
+            "value": 1,
+            "perc": true
+          },
+          {
+            "type": "cap",
+            "id": "saltpetre",
+            "value": 500
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ancient_giant_dif_2",
+    "ach": [
+      {
+        "id": "ancient_giant_dif_2",
+        "rarity": "epic",
+        "req": [
+          {
+            "type": "enemy",
+            "id": "ancient_giant",
+            "value": 1
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "saltpetre",
+            "value": 2,
+            "perc": true
+          },
+          {
+            "type": "cap",
+            "id": "saltpetre",
+            "value": 1000
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ancient_giant_dif_3",
+    "ach": [
+      {
+        "id": "ancient_giant_dif_3",
+        "rarity": "legendary",
+        "req": [
+          {
+            "type": "enemy",
+            "id": "ancient_giant",
+            "value": 1
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "saltpetre",
+            "value": 3,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "fame",
+            "value": 1,
+            "perc": true
+          },
+          {
+            "type": "cap",
+            "id": "saltpetre",
+            "value": 2000
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "skullface_encampment_dif_1",
+    "ach": [
+      {
+        "id": "skullface_encampment_dif_1",
+        "rarity": "rare",
+        "req": [
+          {
+            "type": "enemy",
+            "id": "skullface_encampment",
+            "value": 1
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "gold",
+            "value": 1,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "food",
+            "value": 1,
+            "perc": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "skullface_encampment_dif_2",
+    "ach": [
+      {
+        "id": "skullface_encampment_dif_2",
+        "rarity": "epic",
+        "req": [
+          {
+            "type": "enemy",
+            "id": "skullface_encampment",
+            "value": 1
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "gold",
+            "value": 2,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "food",
+            "value": 2,
+            "perc": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "skullface_encampment_dif_3",
+    "ach": [
+      {
+        "id": "skullface_encampment_dif_3",
+        "rarity": "legendary",
+        "req": [
+          {
+            "type": "enemy",
+            "id": "skullface_encampment",
+            "value": 1
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "gold",
+            "value": 3,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "food",
+            "value": 3,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "fame",
+            "value": 1,
+            "perc": true
+          },
+          {
+            "type": "modifier",
+            "type_id": "army",
+            "id": "mercenary_veteran",
+            "type_gen": "stat",
+            "gen": "attack",
+            "value": 2,
+            "perc": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "minotaur_maze_dif_1",
+    "ach": [
+      {
+        "id": "minotaur_maze_dif_1",
+        "rarity": "rare",
+        "req": [
+          {
+            "type": "enemy",
+            "id": "minotaur_maze",
+            "value": 1
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "stone",
+            "value": 1,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "steel",
+            "value": 1,
+            "perc": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "minotaur_maze_dif_2",
+    "ach": [
+      {
+        "id": "minotaur_maze_dif_2",
+        "rarity": "epic",
+        "req": [
+          {
+            "type": "enemy",
+            "id": "minotaur_maze",
+            "value": 1
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "stone",
+            "value": 2,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "steel",
+            "value": 2,
+            "perc": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "minotaur_maze_dif_3",
+    "ach": [
+      {
+        "id": "minotaur_maze_dif_3",
+        "rarity": "legendary",
+        "req": [
+          {
+            "type": "enemy",
+            "id": "minotaur_maze",
+            "value": 1
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "stone",
+            "value": 3,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "steel",
+            "value": 3,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "fame",
+            "value": 1,
+            "perc": true
+          },
+          {
+            "type": "modifier",
+            "type_id": "army",
+            "id": "mercenary_veteran",
+            "type_gen": "stat",
+            "gen": "attack",
+            "value": 2,
+            "perc": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "markanat_forest_dif_1",
+    "ach": [
+      {
+        "id": "markanat_forest_dif_1",
+        "rarity": "rare",
+        "req": [
+          {
+            "type": "enemy",
+            "id": "markanat_forest",
+            "value": 1
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "wood",
+            "value": 1,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "building_material",
+            "value": 1,
+            "perc": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "markanat_forest_dif_2",
+    "ach": [
+      {
+        "id": "markanat_forest_dif_2",
+        "rarity": "epic",
+        "req": [
+          {
+            "type": "enemy",
+            "id": "markanat_forest",
+            "value": 1
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "wood",
+            "value": 2,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "building_material",
+            "value": 2,
+            "perc": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "markanat_forest_dif_3",
+    "ach": [
+      {
+        "id": "markanat_forest_dif_3",
+        "rarity": "legendary",
+        "req": [
+          {
+            "type": "enemy",
+            "id": "markanat_forest",
+            "value": 1
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "wood",
+            "value": 3,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "building_material",
+            "value": 3,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "fame",
+            "value": 1,
+            "perc": true
+          },
+          {
+            "type": "modifier",
+            "type_id": "army",
+            "id": "crossbowman",
+            "type_gen": "stat",
+            "gen": "attack",
+            "value": 2,
+            "perc": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "hydra_pit_dif_1",
+    "ach": [
+      {
+        "id": "hydra_pit_dif_1",
+        "rarity": "rare",
+        "req": [
+          {
+            "type": "enemy",
+            "id": "hydra_pit",
+            "value": 1
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "cow",
+            "value": 1,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "horse",
+            "value": 1,
+            "perc": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "hydra_pit_dif_2",
+    "ach": [
+      {
+        "id": "hydra_pit_dif_2",
+        "rarity": "epic",
+        "req": [
+          {
+            "type": "enemy",
+            "id": "hydra_pit",
+            "value": 1
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "cow",
+            "value": 2,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "horse",
+            "value": 2,
+            "perc": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "hydra_pit_dif_3",
+    "ach": [
+      {
+        "id": "hydra_pit_dif_3",
+        "rarity": "legendary",
+        "req": [
+          {
+            "type": "enemy",
+            "id": "hydra_pit",
+            "value": 1
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "cow",
+            "value": 3,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "horse",
+            "value": 3,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "fame",
+            "value": 1,
+            "perc": true
+          },
+          {
+            "type": "modifier",
+            "type_id": "army",
+            "id": "light_cavarly",
+            "type_gen": "stat",
+            "gen": "attack",
+            "value": 2,
+            "perc": false
+          },
+          {
+            "type": "modifier",
+            "type_id": "army",
+            "id": "knight",
+            "type_gen": "stat",
+            "gen": "attack",
+            "value": 2,
+            "perc": false
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "hobgoblin_chieftain_dif_1",
+    "ach": [
+      {
+        "id": "hobgoblin_chieftain_dif_1",
+        "rarity": "rare",
+        "req": [
+          {
+            "type": "enemy",
+            "id": "hobgoblin_chieftain",
+            "value": 1
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "building_material",
+            "value": 1,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "steel",
+            "value": 1,
+            "perc": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "hobgoblin_chieftain_dif_2",
+    "ach": [
+      {
+        "id": "hobgoblin_chieftain_dif_2",
+        "rarity": "epic",
+        "req": [
+          {
+            "type": "enemy",
+            "id": "hobgoblin_chieftain",
+            "value": 1
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "building_material",
+            "value": 2,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "steel",
+            "value": 2,
+            "perc": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "hobgoblin_chieftain_dif_3",
+    "ach": [
+      {
+        "id": "hobgoblin_chieftain_dif_3",
+        "rarity": "legendary",
+        "req": [
+          {
+            "type": "enemy",
+            "id": "hobgoblin_chieftain",
+            "value": 1
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "building_material",
+            "value": 3,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "steel",
+            "value": 3,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "fame",
+            "value": 1,
+            "perc": true
+          },
+          {
+            "type": "cap",
+            "id": "building_material",
+            "value": 750
+          },
+          {
+            "type": "cap",
+            "id": "steel",
+            "value": 750
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "gorgon_cave_dif_1",
+    "ach": [
+      {
+        "id": "gorgon_cave_dif_1",
+        "rarity": "rare",
+        "req": [
+          {
+            "type": "enemy",
+            "id": "gorgon_cave",
+            "value": 1
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "copper",
+            "value": 1,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "iron",
+            "value": 1,
+            "perc": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "gorgon_cave_dif_2",
+    "ach": [
+      {
+        "id": "gorgon_cave_dif_2",
+        "rarity": "epic",
+        "req": [
+          {
+            "type": "enemy",
+            "id": "gorgon_cave",
+            "value": 1
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "copper",
+            "value": 2,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "iron",
+            "value": 2,
+            "perc": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "gorgon_cave_dif_3",
+    "ach": [
+      {
+        "id": "gorgon_cave_dif_3",
+        "rarity": "legendary",
+        "req": [
+          {
+            "type": "enemy",
+            "id": "gorgon_cave",
+            "value": 1
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "copper",
+            "value": 3,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "iron",
+            "value": 3,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "fame",
+            "value": 1,
+            "perc": true
+          },
+          {
+            "type": "cap",
+            "id": "copper",
+            "value": 1500
+          },
+          {
+            "type": "cap",
+            "id": "iron",
+            "value": 1500
           }
         ]
       }
@@ -188,7 +2840,7 @@
     "ach": [
       {
         "id": "army_of_goblin",
-        "rarity": "rare",
+        "rarity": "common",
         "req": [
           {
             "type": "tech",
@@ -214,11 +2866,35 @@
     ]
   },
   {
+    "id": "army_of_goblin_dif_99",
+    "ach": [
+      {
+        "id": "army_of_goblin_dif_99",
+        "rarity": "common",
+        "req": [
+          {
+            "type": "tech",
+            "id": "moonlight_night",
+            "value": 1
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "gold",
+            "value": 1,
+            "perc": true
+          }
+        ]
+      }
+    ]
+  },
+  {
     "id": "army_of_goblin_dif_1",
     "ach": [
       {
         "id": "army_of_goblin_dif_1",
-        "rarity": "epic",
+        "rarity": "rare",
         "req": [
           {
             "type": "tech",
@@ -254,7 +2930,7 @@
     "ach": [
       {
         "id": "army_of_goblin_dif_2",
-        "rarity": "legendary",
+        "rarity": "epic",
         "req": [
           {
             "type": "tech",
@@ -292,11 +2968,77 @@
     ]
   },
   {
+    "id": "army_of_goblin_dif_3",
+    "ach": [
+      {
+        "id": "army_of_goblin_dif_3",
+        "rarity": "legendary",
+        "req": [
+          {
+            "type": "tech",
+            "id": "moonlight_night",
+            "value": 1
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "research",
+            "value": 8,
+            "perc": true
+          },
+          {
+            "type": "resource",
+            "id": "gold",
+            "value": 8,
+            "perc": true
+          },
+          {
+            "type": "modifier",
+            "type_id": "army",
+            "id": "archer",
+            "type_gen": "stat",
+            "gen": "attack",
+            "value": 2,
+            "perc": false
+          },
+          {
+            "type": "modifier",
+            "type_id": "army",
+            "id": "warrior",
+            "type_gen": "stat",
+            "gen": "attack",
+            "value": 2,
+            "perc": false
+          },
+          {
+            "type": "modifier",
+            "type_id": "army",
+            "id": "commander",
+            "type_gen": "stat",
+            "gen": "attack",
+            "value": 7,
+            "perc": false
+          },
+          {
+            "type": "modifier",
+            "type_id": "army",
+            "id": "commander",
+            "type_gen": "stat",
+            "gen": "defense",
+            "value": 7,
+            "perc": false
+          }
+        ]
+      }
+    ]
+  },
+  {
     "id": "army_of_dragon",
     "ach": [
       {
         "id": "army_of_dragon",
-        "rarity": "rare",
+        "rarity": "common",
         "req": [
           {
             "type": "tech",
@@ -322,11 +3064,35 @@
     ]
   },
   {
+    "id": "army_of_dragon_dif_99",
+    "ach": [
+      {
+        "id": "army_of_dragon_dif_99",
+        "rarity": "common",
+        "req": [
+          {
+            "type": "tech",
+            "id": "dragon_assault",
+            "value": 1
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "research",
+            "value": 1,
+            "perc": true
+          }
+        ]
+      }
+    ]
+  },
+  {
     "id": "army_of_dragon_dif_1",
     "ach": [
       {
         "id": "army_of_dragon_dif_1",
-        "rarity": "epic",
+        "rarity": "rare",
         "req": [
           {
             "type": "tech",
@@ -362,7 +3128,7 @@
     "ach": [
       {
         "id": "army_of_dragon_dif_2",
-        "rarity": "legendary",
+        "rarity": "epic",
         "req": [
           {
             "type": "tech",
@@ -406,11 +3172,71 @@
     ]
   },
   {
+    "id": "army_of_dragon_dif_3",
+    "ach": [
+      {
+        "id": "army_of_dragon_dif_3",
+        "rarity": "legendary",
+        "req": [
+          {
+            "type": "tech",
+            "id": "dragon_assault",
+            "value": 1
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "fame",
+            "value": 2,
+            "perc": true
+          },
+          {
+            "type": "modifier",
+            "type_id": "army",
+            "id": "crossbowman",
+            "type_gen": "stat",
+            "gen": "attack",
+            "value": 3,
+            "perc": false
+          },
+          {
+            "type": "modifier",
+            "type_id": "army",
+            "id": "man_at_arms",
+            "type_gen": "stat",
+            "gen": "defense",
+            "value": 3,
+            "perc": false
+          },
+          {
+            "type": "modifier",
+            "type_id": "army",
+            "id": "commander",
+            "type_gen": "stat",
+            "gen": "attack",
+            "value": 9,
+            "perc": false
+          },
+          {
+            "type": "modifier",
+            "type_id": "army",
+            "id": "commander",
+            "type_gen": "stat",
+            "gen": "defense",
+            "value": 9,
+            "perc": false
+          }
+        ]
+      }
+    ]
+  },
+  {
     "id": "fallen_angel_army_1",
     "ach": [
       {
         "id": "fallen_angel_army_1",
-        "rarity": "rare",
+        "rarity": "common",
         "req": [
           {
             "type": "tech",
@@ -436,11 +3262,35 @@
     ]
   },
   {
+    "id": "fallen_angel_army_1_dif_99",
+    "ach": [
+      {
+        "id": "fallen_angel_army_1_dif_99",
+        "rarity": "common",
+        "req": [
+          {
+            "type": "tech",
+            "id": "mysterious_robbery",
+            "value": 1
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "food",
+            "value": 1,
+            "perc": true
+          }
+        ]
+      }
+    ]
+  },
+  {
     "id": "fallen_angel_army_1_dif_1",
     "ach": [
       {
         "id": "fallen_angel_army_1_dif_1",
-        "rarity": "epic",
+        "rarity": "rare",
         "req": [
           {
             "type": "tech",
@@ -476,7 +3326,7 @@
     "ach": [
       {
         "id": "fallen_angel_army_1_dif_2",
-        "rarity": "legendary",
+        "rarity": "epic",
         "req": [
           {
             "type": "tech",
@@ -514,11 +3364,71 @@
     ]
   },
   {
+    "id": "fallen_angel_army_1_dif_3",
+    "ach": [
+      {
+        "id": "fallen_angel_army_1_dif_3",
+        "rarity": "legendary",
+        "req": [
+          {
+            "type": "tech",
+            "id": "mysterious_robbery",
+            "value": 1
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "fame",
+            "value": 2,
+            "perc": true
+          },
+          {
+            "type": "modifier",
+            "type_id": "army",
+            "id": "arquebusier",
+            "type_gen": "stat",
+            "gen": "attack",
+            "value": 3,
+            "perc": false
+          },
+          {
+            "type": "modifier",
+            "type_id": "army",
+            "id": "line_infantry",
+            "type_gen": "stat",
+            "gen": "defense",
+            "value": 3,
+            "perc": false
+          },
+          {
+            "type": "modifier",
+            "type_id": "army",
+            "id": "general",
+            "type_gen": "stat",
+            "gen": "attack",
+            "value": 10,
+            "perc": false
+          },
+          {
+            "type": "modifier",
+            "type_id": "army",
+            "id": "general",
+            "type_gen": "stat",
+            "gen": "defense",
+            "value": 10,
+            "perc": false
+          }
+        ]
+      }
+    ]
+  },
+  {
     "id": "fallen_angel_army_2",
     "ach": [
       {
         "id": "fallen_angel_army_2",
-        "rarity": "rare",
+        "rarity": "common",
         "req": [
           {
             "type": "tech",
@@ -544,11 +3454,38 @@
     ]
   },
   {
+    "id": "fallen_angel_army_2_dif_99",
+    "ach": [
+      {
+        "id": "fallen_angel_army_2_dif_99",
+        "rarity": "common",
+        "req": [
+          {
+            "type": "tech",
+            "id": "fallen_angel",
+            "value": 1
+          }
+        ],
+        "gen": [
+          {
+            "type": "modifier",
+            "type_id": "army",
+            "id": "settlement_defenses",
+            "type_gen": "stat",
+            "gen": "attack",
+            "value": 5,
+            "perc": false
+          }
+        ]
+      }
+    ]
+  },
+  {
     "id": "fallen_angel_army_2_dif_1",
     "ach": [
       {
         "id": "fallen_angel_army_2_dif_1",
-        "rarity": "epic",
+        "rarity": "rare",
         "req": [
           {
             "type": "tech",
@@ -587,7 +3524,7 @@
     "ach": [
       {
         "id": "fallen_angel_army_2_dif_2",
-        "rarity": "legendary",
+        "rarity": "epic",
         "req": [
           {
             "type": "tech",
@@ -631,11 +3568,71 @@
     ]
   },
   {
+    "id": "fallen_angel_army_2_dif_3",
+    "ach": [
+      {
+        "id": "fallen_angel_army_2_dif_3",
+        "rarity": "legendary",
+        "req": [
+          {
+            "type": "tech",
+            "id": "fallen_angel",
+            "value": 1
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "fame",
+            "value": 3,
+            "perc": true
+          },
+          {
+            "type": "modifier",
+            "type_id": "army",
+            "id": "general",
+            "type_gen": "stat",
+            "gen": "attack",
+            "value": 10,
+            "perc": false
+          },
+          {
+            "type": "modifier",
+            "type_id": "army",
+            "id": "general",
+            "type_gen": "stat",
+            "gen": "defense",
+            "value": 10,
+            "perc": false
+          },
+          {
+            "type": "modifier",
+            "type_id": "army",
+            "id": "settlement_defenses",
+            "type_gen": "stat",
+            "gen": "attack",
+            "value": 100,
+            "perc": false
+          },
+          {
+            "type": "modifier",
+            "type_id": "army",
+            "id": "settlement_defenses",
+            "type_gen": "stat",
+            "gen": "defense",
+            "value": 100,
+            "perc": false
+          }
+        ]
+      }
+    ]
+  },
+  {
     "id": "orc_horde_boss",
     "ach": [
       {
         "id": "orc_horde_boss",
-        "rarity": "epic",
+        "rarity": "common",
         "req": [
           {
             "type": "tech",
@@ -660,11 +3657,34 @@
     ]
   },
   {
+    "id": "orc_horde_boss_dif_99",
+    "ach": [
+      {
+        "id": "orc_horde_boss_dif_99",
+        "rarity": "common",
+        "req": [
+          {
+            "type": "tech",
+            "id": "orc_horde",
+            "value": 1
+          }
+        ],
+        "gen": [
+          {
+            "type": "cap",
+            "id": "army",
+            "value": 5
+          }
+        ]
+      }
+    ]
+  },
+  {
     "id": "orc_horde_boss_dif_1",
     "ach": [
       {
         "id": "orc_horde_boss_dif_1",
-        "rarity": "legendary",
+        "rarity": "rare",
         "req": [
           {
             "type": "tech",
@@ -693,7 +3713,7 @@
     "ach": [
       {
         "id": "orc_horde_boss_dif_2",
-        "rarity": "legendary",
+        "rarity": "epic",
         "req": [
           {
             "type": "tech",
@@ -724,6 +3744,71 @@
             "id": "food",
             "value": 5,
             "perc": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "orc_horde_boss_dif_3",
+    "ach": [
+      {
+        "id": "orc_horde_boss_dif_3",
+        "rarity": "legendary",
+        "req": [
+          {
+            "type": "tech",
+            "id": "orc_horde",
+            "value": 1
+          }
+        ],
+        "gen": [
+          {
+            "type": "resource",
+            "id": "fame",
+            "value": 4,
+            "perc": true
+          },
+          {
+            "type": "cap",
+            "id": "army",
+            "value": 50
+          },
+          {
+            "type": "modifier",
+            "type_id": "army",
+            "id": "colonial_militia",
+            "type_gen": "stat",
+            "gen": "attack",
+            "value": 7,
+            "perc": false
+          },
+          {
+            "type": "modifier",
+            "type_id": "army",
+            "id": "colonial_militia",
+            "type_gen": "stat",
+            "gen": "defense",
+            "value": 7,
+            "perc": false
+          },
+          {
+            "type": "modifier",
+            "type_id": "army",
+            "id": "general",
+            "type_gen": "stat",
+            "gen": "attack",
+            "value": 15,
+            "perc": false
+          },
+          {
+            "type": "modifier",
+            "type_id": "army",
+            "id": "general",
+            "type_gen": "stat",
+            "gen": "defense",
+            "value": 15,
+            "perc": false
           }
         ]
       }
@@ -1627,6 +4712,65 @@
             "id": "research",
             "value": 3,
             "perc": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "alchemist_complex",
+    "ach": [
+      {
+        "id": "5_alchemist_complex",
+        "rarity": "common",
+        "req": [
+          {
+            "type": "building",
+            "id": "alchemist_complex",
+            "value": 5
+          }
+        ],
+        "gen": [
+          {
+            "type": "cap",
+            "id": "saltpetre",
+            "value": 1000
+          }
+        ]
+      },
+      {
+        "id": "15_alchemist_complex",
+        "rarity": "rare",
+        "req": [
+          {
+            "type": "building",
+            "id": "alchemist_complex",
+            "value": 15
+          }
+        ],
+        "gen": [
+          {
+            "type": "cap",
+            "id": "saltpetre",
+            "value": 2000
+          }
+        ]
+      },
+      {
+        "id": "25_alchemist_complex",
+        "rarity": "epic",
+        "req": [
+          {
+            "type": "building",
+            "id": "alchemist_complex",
+            "value": 25
+          }
+        ],
+        "gen": [
+          {
+            "type": "cap",
+            "id": "saltpetre",
+            "value": 4000
           }
         ]
       }
